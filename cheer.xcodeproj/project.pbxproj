@@ -7,13 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		910C1CF51DB37F650095BE66 /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910C1CF41DB37F650095BE66 /* ImageData.swift */; };
+		910C1CFA1DB4616B0095BE66 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 910C1CF81DB4616B0095BE66 /* Settings.storyboard */; };
+		910C1CFC1DB461B10095BE66 /* Market.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 910C1CFB1DB461B10095BE66 /* Market.storyboard */; };
+		910C1CFF1DB461DC0095BE66 /* Coupon.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 910C1CFD1DB461DC0095BE66 /* Coupon.storyboard */; };
+		910C1D011DB462590095BE66 /* Activity.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 910C1D001DB462590095BE66 /* Activity.storyboard */; };
+		910C1D041DB462E20095BE66 /* Jobs.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 910C1D021DB462E20095BE66 /* Jobs.storyboard */; };
+		910C1D081DB467B80095BE66 /* SchoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910C1D061DB467B80095BE66 /* SchoolCell.swift */; };
+		910C1D091DB467B80095BE66 /* SchoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 910C1D071DB467B80095BE66 /* SchoolCell.xib */; };
 		916E8F141DB0BADE002A48D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916E8F131DB0BADE002A48D5 /* AppDelegate.swift */; };
-		916E8F161DB0BADE002A48D5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916E8F151DB0BADE002A48D5 /* ViewController.swift */; };
 		916E8F191DB0BADE002A48D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 916E8F171DB0BADE002A48D5 /* Main.storyboard */; };
 		916E8F1B1DB0BADE002A48D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 916E8F1A1DB0BADE002A48D5 /* Assets.xcassets */; };
 		916E8F1E1DB0BADE002A48D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 916E8F1C1DB0BADE002A48D5 /* LaunchScreen.storyboard */; };
 		916E8F291DB0BADF002A48D5 /* cheerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916E8F281DB0BADF002A48D5 /* cheerTests.swift */; };
 		916E8F341DB0BADF002A48D5 /* cheerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916E8F331DB0BADF002A48D5 /* cheerUITests.swift */; };
+		916E8F481DB1D22D002A48D5 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 916E8F461DB1D22D002A48D5 /* Bolts.framework */; };
+		916E8F491DB1D22D002A48D5 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 916E8F461DB1D22D002A48D5 /* Bolts.framework */; };
+		916E8F4A1DB1D22D002A48D5 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 916E8F461DB1D22D002A48D5 /* Bolts.framework */; };
+		916E8F4B1DB1D22D002A48D5 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 916E8F471DB1D22D002A48D5 /* Parse.framework */; };
+		916E8F4C1DB1D22D002A48D5 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 916E8F471DB1D22D002A48D5 /* Parse.framework */; };
+		916E8F4D1DB1D22D002A48D5 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 916E8F471DB1D22D002A48D5 /* Parse.framework */; };
+		916E8F4F1DB1D465002A48D5 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 916E8F4E1DB1D465002A48D5 /* AudioToolbox.framework */; };
+		916E8F511DB1D474002A48D5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 916E8F501DB1D474002A48D5 /* SystemConfiguration.framework */; };
+		916E8F531DB1D4DB002A48D5 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 916E8F521DB1D4DB002A48D5 /* libsqlite3.tbd */; };
+		916E8F561DB1D805002A48D5 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916E8F551DB1D805002A48D5 /* Item.swift */; };
+		916E8F581DB1D835002A48D5 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916E8F571DB1D835002A48D5 /* Config.swift */; };
+		916E8F641DB1DC36002A48D5 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916E8F621DB1DC36002A48D5 /* ItemCell.swift */; };
+		916E8F651DB1DC36002A48D5 /* ItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 916E8F631DB1DC36002A48D5 /* ItemCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +54,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		910C1CF41DB37F650095BE66 /* ImageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
+		910C1CF91DB4616B0095BE66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
+		910C1CFB1DB461B10095BE66 /* Market.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Market.storyboard; path = cheer/Market.storyboard; sourceTree = "<group>"; };
+		910C1CFE1DB461DC0095BE66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Coupon.storyboard; sourceTree = "<group>"; };
+		910C1D001DB462590095BE66 /* Activity.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Activity.storyboard; sourceTree = "<group>"; };
+		910C1D031DB462E20095BE66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Jobs.storyboard; sourceTree = "<group>"; };
+		910C1D061DB467B80095BE66 /* SchoolCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolCell.swift; sourceTree = "<group>"; };
+		910C1D071DB467B80095BE66 /* SchoolCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SchoolCell.xib; sourceTree = "<group>"; };
 		916E8F101DB0BADE002A48D5 /* cheer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cheer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		916E8F131DB0BADE002A48D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		916E8F151DB0BADE002A48D5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		916E8F181DB0BADE002A48D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		916E8F1A1DB0BADE002A48D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		916E8F1D1DB0BADE002A48D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +74,15 @@
 		916E8F2F1DB0BADF002A48D5 /* cheerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = cheerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		916E8F331DB0BADF002A48D5 /* cheerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cheerUITests.swift; sourceTree = "<group>"; };
 		916E8F351DB0BADF002A48D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		916E8F461DB1D22D002A48D5 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		916E8F471DB1D22D002A48D5 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		916E8F4E1DB1D465002A48D5 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		916E8F501DB1D474002A48D5 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		916E8F521DB1D4DB002A48D5 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		916E8F551DB1D805002A48D5 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		916E8F571DB1D835002A48D5 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		916E8F621DB1DC36002A48D5 /* ItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
+		916E8F631DB1DC36002A48D5 /* ItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +90,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				916E8F531DB1D4DB002A48D5 /* libsqlite3.tbd in Frameworks */,
+				916E8F511DB1D474002A48D5 /* SystemConfiguration.framework in Frameworks */,
+				916E8F4F1DB1D465002A48D5 /* AudioToolbox.framework in Frameworks */,
+				916E8F4B1DB1D22D002A48D5 /* Parse.framework in Frameworks */,
+				916E8F481DB1D22D002A48D5 /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +102,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				916E8F4C1DB1D22D002A48D5 /* Parse.framework in Frameworks */,
+				916E8F491DB1D22D002A48D5 /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,12 +111,65 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				916E8F4D1DB1D22D002A48D5 /* Parse.framework in Frameworks */,
+				916E8F4A1DB1D22D002A48D5 /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		910C1CEE1DB37EA30095BE66 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				916E8F1C1DB0BADE002A48D5 /* LaunchScreen.storyboard */,
+				916E8F171DB0BADE002A48D5 /* Main.storyboard */,
+			);
+			name = Main;
+			sourceTree = "<group>";
+		};
+		910C1CEF1DB37EC60095BE66 /* Martket */ = {
+			isa = PBXGroup;
+			children = (
+				910C1CFB1DB461B10095BE66 /* Market.storyboard */,
+			);
+			name = Martket;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		910C1CF01DB37EDF0095BE66 /* Coupon */ = {
+			isa = PBXGroup;
+			children = (
+				910C1CFD1DB461DC0095BE66 /* Coupon.storyboard */,
+			);
+			name = Coupon;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		910C1CF11DB37EF60095BE66 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				910C1D001DB462590095BE66 /* Activity.storyboard */,
+			);
+			name = Activity;
+			sourceTree = "<group>";
+		};
+		910C1CF21DB37F060095BE66 /* Jobs */ = {
+			isa = PBXGroup;
+			children = (
+				910C1D021DB462E20095BE66 /* Jobs.storyboard */,
+			);
+			name = Jobs;
+			sourceTree = "<group>";
+		};
+		910C1CF31DB37F0D0095BE66 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				910C1CF81DB4616B0095BE66 /* Settings.storyboard */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
 		916E8F071DB0BADE002A48D5 = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +177,7 @@
 				916E8F271DB0BADF002A48D5 /* cheerTests */,
 				916E8F321DB0BADF002A48D5 /* cheerUITests */,
 				916E8F111DB0BADE002A48D5 /* Products */,
+				916E8F411DB0BCB8002A48D5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,12 +194,17 @@
 		916E8F121DB0BADE002A48D5 /* cheer */ = {
 			isa = PBXGroup;
 			children = (
-				916E8F131DB0BADE002A48D5 /* AppDelegate.swift */,
-				916E8F151DB0BADE002A48D5 /* ViewController.swift */,
-				916E8F171DB0BADE002A48D5 /* Main.storyboard */,
-				916E8F1A1DB0BADE002A48D5 /* Assets.xcassets */,
-				916E8F1C1DB0BADE002A48D5 /* LaunchScreen.storyboard */,
 				916E8F1F1DB0BADE002A48D5 /* Info.plist */,
+				916E8F131DB0BADE002A48D5 /* AppDelegate.swift */,
+				916E8F1A1DB0BADE002A48D5 /* Assets.xcassets */,
+				916E8F541DB1D7D4002A48D5 /* Class */,
+				916E8F591DB1DA54002A48D5 /* custom cells */,
+				910C1CEE1DB37EA30095BE66 /* Main */,
+				910C1CEF1DB37EC60095BE66 /* Martket */,
+				910C1CF01DB37EDF0095BE66 /* Coupon */,
+				910C1CF11DB37EF60095BE66 /* Activity */,
+				910C1CF21DB37F060095BE66 /* Jobs */,
+				910C1CF31DB37F0D0095BE66 /* Settings */,
 			);
 			path = cheer;
 			sourceTree = "<group>";
@@ -123,6 +225,40 @@
 				916E8F351DB0BADF002A48D5 /* Info.plist */,
 			);
 			path = cheerUITests;
+			sourceTree = "<group>";
+		};
+		916E8F411DB0BCB8002A48D5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				916E8F521DB1D4DB002A48D5 /* libsqlite3.tbd */,
+				916E8F501DB1D474002A48D5 /* SystemConfiguration.framework */,
+				916E8F4E1DB1D465002A48D5 /* AudioToolbox.framework */,
+				916E8F461DB1D22D002A48D5 /* Bolts.framework */,
+				916E8F471DB1D22D002A48D5 /* Parse.framework */,
+			);
+			name = Frameworks;
+			path = cheer;
+			sourceTree = "<group>";
+		};
+		916E8F541DB1D7D4002A48D5 /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				916E8F571DB1D835002A48D5 /* Config.swift */,
+				916E8F551DB1D805002A48D5 /* Item.swift */,
+				910C1CF41DB37F650095BE66 /* ImageData.swift */,
+			);
+			name = Class;
+			sourceTree = "<group>";
+		};
+		916E8F591DB1DA54002A48D5 /* custom cells */ = {
+			isa = PBXGroup;
+			children = (
+				916E8F621DB1DC36002A48D5 /* ItemCell.swift */,
+				916E8F631DB1DC36002A48D5 /* ItemCell.xib */,
+				910C1D061DB467B80095BE66 /* SchoolCell.swift */,
+				910C1D071DB467B80095BE66 /* SchoolCell.xib */,
+			);
+			name = "custom cells";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,9 +371,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				910C1CFC1DB461B10095BE66 /* Market.storyboard in Resources */,
+				916E8F651DB1DC36002A48D5 /* ItemCell.xib in Resources */,
+				910C1CFF1DB461DC0095BE66 /* Coupon.storyboard in Resources */,
+				910C1D091DB467B80095BE66 /* SchoolCell.xib in Resources */,
 				916E8F1E1DB0BADE002A48D5 /* LaunchScreen.storyboard in Resources */,
 				916E8F1B1DB0BADE002A48D5 /* Assets.xcassets in Resources */,
+				910C1CFA1DB4616B0095BE66 /* Settings.storyboard in Resources */,
+				910C1D041DB462E20095BE66 /* Jobs.storyboard in Resources */,
 				916E8F191DB0BADE002A48D5 /* Main.storyboard in Resources */,
+				910C1D011DB462590095BE66 /* Activity.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,8 +405,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				916E8F161DB0BADE002A48D5 /* ViewController.swift in Sources */,
+				916E8F581DB1D835002A48D5 /* Config.swift in Sources */,
+				916E8F561DB1D805002A48D5 /* Item.swift in Sources */,
 				916E8F141DB0BADE002A48D5 /* AppDelegate.swift in Sources */,
+				910C1D081DB467B80095BE66 /* SchoolCell.swift in Sources */,
+				916E8F641DB1DC36002A48D5 /* ItemCell.swift in Sources */,
+				910C1CF51DB37F650095BE66 /* ImageData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +446,31 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		910C1CF81DB4616B0095BE66 /* Settings.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				910C1CF91DB4616B0095BE66 /* Base */,
+			);
+			name = Settings.storyboard;
+			sourceTree = "<group>";
+		};
+		910C1CFD1DB461DC0095BE66 /* Coupon.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				910C1CFE1DB461DC0095BE66 /* Base */,
+			);
+			name = Coupon.storyboard;
+			path = cheer;
+			sourceTree = "<group>";
+		};
+		910C1D021DB462E20095BE66 /* Jobs.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				910C1D031DB462E20095BE66 /* Base */,
+			);
+			name = Jobs.storyboard;
+			sourceTree = "<group>";
+		};
 		916E8F171DB0BADE002A48D5 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -414,6 +586,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = X73E52W442;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/cheer",
+				);
 				INFOPLIST_FILE = cheer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.EvolvementApps.cheer;
@@ -427,6 +603,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = X73E52W442;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/cheer",
+				);
 				INFOPLIST_FILE = cheer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.EvolvementApps.cheer;
@@ -441,6 +621,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = X73E52W442;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/cheer",
+				);
 				INFOPLIST_FILE = cheerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.EvolvementApps.cheerTests;
@@ -456,6 +640,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = X73E52W442;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/cheer",
+				);
 				INFOPLIST_FILE = cheerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.EvolvementApps.cheerTests;
@@ -470,6 +658,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = X73E52W442;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/cheer",
+				);
 				INFOPLIST_FILE = cheerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.EvolvementApps.cheerUITests;
@@ -484,6 +676,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = X73E52W442;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/cheer",
+				);
 				INFOPLIST_FILE = cheerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.EvolvementApps.cheerUITests;
@@ -512,6 +708,7 @@
 				916E8F3A1DB0BADF002A48D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		916E8F3B1DB0BADF002A48D5 /* Build configuration list for PBXNativeTarget "cheerTests" */ = {
 			isa = XCConfigurationList;
@@ -520,6 +717,7 @@
 				916E8F3D1DB0BADF002A48D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		916E8F3E1DB0BADF002A48D5 /* Build configuration list for PBXNativeTarget "cheerUITests" */ = {
 			isa = XCConfigurationList;
@@ -528,6 +726,7 @@
 				916E8F401DB0BADF002A48D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

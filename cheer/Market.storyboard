@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="pFt-aA-HR3">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="nAx-Km-fd4">
+            <objects>
+                <viewController id="uvI-MW-pV9" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wpm-rz-Eyr"/>
+                        <viewControllerLayoutGuide type="bottom" id="iVe-6u-lfb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="S6v-E2-6xw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="dhu-gO-6eY">
+                        <barButtonItem key="rightBarButtonItem" title="Add Post" id="0oI-Qd-t7h">
+                            <connections>
+                                <segue destination="q8k-x8-tK4" kind="show" id="Sj5-1C-lbf"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WzL-20-Cx2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-940" y="-0.44977511244377816"/>
+        </scene>
+        <!--Title-->
+        <scene sceneID="Dj5-L8-C9P">
+            <objects>
+                <viewController id="q8k-x8-tK4" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vze-iU-yOn"/>
+                        <viewControllerLayoutGuide type="bottom" id="9er-O4-GYP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="FjW-KR-ts8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="3D0-bz-JFa">
+                        <barButtonItem key="rightBarButtonItem" title="Cancel" id="J7g-dC-gjG"/>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J9B-Xh-YvL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-119" y="0.0"/>
+        </scene>
+        <!--Market-->
+        <scene sceneID="IcH-rP-2IX">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pFt-aA-HR3" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Market" image="price_Tag" selectedImage="price_Tag" id="Dqq-qE-1Ql"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="EZe-0R-4Qx">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="uvI-MW-pV9" kind="relationship" relationship="rootViewController" id="zPr-BT-icT"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Uud-rS-Qzs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1879.2" y="-0.44977511244377816"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="price_Tag" width="25" height="25"/>
+    </resources>
+</document>
