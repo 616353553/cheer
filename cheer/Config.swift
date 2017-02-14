@@ -31,4 +31,6 @@ public struct Config{
     var theme_color: UIColor = UIColor.init(red: 0/255.0, green: 128/255.0, blue: 255/255.0, alpha: 1)
     static let blueColor: UIColor = UIColor.init(red: 0/255.0, green: 128/255.0, blue: 255/255.0, alpha: 1)
     static let redColor: UIColor = UIColor.init(red: 255/255.0, green: 0/255.0, blue: 0/255.0, alpha: 1)
+    static var isFirstRun = true
+    static var userIsLoggedIn = false
 }

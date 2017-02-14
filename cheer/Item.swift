@@ -12,14 +12,11 @@ import UIKit
 class Item {
     var userID: String?
     var category: String?
-    var isForSale: Bool?
+    var deliveryMethod: String?
     var title: String?
-    var price: Double?
+    var price: String?
     var discription: String?
     var location: String?
-    var numOfContacts: Int!
-    var contactMethods = [String?](repeating: nil, count: Config.maxContactsAllowed)
-    var contacts = [String?](repeating: nil, count: Config.maxContactsAllowed)
-    var numOfImages: Int!
+    var numOfImages: Int?
     var images = [UIImage?](repeating: nil, count: Config.maxImagesAllowed)
 }

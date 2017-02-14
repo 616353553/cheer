@@ -1,0 +1,21 @@
+PODS:
+  - Bolts/Tasks (1.8.4)
+  - Parse (1.14.2):
+    - Bolts/Tasks (~> 1.8)
+  - SinchVerification-Swift (2.0.3)
+  - SwiftyStarRatingView (1.0.1)
+
+DEPENDENCIES:
+  - Parse
+  - SinchVerification-Swift
+  - SwiftyStarRatingView
+
+SPEC CHECKSUMS:
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
+  SinchVerification-Swift: 567aaf9cb29c55a115faecb6016fea25a7f37688
+  SwiftyStarRatingView: 973a3ea9a7cc0a88e34985f1087d3a4a7c837b51
+
+PODFILE CHECKSUM: e1021b689817fcd36eefcaa2dbfbbaad71759e7e
+
+COCOAPODS: 1.0.1

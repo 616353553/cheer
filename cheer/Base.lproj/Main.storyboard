@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1v8-FS-yef">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1v8-FS-yef">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -16,66 +19,67 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="EiU-Ot-BGD" kind="relationship" relationship="viewControllers" id="KE6-kI-VVi"/>
-                        <segue destination="kLr-BP-HsI" kind="relationship" relationship="viewControllers" id="QKt-Fi-WSn"/>
-                        <segue destination="yMp-GT-paa" kind="relationship" relationship="viewControllers" id="DkY-85-Xir"/>
-                        <segue destination="Oag-bs-axR" kind="relationship" relationship="viewControllers" id="ie2-4i-qOg"/>
-                        <segue destination="4hJ-Wj-79f" kind="relationship" relationship="viewControllers" id="He2-fc-Ci3"/>
+                        <segue destination="MBf-ct-Kis" kind="relationship" relationship="viewControllers" id="VYi-1f-nel"/>
+                        <segue destination="ebD-f7-I48" kind="relationship" relationship="viewControllers" id="uRs-rl-jog"/>
+                        <segue destination="zWO-Ls-EPb" kind="relationship" relationship="viewControllers" id="ePc-P2-B4Q"/>
+                        <segue destination="EfY-Ad-yfI" kind="relationship" relationship="viewControllers" id="K2G-UN-0Md"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RNq-Oe-Brf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-794" y="-867"/>
         </scene>
-        <!--Settings-->
-        <scene sceneID="PVs-qm-iII">
+        <!--Home-->
+        <scene sceneID="kiL-5y-6PM">
             <objects>
-                <viewControllerPlaceholder storyboardName="Settings" id="4hJ-Wj-79f" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="KIq-qA-eXl"/>
+                <viewControllerPlaceholder storyboardName="Home" id="MBf-ct-Kis" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Home" image="Home_unselected" selectedImage="Home_selected" id="e7G-s5-tBp">
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="10"/>
+                    </tabBarItem>
                 </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CBP-Sb-LhX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tkz-Sj-2AI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="17" y="-580"/>
+            <point key="canvasLocation" x="-171" y="-1045"/>
         </scene>
         <!--Market-->
-        <scene sceneID="zxl-Vp-oBe">
+        <scene sceneID="TnR-cP-F47">
             <objects>
-                <viewControllerPlaceholder storyboardName="Market" id="EiU-Ot-BGD" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="cwb-Vp-tDc"/>
+                <viewControllerPlaceholder storyboardName="Market" id="ebD-f7-I48" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Market" image="Market_unselected" selectedImage="Market_selected" id="qlr-lg-jjV"/>
                 </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Rqt-QW-Pfx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nld-h1-7vD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10" y="-1155"/>
+            <point key="canvasLocation" x="-166" y="-936"/>
         </scene>
-        <!--Coupon-->
-        <scene sceneID="IGZ-xe-cVh">
+        <!--MeMain-->
+        <scene sceneID="GEm-Ha-9k7">
             <objects>
-                <viewControllerPlaceholder storyboardName="Coupon" id="kLr-BP-HsI" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="pxh-1e-ivj"/>
+                <viewControllerPlaceholder storyboardName="MeMain" id="EfY-Ad-yfI" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Me" image="Me_unselected" selectedImage="Me_selected" id="CXk-4Y-mKo"/>
                 </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qQ2-PE-xKq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d67-Iq-vQN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10" y="-1003"/>
+            <point key="canvasLocation" x="-162" y="-676"/>
         </scene>
-        <!--Activity-->
-        <scene sceneID="laT-z9-gxL">
+        <!--DiscoverMain-->
+        <scene sceneID="wfc-fy-SFg">
             <objects>
-                <viewControllerPlaceholder storyboardName="Activity" id="yMp-GT-paa" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="hLp-4g-pUO"/>
+                <viewControllerPlaceholder storyboardName="DiscoverMain" id="zWO-Ls-EPb" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Discover" image="Discover_unselected" selectedImage="Discover_selected" id="Kp0-rM-S6q"/>
                 </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="I7R-bd-6Pj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bWR-d1-cgO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="14" y="-868"/>
-        </scene>
-        <!--Jobs-->
-        <scene sceneID="dc8-MT-CgL">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Jobs" id="Oag-bs-axR" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="RW4-9g-pUa"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="40W-Na-ff1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="0.0" y="-712"/>
+            <point key="canvasLocation" x="-134" y="-806"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Discover_selected" width="22" height="22"/>
+        <image name="Discover_unselected" width="22" height="22"/>
+        <image name="Home_selected" width="22" height="22"/>
+        <image name="Home_unselected" width="22" height="22"/>
+        <image name="Market_selected" width="23" height="22"/>
+        <image name="Market_unselected" width="23" height="22"/>
+        <image name="Me_selected" width="24" height="24"/>
+        <image name="Me_unselected" width="24" height="24"/>
+    </resources>
 </document>

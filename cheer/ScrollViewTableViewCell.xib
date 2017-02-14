@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="ScrollViewTableViewCell" selectionStyle="default" indentationWidth="10" rowHeight="215" id="KGk-i7-Jjw" customClass="ScrollViewTableViewCell" customModule="cheer" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="400" height="215"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="400" height="214"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="4qo-D3-xPH">
+                        <rect key="frame" x="0.0" y="186" width="400" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="pIB-yh-LA3"/>
+                        </constraints>
+                        <color key="pageIndicatorTintColor" red="0.73333333329999995" green="0.73333333329999995" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="currentPageIndicatorTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </pageControl>
+                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cqK-Dy-jpO">
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="214"/>
+                    </scrollView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="cqK-Dy-jpO" secondAttribute="trailing" id="3X3-Tw-i79"/>
+                    <constraint firstItem="4qo-D3-xPH" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="4m0-QF-eiz"/>
+                    <constraint firstItem="cqK-Dy-jpO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="W5h-Ad-7XS"/>
+                    <constraint firstAttribute="bottom" secondItem="cqK-Dy-jpO" secondAttribute="bottom" id="azK-oL-KvI"/>
+                    <constraint firstItem="cqK-Dy-jpO" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="fdd-jn-1io"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="4qo-D3-xPH" secondAttribute="bottom" id="gbd-Lo-Lbg"/>
+                    <constraint firstItem="cqK-Dy-jpO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="rBD-9a-sFQ"/>
+                    <constraint firstItem="4qo-D3-xPH" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" id="tbw-dz-TfW"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="adsPageControl" destination="4qo-D3-xPH" id="hZi-F1-Kc1"/>
+                <outlet property="adsScrollView" destination="cqK-Dy-jpO" id="lx0-4l-M6C"/>
+            </connections>
+            <point key="canvasLocation" x="65" y="137.5"/>
+        </tableViewCell>
+    </objects>
+</document>

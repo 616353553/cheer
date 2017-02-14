@@ -9,6 +9,7 @@
 import UIKit
 import Parse
 import UserNotifications
+import FBSDKLoginKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -21,20 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        //show welcome page if this is first run
-        /*
-         if !NSUserDefaults.standardUserDefaults().boolForKey("welcomeViewHasBeenDisplayed"){
-         let mainStoryboard : UIStoryboard = UIStoryboard(name: "WelcomeView", bundle: nil)
-         let initialViewController : UIViewController = mainStoryboard.instantiateInitialViewController()! as UIViewController
-         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-         self.window?.rootViewController = initialViewController
-         self.window?.makeKeyAndVisible()
-         //NSUserDefaults.standardUserDefaults().setBool(true, forKey: "welcomeViewHasBeenDisplayed")
-         }*/
-        
         // Enable storing and querying data from Local Datastore.
         // Remove this line if you don't want to use Local Datastore features or want to use cachePolicy.
-        
         Parse.enableLocalDatastore()
         
         let parseConfiguration = ParseClientConfiguration(block: { (ParseMutableClientConfiguration) -> Void in
@@ -42,8 +31,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             ParseMutableClientConfiguration.clientKey = "f6ss1v3s48a38hg4gt8"
             ParseMutableClientConfiguration.server = "https://cheers1.herokuapp.com/parse"
         })
-        
         Parse.initialize(with: parseConfiguration)
+        
+        //show welcome page if this is first run
+        if !UserDefaults.standard.bool(forKey: "noSchoolSelected"){
+            let mainStoryboard : UIStoryboard = UIStoryboard(name: "Welcome", bundle: nil)
+            let initialViewController : UIViewController = mainStoryboard.instantiateInitialViewController()! as UIViewController
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            self.window?.rootViewController = initialViewController
+            self.window?.makeKeyAndVisible()
+            //UserDefaults.standard.set(true, forKey: "isNotFirstRun")
+        }
+        
+        
         
         // ****************************************************************************
         // If you are using Facebook, uncomment and add your FacebookAppID to your bundle's plist as
@@ -51,6 +51,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Uncomment the line inside ParseStartProject-Bridging-Header and the following line here:
         // PFFacebookUtils.initializeFacebook()
         // ****************************************************************************
+        
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+        
+        
+        
+        
         
         PFUser.enableAutomaticUser()
         
@@ -77,6 +84,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         return true
+    }
+    
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
     }
     
     //--------------------------------------
