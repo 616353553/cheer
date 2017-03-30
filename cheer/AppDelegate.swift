@@ -33,16 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         })
         Parse.initialize(with: parseConfiguration)
         
-        //show welcome page if this is first run
-        if !UserDefaults.standard.bool(forKey: "noSchoolSelected"){
-            let mainStoryboard : UIStoryboard = UIStoryboard(name: "Welcome", bundle: nil)
-            let initialViewController : UIViewController = mainStoryboard.instantiateInitialViewController()! as UIViewController
-            self.window = UIWindow(frame: UIScreen.main.bounds)
-            self.window?.rootViewController = initialViewController
-            self.window?.makeKeyAndVisible()
-            //UserDefaults.standard.set(true, forKey: "isNotFirstRun")
-        }
-        
         
         
         // ****************************************************************************

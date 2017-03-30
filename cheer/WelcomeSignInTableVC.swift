@@ -7,24 +7,45 @@
 //
 
 import UIKit
+import Parse
 
 class WelcomeSignInTableVC: UITableViewController {
 
-    @IBOutlet weak var emailAddress: UITextField!
-    @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var signInButton: UIButton!
+    @IBOutlet weak var touristButton: UIButton!
+
     var tap: UITapGestureRecognizer!
+    let spinner = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        emailAddress.delegate = self
-        password.delegate = self
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        // sign in button round corner
+        signInButton.layer.cornerRadius = 20
+        signInButton.layer.borderWidth = 1
+        signInButton.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
+        signInButton.titleLabel?.textColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 1)
+        // tourist button round corner
+        touristButton.layer.cornerRadius = 13
+        touristButton.layer.borderWidth = 1
+        touristButton.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
+        touristButton.titleLabel?.textColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 1)
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = true
         // hide the keyboard when touch outside
         NotificationCenter.default.addObserver(self, selector: #selector(PostItemTableVC.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(PostItemTableVC.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         tap = UITapGestureRecognizer(target: self, action: #selector(WelcomeSignInTableVC.dismissKeyboard))
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = false
+        self.view.endEditing(true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -46,14 +67,38 @@ class WelcomeSignInTableVC: UITableViewController {
     
     // change the password visibility
     @IBAction func passwordVisibility(_ sender: UIButton) {
-        if password.isSecureTextEntry{
-            sender.setImage(#imageLiteral(resourceName: "visible"), for: .normal)
-            password.isSecureTextEntry = false
+        sender.setImage(passwordTextField.isSecureTextEntry ? #imageLiteral(resourceName: "visible") : #imageLiteral(resourceName: "invisible"), for: .normal)
+        passwordTextField.isSecureTextEntry = !passwordTextField.isSecureTextEntry
+    }
+    
+    @IBAction func countinueWithoutSignIn(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "selectSchool", sender: self)
+    }
+    
+    @IBAction func signInButtonIsPushed(_ sender: UIButton) {
+        if emailTextField.text! == ""{
+            Alert.displayAlertWithOneButton(title: "Error", message: "Email address cannot be empty", vc: self)
+        }
+        else if passwordTextField.text! == ""{
+            Alert.displayAlertWithOneButton(title: "Error", message: "Password cannot be empty", vc: self)
         }
         else{
-            sender.setImage(#imageLiteral(resourceName: "invisible"), for: .normal)
-            password.isSecureTextEntry = true
+            Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
+            // Send a request to login
+            PFUser.logInWithUsername(inBackground: emailTextField.text!, password: passwordTextField.text!, block: {(user, error) -> Void in
+                Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
+                if ((user) != nil) {
+                    self.performSegue(withIdentifier: "selectSchool", sender: self)
+                }
+                else {
+                    Alert.displayAlertWithOneButton(title: "Error", message: error!.localizedDescription, vc: self)
+                }
+            })
         }
+    }
+    
+    @IBAction func unwindToWelcomeSignInTableVC(unwindSeague: UIStoryboardSegue){
+        // do something
     }
     
     // MARK: - Table view data source
@@ -63,19 +108,23 @@ class WelcomeSignInTableVC: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.row{
+        case 0:
+            return 200
+        case 1:
+            return 44
+        case 2:
+            return 44
+        case 3:
+            return UIScreen.main.bounds.height - CGFloat(288)
+        default:
+            return 0
+        }
     }
-    */
-
 }
 
 extension WelcomeSignInTableVC: UITextFieldDelegate{

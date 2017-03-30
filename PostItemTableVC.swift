@@ -116,13 +116,13 @@ class PostItemTableVC: UITableViewController {
         else if item.deliveryMethod == nil{
             displayAlert(title: "Error", message: "Please select a delivery method", vc: self)
         }
-        else if item.title == nil || InputChecker.onlyHasWhiteSpace(titleText: item.title!){
+        else if item.title == nil || InputChecker.onlyHasWhiteSpace(text: item.title!){
             displayAlert(title: "Error", message: "Invalid title", vc: self)
         }
         else if item.price != nil && !InputChecker.onlyHasNumber(price: item.price!){
             displayAlert(title: "Error", message: "Invalid price", vc: self)
         }
-        else if item.discription == nil || InputChecker.onlyHasWhiteSpace(titleText: item.discription!){
+        else if item.discription == nil || InputChecker.onlyHasWhiteSpace(text: item.discription!){
             displayAlert(title: "Error", message: "Invalid item discription", vc: self)
         }
         else{

@@ -10,18 +10,20 @@ import UIKit
 
 class SchoolCell: UITableViewCell {
 
-    @IBOutlet weak var school_icon: UIImageView!
-    @IBOutlet weak var scholl_name: UILabel!
+    @IBOutlet weak var schoolName: UILabel!
+    @IBOutlet weak var logo: UIImageView!
+    @IBOutlet weak var background: UIImageView!
+    @IBOutlet weak var checkMark: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        checkMark.isHidden = true
         // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        checkMark.isHidden = !selected
     }
     
 }

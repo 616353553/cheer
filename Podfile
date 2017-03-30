@@ -7,9 +7,18 @@ target 'cheer' do
 
   #Sinch framework (SMS verify)
   pod ’SinchVerification-Swift’
+  #pod 'SinchRTC'
+
+  # SwiftRequest
+  source 'https://github.com/CocoaPods/Specs.git'
+  platform :ios, '8.0'
+  pod 'SwiftRequest', '0.0.4'
 
   #Parse SDK
   pod 'Parse'
+
+  #Swift-Mailgun
+  pod 'SwiftMailgun'
 
   # Pods for cheer
   pod 'SwiftyStarRatingView'
