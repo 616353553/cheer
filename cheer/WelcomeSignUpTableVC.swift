@@ -7,43 +7,187 @@
 //
 
 import UIKit
+import Parse
 
 class WelcomeSignUpTableVC: UITableViewController {
-
+    // textfields
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    // "check symbol" images
+    @IBOutlet weak var emailValid: UIImageView!
+    @IBOutlet weak var passwordValid: UIImageView!
+    @IBOutlet weak var passwordValidLength: UIImageView!
+    @IBOutlet weak var passwordValidContent: UIImageView!
+    @IBOutlet weak var passwordValidSpecial: UIImageView!
+    
+    // sign up button
+    @IBOutlet weak var signUpButton: UIButton!
+    
+    var isEditingPassword = false
+    let spinner = UIActivityIndicatorView()
+    var tap: UITapGestureRecognizer!
+    var emailChecker = PFUser.query()!
+    var user = PFUser()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        setUpTextfield()
+        signUpButton.layer.cornerRadius = 20
+        signUpButton.layer.borderWidth = 1
+        signUpButton.layer.borderColor = Config.themeColor.cgColor
+        signUpButton.titleLabel?.textColor = Config.themeColor
+        // set up observers
+        NotificationCenter.default.addObserver(self, selector: #selector(WelcomeSignUpTableVC.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(WelcomeSignUpTableVC.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        // set up gesture recognizer
+        tap = UITapGestureRecognizer(target: self, action: #selector(WelcomeSignUpTableVC.dismissKeyboard))
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        emailChecker.cancel()
+        self.view.endEditing(true)
+    }
+    
+    @IBAction func signUpIsPushed(_ sender: UIButton) {
+        if emailValid.image! == #imageLiteral(resourceName: "Ok"){
+            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid email", vc: self)
+        }
+        else if passwordValid.image! == #imageLiteral(resourceName: "Ok"){
+            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid password", vc: self)
+        }
+        else{
+            Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
+            emailChecker.whereKey("email", equalTo: emailTextField.text!)
+            emailChecker.findObjectsInBackground(block: {(objects, error) -> Void in
+                if error == nil {
+                    if (objects!.count > 0){
+                        Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
+                        Alert.displayAlertWithOneButton(title: "Error", message: "Email is already used by another user.", vc: self, alertActionHandler: nil)
+                    } else {
+                        self.user.username = self.emailTextField.text!
+                        self.user.password = self.passwordTextField.text!
+                        self.user.email = self.emailTextField.text!
+                        self.user.signUpInBackground(block: {(success, error) in
+                            Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
+                            if success{
+                                Alert.displayAlertWithOneButton(title: "Success", message: "A verify link is sent to your email", vc: self, alertActionHandler: {(action) in
+                                        self.performSegue(withIdentifier: "backToSignIn", sender: self)
+                                    })
+                            } else {
+                                Alert.displayAlertWithOneButton(title: "Error", message: error!.localizedDescription, vc: self)
+                            }
+                        })
+                    }
+                } else {
+                    Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
+                    Alert.displayAlertWithOneButton(title: "Error", message: error!.localizedDescription, vc: self, alertActionHandler: nil)
+                }
+            })
+        }
+    }
+    
+    func setUpTextfield(){
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        emailTextField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
+    }
+    
+    func textDidChange(_ textField: UITextField){
+        switch textField.restorationIdentifier! {
+        case "email":
+            emailValid.image = InputChecker.isValidEmail(text: emailTextField.text!) ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
+        case "password":
+            let passwordHasValidLength = InputChecker.hasCorrectLength(min: 8, max: 16, text: passwordTextField.text!)
+            let passwordHasValidContent = InputChecker.hasValidPasswordContent(text: passwordTextField.text!)
+            let passwordHasValidSpecial = InputChecker.hasNoSpecialLetters(text: passwordTextField.text!)
+            passwordValid.image = (passwordHasValidLength && passwordHasValidContent) && passwordHasValidSpecial ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
+            passwordValidLength.image = passwordHasValidLength ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
+            passwordValidContent.image = passwordHasValidContent ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
+            passwordValidSpecial.image = passwordHasValidSpecial ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
+        default:
+            break
+        }
+    }
+    
+    func keyboardWillShow(notification: NSNotification){
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    func keyboardWillHide(notification: NSNotification){
+        self.view.removeGestureRecognizer(tap)
+    }
+    
+    func dismissKeyboard(){
+        self.view.endEditing(true)
+    }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 6
+        return 5
     }
-
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.row {
+        case 0:
+            return 100
+        case 1, 2:
+            return 44
+        case 3:
+            return self.isEditingPassword ? 85 : 0
+        case 4:
+            let top = (self.navigationController == nil) ? UIApplication.shared.statusBarFrame.height : self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height
+            let short = UIScreen.main.bounds.height - CGFloat(100 + 44 * 2 + 85) - top
+            let long = UIScreen.main.bounds.height - CGFloat(100 + 44 * 2) - top
+            return isEditingPassword ? short : long
+        default:
+            return 0
+        }
+    }
  
-    /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        // do something?
     }
-    */
+}
+
+extension WelcomeSignUpTableVC: UITextFieldDelegate{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        isEditingPassword = textField.restorationIdentifier! == "password"
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
+//        UIView.animate(withDuration: 0.2){
+//            self.tableView.reloadData()
+//        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.restorationIdentifier! == "password"{
+            isEditingPassword = false
+        }
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
+//        UIView.animate(withDuration: 0.2){
+//            self.tableView.reloadData()
+//        }
+    }
 }
