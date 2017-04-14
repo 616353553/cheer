@@ -5,24 +5,21 @@ target 'cheer' do
   # Comment this line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
-  #Sinch framework (SMS verify)
-  pod ’SinchVerification-Swift’
-  #pod 'SinchRTC'
-
-  # SwiftRequest
-  source 'https://github.com/CocoaPods/Specs.git'
-  platform :ios, '8.0'
-  pod 'SwiftRequest', '0.0.4'
-
   #Parse SDK
   pod 'Parse'
 
-  #Swift-Mailgun
-  pod 'SwiftMailgun'
+  #Firebase
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod ‘Firebase/Database’
+  pod 'Firebase/Storage'
 
   # Pods for cheer
   pod 'SwiftyStarRatingView'
   #pod 'StarryStars', '~> 0.0.1'
+
+  # image picker
+  pod "BSImagePicker", "~> 2.4"
 
   target 'cheerTests' do
     inherit! :search_paths

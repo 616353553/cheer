@@ -50,7 +50,9 @@ class ChooseSchoolTableVC: UITableViewController {
     @IBAction func doneIsPushed(_ sender: UIBarButtonItem) {
         if selectedSchool != nil{
             UserDefaults.standard.set(selectedSchool!, forKey: "selectedSchool")
-            self.dismiss(animated: true, completion: nil)
+            let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateInitialViewController()
+            self.present(vc!, animated: false, completion: nil)
         }
         else{
             Alert.displayAlertWithOneButton(title: "Error", message: "Please select a school", vc: self)
@@ -104,15 +106,11 @@ class ChooseSchoolTableVC: UITableViewController {
         selectedSchool = cell.schoolName.text!
     }
 
-    /*
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        // do something?
     }
-    */
 }
 
 extension ChooseSchoolTableVC: UISearchBarDelegate{

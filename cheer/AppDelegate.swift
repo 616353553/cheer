@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Parse
+import Firebase
 import UserNotifications
 import FBSDKLoginKit
 
@@ -21,58 +21,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     //--------------------------------------
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        // Use Firebase library to configure APIs
+        FIRApp.configure()
         
-        // Enable storing and querying data from Local Datastore.
-        // Remove this line if you don't want to use Local Datastore features or want to use cachePolicy.
-        Parse.enableLocalDatastore()
+        UINavigationBar.appearance().tintColor = Config.themeColor
         
-        let parseConfiguration = ParseClientConfiguration(block: { (ParseMutableClientConfiguration) -> Void in
-            ParseMutableClientConfiguration.applicationId = "parse7fo46ds9fv3s4"
-            ParseMutableClientConfiguration.clientKey = "f6ss1v3s48a38hg4gt8"
-            ParseMutableClientConfiguration.server = "https://cheers1.herokuapp.com/parse"
-        })
-        Parse.initialize(with: parseConfiguration)
-        
-        
-        
-        // ****************************************************************************
-        // If you are using Facebook, uncomment and add your FacebookAppID to your bundle's plist as
-        // described here: https://developers.facebook.com/docs/getting-started/facebook-sdk-for-ios/
-        // Uncomment the line inside ParseStartProject-Bridging-Header and the following line here:
-        // PFFacebookUtils.initializeFacebook()
-        // ****************************************************************************
-        
-        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        
-        
-        
-        
-        
-        
-        PFUser.enableAutomaticUser()
-        
-        let defaultACL = PFACL()
-        
-        // If you would like all objects to be private by default, remove this line.
-        defaultACL.getPublicReadAccess = true
-        
-        PFACL.setDefault(defaultACL, withAccessForCurrentUser: true)
-        
-        if application.applicationState != UIApplicationState.background {
-            // Track an app open here if we launch with a push, unless
-            // "content_available" was used to trigger a background push (introduced in iOS 7).
-            // In that case, we skip tracking here to avoid double counting the app-open.
-            let preBackgroundPush = application.responds(to: #selector(getter: UIApplication.backgroundRefreshStatus))
-            let oldPushHandlerOnly = self.responds(to: #selector(UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:)))
-            var noPushPayload = false;
-            if let options = launchOptions {
-                noPushPayload = options[UIApplicationLaunchOptionsKey.remoteNotification] != nil;
-            }
-            if (preBackgroundPush || oldPushHandlerOnly || noPushPayload) {
-                PFAnalytics.trackAppOpened(launchOptions: launchOptions)
-            }
+        // show sign in page if no school is selected
+        var storyboard = UIStoryboard()
+        if UserDefaults.standard.string(forKey: "selectedSchool") == nil || UserDefaults.standard.string(forKey: "selectedSchool") == ""{
+            storyboard = UIStoryboard.init(name: "Welcome", bundle: nil)
+        } else {
+            storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         }
-
+        let vc = storyboard.instantiateInitialViewController()
+        self.window?.rootViewController = vc
         return true
     }
     
@@ -85,10 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     //--------------------------------------
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let installation = PFInstallation.current()
-        installation?.setDeviceTokenFrom(deviceToken)
-        installation?.saveInBackground()
-        PFPush.subscribeToChannel(inBackground: "", block: nil)
+        
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -96,10 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        PFPush.handle(userInfo)
-        if application.applicationState == UIApplicationState.inactive {
-            PFAnalytics.trackAppOpened(withRemoteNotificationPayload: userInfo)
-        }
+        
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

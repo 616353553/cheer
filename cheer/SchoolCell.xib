@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,44 +21,41 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ASU" translatesAutoresizingMaskIntoConstraints="NO" id="GoD-IM-FX2">
-                        <rect key="frame" x="334" y="0.0" width="90" height="91"/>
+                        <rect key="frame" x="324" y="0.0" width="90" height="89"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="90" id="7pW-Xv-NcB"/>
-                            <constraint firstAttribute="height" constant="90" id="hte-pl-mnA"/>
+                            <constraint firstAttribute="width" secondItem="GoD-IM-FX2" secondAttribute="height" multiplier="1:1" constant="1" id="kal-9U-1he"/>
                         </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CheckMark" translatesAutoresizingMaskIntoConstraints="NO" id="vb1-Hc-9tw">
+                        <rect key="frame" x="324" y="0.0" width="90" height="89"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ASU_view" translatesAutoresizingMaskIntoConstraints="NO" id="EsI-Uq-6kj">
-                        <rect key="frame" x="0.0" y="0.0" width="334" height="90"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="90" id="hbj-Nv-jzY"/>
-                        </constraints>
+                        <rect key="frame" x="10" y="0.0" width="314" height="89"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="University of Illinois at Urbana-Champaign" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2HJ-7Y-17v">
-                        <rect key="frame" x="18" y="13" width="216" height="64"/>
+                        <rect key="frame" x="18" y="13" width="206" height="63"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CheckMark" translatesAutoresizingMaskIntoConstraints="NO" id="vb1-Hc-9tw">
-                        <rect key="frame" x="334" y="1" width="90" height="90"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="90" id="1G1-5z-Ag9"/>
-                            <constraint firstAttribute="width" constant="90" id="uVv-8l-Fym"/>
-                        </constraints>
-                    </imageView>
                 </subviews>
+                <color key="backgroundColor" red="0.96963047981262207" green="0.96961236000061035" blue="0.96962475776672363" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                 <constraints>
                     <constraint firstItem="EsI-Uq-6kj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="5G5-Ss-7v8"/>
+                    <constraint firstAttribute="bottom" secondItem="GoD-IM-FX2" secondAttribute="bottom" id="CPs-s2-eks"/>
                     <constraint firstItem="2HJ-7Y-17v" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="Hsj-tC-G9y"/>
-                    <constraint firstItem="vb1-Hc-9tw" firstAttribute="centerX" secondItem="GoD-IM-FX2" secondAttribute="centerX" id="J3Z-FW-6DA"/>
+                    <constraint firstItem="vb1-Hc-9tw" firstAttribute="bottom" secondItem="GoD-IM-FX2" secondAttribute="bottom" id="MlS-8W-7ex"/>
+                    <constraint firstItem="vb1-Hc-9tw" firstAttribute="leading" secondItem="EsI-Uq-6kj" secondAttribute="trailing" id="PdZ-KY-Tvc"/>
                     <constraint firstItem="2HJ-7Y-17v" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="QCC-Oz-NuW"/>
                     <constraint firstAttribute="bottomMargin" secondItem="2HJ-7Y-17v" secondAttribute="bottom" constant="5" id="QzV-ac-Q1U"/>
-                    <constraint firstItem="EsI-Uq-6kj" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Tip-2T-URA"/>
+                    <constraint firstItem="EsI-Uq-6kj" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="Tip-2T-URA"/>
                     <constraint firstItem="GoD-IM-FX2" firstAttribute="leading" secondItem="2HJ-7Y-17v" secondAttribute="trailing" constant="100" id="VAo-CH-Zfq"/>
+                    <constraint firstAttribute="bottom" secondItem="EsI-Uq-6kj" secondAttribute="bottom" id="eAN-zE-rdJ"/>
+                    <constraint firstAttribute="trailing" secondItem="vb1-Hc-9tw" secondAttribute="trailing" constant="10" id="iWi-fm-3vz"/>
                     <constraint firstItem="GoD-IM-FX2" firstAttribute="leading" secondItem="EsI-Uq-6kj" secondAttribute="trailing" id="kXL-Jw-0F5"/>
-                    <constraint firstAttribute="trailing" secondItem="GoD-IM-FX2" secondAttribute="trailing" id="ndh-rv-Xy3"/>
+                    <constraint firstAttribute="trailing" secondItem="GoD-IM-FX2" secondAttribute="trailing" constant="10" id="ndh-rv-Xy3"/>
+                    <constraint firstItem="vb1-Hc-9tw" firstAttribute="top" secondItem="GoD-IM-FX2" secondAttribute="top" id="ovS-vW-c4B"/>
                     <constraint firstItem="GoD-IM-FX2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="wXh-Qf-HFV"/>
-                    <constraint firstItem="vb1-Hc-9tw" firstAttribute="centerY" secondItem="GoD-IM-FX2" secondAttribute="centerY" id="xKM-Fk-I42"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

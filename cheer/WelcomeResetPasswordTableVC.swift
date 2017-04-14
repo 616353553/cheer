@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Parse
+import FirebaseAuth
 
 class WelcomeResetPasswordTableVC: UITableViewController {
     
@@ -16,7 +16,6 @@ class WelcomeResetPasswordTableVC: UITableViewController {
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var signInButton: UIButton!
     
-    var user = PFUser.query()!
     var tap: UITapGestureRecognizer!
     let spinner = UIActivityIndicatorView()
     var timer: Timer?
@@ -52,55 +51,41 @@ class WelcomeResetPasswordTableVC: UITableViewController {
         if timer != nil && timer!.isValid{
             timer!.invalidate()
         }
-        user.cancel()
         self.view.endEditing(true)
     }
     
     @IBAction func sendIsPushed(_ sender: UIButton) {
-        if emailValid.image == #imageLiteral(resourceName: "Ok_fill"){
-            Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
-            user.whereKey("username", equalTo: emailTextField.text!)
-            user.findObjectsInBackground(block: {(objects, error) in
-                if error == nil{
-                    if objects!.count > 0 {
-                        PFUser.requestPasswordResetForEmail(inBackground: self.emailTextField.text!, block: {(success, error) in
-                            Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
-                            if success{
-                                Alert.displayAlertWithOneButton(title: "Success", message: "A link is sent to your email adrress,  please check both of inbox and junk folders", vc: self)
-                                self.timerCount = 60
-                                self.setSendButton()
-                                self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.setSendButton), userInfo: nil, repeats: true)
-                            }
-                            else{
-                                Alert.displayAlertWithOneButton(title: "Error", message: error!.localizedDescription, vc: self)
-                            }
-                        })
+        if timerCount <= 0{
+            if emailValid.image == #imageLiteral(resourceName: "Ok_fill"){
+                Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
+                FIRAuth.auth()!.sendPasswordReset(withEmail: emailTextField.text!, completion: {(error) in
+                    Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
+                    if error != nil{
+                        Alert.displayAlertWithOneButton(title: "Error", message: error!.localizedDescription, vc: self)
+                        self.timerCount = 0
+                        self.setSendButton()
                     }
                     else{
-                        Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
-                        Alert.displayAlertWithOneButton(title: "Error", message: "No account associates with given email address", vc: self)
+                        Alert.displayAlertWithOneButton(title: "Success", message: "A link is sent to your email, please check your email", vc: self)
+                        self.timerCount = 60
+                        self.setSendButton()
+                        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.setSendButton), userInfo: nil, repeats: true)
                     }
-                }
-                else{
-                    Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
-                    Alert.displayAlertWithOneButton(title: "Error", message: error!.localizedDescription, vc: self)
-                }
-            })
-        } else {
-            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid email format", vc: self)
+                })
+            } else {
+                Alert.displayAlertWithOneButton(title: "Error", message: "Invalid email format", vc: self)
+            }
         }
     }
     
     func setSendButton(){
         if timerCount <= 0{
-            sendButton.isEnabled = true
             sendButton.setTitle("Send", for: .normal)
             if timer != nil && timer!.isValid{
                 timer!.invalidate()
             }
         }
         else{
-            sendButton.isEnabled = false
             sendButton.setTitle("Send(\(timerCount))", for: .normal)
         }
         timerCount = timerCount - 1

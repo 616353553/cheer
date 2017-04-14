@@ -12,12 +12,6 @@ class HomeMainTableVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // show log in view if no school is selected
-        if UserDefaults.standard.string(forKey: "selectedSchool") == nil{
-            let storyboard = UIStoryboard(name: "Welcome", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "signIn") as! UINavigationController
-            self.present(vc, animated: true, completion: nil)
-        }
         setUpTableView()
     }
 

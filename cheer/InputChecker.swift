@@ -13,18 +13,12 @@ class InputChecker{
     // check if the given string only has white spaces
     static func onlyHasWhiteSpace(text: String) -> Bool{
         let whiteSpaceSet = NSCharacterSet.whitespaces
-        if text.trimmingCharacters(in: whiteSpaceSet).isEmpty == false {
-            return true
-        }
-        return false
+        return text.trimmingCharacters(in: whiteSpaceSet).isEmpty
     }
     
     // check if the given string only has number
     static func onlyHasNumber(price: String!) -> Bool{
-        if Double(price) != nil{
-            return true
-        }
-        return false
+        return Double(price) != nil
     }
     
     // check if the given string has allowed length
@@ -50,14 +44,13 @@ class InputChecker{
         return result
     }
     
-    // has at least 1 digit, 1 lower-case letter and 1 upper-case letter
+    // contains both of letters(a~z, A~Z) and digits(0~9)
     static func hasValidPasswordContent(text: String) -> Bool{
         let upperCase_REGEX = ".*[A-Z]+.*"
         let lowerCase_REGEX = ".*[a-z]+.*"
         let digits_REGEX = ".*[0-9]+.*"
         
-        let result = onlyHasGivenRegex(REGEX: upperCase_REGEX, text: text)
-            && onlyHasGivenRegex(REGEX: lowerCase_REGEX, text: text)
+        let result = (onlyHasGivenRegex(REGEX: upperCase_REGEX, text: text) || onlyHasGivenRegex(REGEX: lowerCase_REGEX, text: text))
             && onlyHasGivenRegex(REGEX: digits_REGEX, text: text)
         return result
     }
