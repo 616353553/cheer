@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Parse
+import FirebaseAuth
 
 class WelcomeSignUpTableVC: UITableViewController {
     // textfields
@@ -26,8 +26,8 @@ class WelcomeSignUpTableVC: UITableViewController {
     var isEditingPassword = false
     let spinner = UIActivityIndicatorView()
     var tap: UITapGestureRecognizer!
-    var emailChecker = PFUser.query()!
-    var user = PFUser()
+    //var emailChecker = PFUser.query()!
+    //var user = PFUser()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +49,7 @@ class WelcomeSignUpTableVC: UITableViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        emailChecker.cancel()
+        //emailChecker.cancel()
         self.view.endEditing(true)
     }
     
@@ -61,31 +61,18 @@ class WelcomeSignUpTableVC: UITableViewController {
             Alert.displayAlertWithOneButton(title: "Error", message: "Invalid password", vc: self)
         }
         else{
+            //print(FIRAuth.auth()!.currentUser?.email ?? "none")
             Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
-            emailChecker.whereKey("email", equalTo: emailTextField.text!)
-            emailChecker.findObjectsInBackground(block: {(objects, error) -> Void in
-                if error == nil {
-                    if (objects!.count > 0){
+            FIRAuth.auth()!.createUser(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: {(user, error) in
+                if user != nil{
+                    user!.sendEmailVerification(completion: {(error) in
                         Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
-                        Alert.displayAlertWithOneButton(title: "Error", message: "Email is already used by another user.", vc: self, alertActionHandler: nil)
-                    } else {
-                        self.user.username = self.emailTextField.text!
-                        self.user.password = self.passwordTextField.text!
-                        self.user.email = self.emailTextField.text!
-                        self.user.signUpInBackground(block: {(success, error) in
-                            Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
-                            if success{
-                                Alert.displayAlertWithOneButton(title: "Success", message: "A verify link is sent to your email", vc: self, alertActionHandler: {(action) in
-                                        self.performSegue(withIdentifier: "backToSignIn", sender: self)
-                                    })
-                            } else {
-                                Alert.displayAlertWithOneButton(title: "Error", message: error!.localizedDescription, vc: self)
-                            }
-                        })
-                    }
-                } else {
+                        self.performSegue(withIdentifier: "selectSchool", sender: self)
+                    })
+                }
+                else{
                     Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
-                    Alert.displayAlertWithOneButton(title: "Error", message: error!.localizedDescription, vc: self, alertActionHandler: nil)
+                    Alert.displayAlertWithOneButton(title: "Error", message: error!.localizedDescription, vc: self)
                 }
             })
         }
@@ -103,13 +90,13 @@ class WelcomeSignUpTableVC: UITableViewController {
         case "email":
             emailValid.image = InputChecker.isValidEmail(text: emailTextField.text!) ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
         case "password":
-            let passwordHasValidLength = InputChecker.hasCorrectLength(min: 8, max: 16, text: passwordTextField.text!)
+            let passwordHasValidLength = InputChecker.hasCorrectLength(min: 6, max: 16, text: passwordTextField.text!)
             let passwordHasValidContent = InputChecker.hasValidPasswordContent(text: passwordTextField.text!)
-            let passwordHasValidSpecial = InputChecker.hasNoSpecialLetters(text: passwordTextField.text!)
-            passwordValid.image = (passwordHasValidLength && passwordHasValidContent) && passwordHasValidSpecial ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
+            let passwordHasNoSpecial = InputChecker.hasNoSpecialLetters(text: passwordTextField.text!)
+            passwordValid.image = (passwordHasValidLength && passwordHasValidContent) && passwordHasNoSpecial ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
             passwordValidLength.image = passwordHasValidLength ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
             passwordValidContent.image = passwordHasValidContent ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
-            passwordValidSpecial.image = passwordHasValidSpecial ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
+            passwordValidSpecial.image = passwordHasNoSpecial ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
         default:
             break
         }
@@ -175,9 +162,6 @@ extension WelcomeSignUpTableVC: UITextFieldDelegate{
         isEditingPassword = textField.restorationIdentifier! == "password"
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
-//        UIView.animate(withDuration: 0.2){
-//            self.tableView.reloadData()
-//        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -186,8 +170,5 @@ extension WelcomeSignUpTableVC: UITextFieldDelegate{
         }
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
-//        UIView.animate(withDuration: 0.2){
-//            self.tableView.reloadData()
-//        }
     }
 }

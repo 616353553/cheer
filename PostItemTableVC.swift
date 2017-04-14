@@ -7,52 +7,56 @@
 //
 
 import UIKit
+import Photos
+import BSImagePicker
 
 class PostItemTableVC: UITableViewController {
 
-    @IBOutlet weak var collegeIcon: UIImageView!
-    @IBOutlet weak var collegeName: UILabel!
-    @IBOutlet weak var categoriesCollectionView: UICollectionView!
+    @IBOutlet weak var schoolLogo: UIImageView!
+    @IBOutlet weak var schoolView: UIImageView!
+    @IBOutlet weak var schoolName: UILabel!
+    @IBOutlet var catagoryButtons: [UIButton]!
     @IBOutlet weak var deliveryCollectionView: UICollectionView!
-    @IBOutlet weak var titleTextField: UITextField!
+    
+    @IBOutlet weak var titleTextView: UITextView!
+    @IBOutlet weak var titlePlaceHolder: UILabel!
+    @IBOutlet weak var titleLength: UILabel!
+    
     @IBOutlet weak var priceTextField: UITextField!
+    
     @IBOutlet weak var discriptionTextView: UITextView!
-    @IBOutlet weak var numberOfLetters: UILabel!
+    @IBOutlet weak var discriptionPlaceHolder: UILabel!
+    @IBOutlet weak var discriptionLength: UILabel!
+    
     @IBOutlet weak var imagesCollectionView: UICollectionView!
     @IBOutlet weak var numberOfImages: UILabel!
     
     let item = Item()
-    var categoryImages = [UIImage]()
-    var categoryTitles = [String]()
-    var deliveryMethodImages = [UIImage]()
-    var deliveryMethodSelectedImages = [UIImage]()
-    var deliveryMethodTitles = [String]()
-    var addPhotoImage = UIImage()
+    let deliveryMethodImages = [#imageLiteral(resourceName: "Deliver_unselected"),#imageLiteral(resourceName: "Pickup_unselected"),#imageLiteral(resourceName: "Both_unselected"),#imageLiteral(resourceName: "NotApply_unselected")]
+    let deliveryMethodSelectedImages = [#imageLiteral(resourceName: "Deliver_selected"), #imageLiteral(resourceName: "Pickup_selected"),#imageLiteral(resourceName: "Both_selected"), #imageLiteral(resourceName: "NotApply_selected")]
+    let deliveryMethodTitles = ["Deliver", "Pick up", "Both", "N/A"]
     var tap: UITapGestureRecognizer!
+    var imagePicker: BSImagePickerViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        categoryImages = [#imageLiteral(resourceName: "TestingImage_car"),#imageLiteral(resourceName: "TestingImage_car"),#imageLiteral(resourceName: "TestingImage_car"),#imageLiteral(resourceName: "TestingImage_car"),#imageLiteral(resourceName: "TestingImage_car"),#imageLiteral(resourceName: "TestingImage_car"),#imageLiteral(resourceName: "TestingImage_car"),#imageLiteral(resourceName: "TestingImage_car")]
-        categoryTitles = ["Auto", "Book", "Clothing", "Electronics", "Food", "Furniture", "Housing", "Service"]
-        deliveryMethodImages = [#imageLiteral(resourceName: "Deliver_unselected"),#imageLiteral(resourceName: "Pickup_unselected"),#imageLiteral(resourceName: "Both_unselected"),#imageLiteral(resourceName: "NotApply_unselected")]
-        deliveryMethodSelectedImages = [#imageLiteral(resourceName: "Deliver_selected"), #imageLiteral(resourceName: "Pickup_selected"),#imageLiteral(resourceName: "Both_selected"), #imageLiteral(resourceName: "NotApply_selected")]
-        deliveryMethodTitles = ["Deliver", "Pick up", "Both", "N/A"]
-        addPhotoImage = #imageLiteral(resourceName: "add_image")
-        setUpCollectionView()
-        setUpTextFields()
+        
+        //setup cell 2
+        for catagoryButton in catagoryButtons{
+            catagoryButton.adjustsImageWhenHighlighted = false
+            ButtonDesign.round(button: catagoryButton, color: Config.themeColor, radius: 12, borderWidth: 1)
+        }
+        
+        item.initialize()
+        setupCollectionView()
+        setupTextFields()
         
         // hide the keyboard when touch outside
         NotificationCenter.default.addObserver(self, selector: #selector(PostItemTableVC.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(PostItemTableVC.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         tap = UITapGestureRecognizer(target: self, action: #selector(PostItemTableVC.dismissKeyboard))
-        
-        
-        
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,12 +64,40 @@ class PostItemTableVC: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        self.tabBarController?.tabBar.isHidden = false
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = true
+        setupCells()
+    }
+    
+    @IBAction func PostButtonIsPushed(_ sender: UIBarButtonItem) {
+        if InputChecker.onlyHasWhiteSpace(text: titleTextView.text!){
+            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid title", vc: self)
+        }
+        else if (titleTextView.text!.characters.count > 150){
+            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid title length", vc: self)
+        }
+        else if priceTextField.text! != "" && Double(priceTextField.text!) == nil{
+            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid price", vc: self)
+        }
+        else if InputChecker.onlyHasWhiteSpace(text: discriptionTextView.text!){
+            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid discription", vc: self)
+        }
+        else if discriptionTextView.text!.characters.count > 1500{
+            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid discription length", vc: self)
+        }
+        else{
+            item.title = titleTextView.text!
+            item.price = priceTextField.text! == "" ? "N/A" : priceTextField.text!
+            item.discription = discriptionTextView.text!
+            // upload to server
+        }
+    }
+    
+    @IBAction func catagoryIsPushed(_ sender: UIButton) {
+        for catagoryButton in catagoryButtons{
+            item.category = sender.titleLabel!.text!
+            ButtonDesign.selectButton(button: catagoryButton, setSelect: catagoryButton.titleLabel!.text! == item.category!)
+        }
     }
     
     func keyboardWillShow(notification: NSNotification){
@@ -80,56 +112,46 @@ class PostItemTableVC: UITableViewController {
         self.view.endEditing(true)
     }
     
-    func displayAlert(title: String, message: String, vc: UIViewController){
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        vc.present(alert, animated: true, completion: nil)
+    // setup cells
+    func setupCells(){
+        // cell 1
+        schoolName.text = item.location
+        schoolLogo.image = SchoolData.schoolData[item.location!]![0]
+        schoolView.image = SchoolData.schoolData[item.location!]![1]
+        // cell 2
+        for catagoryButton in catagoryButtons{
+            ButtonDesign.selectButton(button: catagoryButton, setSelect: catagoryButton.titleLabel!.text! == item.category!)
+        }
+        //cell 3
+        //cell 4
+        
     }
-
-    func setUpCollectionView(){
+    
+    func setupCollectionView(){
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 10
-        categoriesCollectionView.delegate = self
-        categoriesCollectionView.dataSource = self
         deliveryCollectionView.delegate = self
         deliveryCollectionView.dataSource = self
         imagesCollectionView.delegate = self
         imagesCollectionView.dataSource = self
     }
     
-    func setUpTextFields(){
-        titleTextField.tag = 0
-        titleTextField.returnKeyType = .done
-        titleTextField.delegate = self
-        priceTextField.tag = 1
+    func setupTextFields(){
+        titleTextView.returnKeyType = .done
+        titleTextView.delegate = self
         priceTextField.returnKeyType = .done
         priceTextField.delegate = self
         discriptionTextView.returnKeyType = .done
         discriptionTextView.delegate = self
     }
     
-    @IBAction func PostButtonIsPushed(_ sender: UIBarButtonItem) {
-        if item.category == nil{
-            displayAlert(title: "Error", message: "Please select a category", vc: self)
-        }
-        else if item.deliveryMethod == nil{
-            displayAlert(title: "Error", message: "Please select a delivery method", vc: self)
-        }
-        else if item.title == nil || InputChecker.onlyHasWhiteSpace(text: item.title!){
-            displayAlert(title: "Error", message: "Invalid title", vc: self)
-        }
-        else if item.price != nil && !InputChecker.onlyHasNumber(price: item.price!){
-            displayAlert(title: "Error", message: "Invalid price", vc: self)
-        }
-        else if item.discription == nil || InputChecker.onlyHasWhiteSpace(text: item.discription!){
-            displayAlert(title: "Error", message: "Invalid item discription", vc: self)
-        }
-        else{
-            // upload to server
-        }
+    func numberOfImagesHasChanged(){
+        imagesCollectionView.reloadData()
+        numberOfImages.text = "\(self.item.images.numOfImages!)/\(Config.maxImagesAllowed) Images"
+        tableView.beginUpdates()
+        tableView.endUpdates()
     }
-    
     
 
     // MARK: - Table view delegate and data source
@@ -143,35 +165,55 @@ class PostItemTableVC: UITableViewController {
         case [0, 0]:
             return 80
         case [1, 0]:
-            return (UIScreen.main.bounds.width - 100) * 0.6 + 46
+            return 150
         case [1, 1]:
             return 0.3 * UIScreen.main.bounds.width + 11
-        case [1, 2],
-             [1, 3]:
+        case [1, 2]:
+            return 140
+        case [1, 3]:
             return UITableViewAutomaticDimension
         case [1, 4]:
-            return 150
+            return 230
         case [1, 5]:
-            return UIScreen.main.bounds.width + 26
+            if item.images.numOfImages < 3{
+                return (UIScreen.main.bounds.width - 70)/3 + 100
+            }else if item.images.numOfImages < 6{
+                return 2*(UIScreen.main.bounds.width - 70)/3 + 110
+            }else{
+                return 3*(UIScreen.main.bounds.width - 70)/3 + 120
+            }
         default:
             return UITableViewAutomaticDimension
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("cell is pressed")
+        switch indexPath{
+        case [0, 0]:
+            performSegue(withIdentifier: "selectSchool", sender: self)
+        default:
+            break
+        }
     }
     
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        switch segue.identifier!{
+        case "selectSchool":
+            let vc = segue.destination as! PostItemChangeSchoolTableVC
+            vc.delegate = self
+            vc.selectedSchool = item.location!
+        case "manageImages":
+            let vc = segue.destination as! ManageImagePageVC
+            let index = sender as! IndexPath
+            vc.images = item.images
+            vc.startIndex = index.row
+        default:
+            break
+        }
     }
-    */
-
 }
 
 // MARK: - UICollectionView delegate and datasource
@@ -182,77 +224,87 @@ extension PostItemTableVC: UICollectionViewDelegate, UICollectionViewDataSource,
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView.restorationIdentifier == "categoriesCollectionView"{
-            return 8
-        }
-        else if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
+        if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
             return 4
+        }else if collectionView.restorationIdentifier == "imageCollectionView"{
+            return (item.images.numOfImages + 1) > Config.maxImagesAllowed ? Config.maxImagesAllowed : (item.images.numOfImages + 1)
+        }else{
+            return 0
         }
-        return 9
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var cell: UICollectionViewCell!
-        if collectionView.restorationIdentifier == "categoriesCollectionView"{
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "categoryCell", for: indexPath) as! CategoryCollectionViewCell
+        if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "deliveryMethodCell", for: indexPath) as! DeliveryMethodCollectionViewCell
+            cell.deliveryMethodLabel.text = deliveryMethodTitles[indexPath.row]
+            if cell.deliveryMethodLabel.text == item.deliveryMethod!{
+                cell.deliveryMethodImage.image = deliveryMethodSelectedImages[indexPath.row]
+            }else{
+                cell.deliveryMethodImage.image = deliveryMethodImages[indexPath.row]
+            }
+            return cell
         }
-        else if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "deliveryMethodCell", for: indexPath) as! DeliveryMethodCollectionViewCell
-        }
-        else{
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! PostImageCollectionViewCell
-        }
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if collectionView.restorationIdentifier == "categoriesCollectionView"{
-            let itemCell = cell as! CategoryCollectionViewCell
-            itemCell.categoryImage.image = categoryImages[indexPath.row]
-            itemCell.categoryLabel.text = categoryTitles[indexPath.row]
-        }
-        else if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
-            let itemCell = cell as! DeliveryMethodCollectionViewCell
-            itemCell.deliveryMethodImage.image = deliveryMethodImages[indexPath.row]
-            itemCell.deliveryMethodLabel.text = deliveryMethodTitles[indexPath.row]
+        else if collectionView.restorationIdentifier == "imageCollectionView"{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! PostImageCollectionViewCell
+            cell.itemImage.image = item.images.images[indexPath.row]!
+            cell.delegate = self
+            cell.index = indexPath.row
+            cell.deleteButton.isHidden = cell.itemImage.image == #imageLiteral(resourceName: "add_image")
+            return cell
         }
         else{
-            let itemCell = cell as! PostImageCollectionViewCell
-            itemCell.itemImage.image = addPhotoImage
+            return UICollectionViewCell()
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var collectionCellWidth: CGFloat
-        var collectionCellHeight: CGFloat
-        if collectionView.restorationIdentifier == "imageCollectionView"{
-            collectionCellWidth = (UIScreen.main.bounds.width - 60)/3
-            collectionCellHeight = collectionCellWidth
-        }
-        else{
+        var collectionCellWidth: CGFloat!
+        var collectionCellHeight: CGFloat!
+        if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
             collectionCellWidth = (UIScreen.main.bounds.width - 100)/4
             collectionCellHeight = 1.2 * collectionCellWidth
+        }
+        else if collectionView.restorationIdentifier == "imageCollectionView"{
+            collectionCellWidth = (UIScreen.main.bounds.width - 70)/3
+            collectionCellHeight = collectionCellWidth
         }
         return CGSize.init(width: collectionCellWidth, height: collectionCellHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView.restorationIdentifier == "categoriesCollectionView"{
-            //item.category = categoryTitles[indexPath.row]
-            //print(categoryTitles[indexPath.row])
-        }
-        else if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
+        if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
+            item.category = deliveryMethodTitles[indexPath.row]
             let targetCell = collectionView.cellForItem(at: indexPath) as! DeliveryMethodCollectionViewCell
             for cell in collectionView.visibleCells{
                 let temp = cell as! DeliveryMethodCollectionViewCell
-                temp.cellIsSelected = false
                 temp.deliveryMethodImage.image = deliveryMethodImages[collectionView.indexPath(for: temp)!.row]
             }
             targetCell.deliveryMethodImage.image = deliveryMethodSelectedImages[indexPath.row]
-            targetCell.cellIsSelected = true
         }
-        else {
-            
+        else if collectionView.restorationIdentifier == "imageCollectionView"{
+            if indexPath.row == item.images.numOfImages{
+                imagePicker = BSImagePickerViewController()
+                imagePicker.maxNumberOfSelections = Config.maxImagesAllowed - item.images.numOfImages
+                var assets: [PHAsset?]? = [PHAsset?]()
+                bs_presentImagePickerController(imagePicker, animated: true,
+                                                select: {(asset) in assets!.append(asset)},
+                                                deselect: {(asset) in
+                                                    for i in 0..<assets!.count{
+                                                        if assets![i] == asset{
+                                                            assets!.remove(at: i)
+                                                            break
+                                                        }
+                                                    }},
+                                                cancel: {(asset) in assets = nil},
+                                                finish: {(asset) in
+                                                    self.item.images.appendImages(from: assets)
+                                                    DispatchQueue.main.async(execute: {() in
+                                                        self.numberOfImagesHasChanged()
+                                                    })},
+                                                completion: nil)
+            }else{
+                performSegue(withIdentifier: "manageImages", sender: indexPath)
+            }
         }
     }
 }
@@ -270,25 +322,59 @@ extension PostItemTableVC: UITextFieldDelegate {
     
     // adjust current editing textfield to the top of the screen
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField.tag == 0{
-            self.tableView.scrollToRow(at: IndexPath.init(row: 2, section: 1), at: .top, animated: true)
-        }
-        if textField.tag == 1{
-            self.tableView.scrollToRow(at: IndexPath.init(row: 3, section: 1), at: .top, animated: true)
-        }
+        self.tableView.scrollToRow(at: IndexPath.init(row: 3, section: 1), at: .top, animated: true)
     }
+    
+    
 }
 
 extension PostItemTableVC: UITextViewDelegate{
     func textViewDidBeginEditing(_ textView: UITextView) {
-        self.tableView.scrollToRow(at: IndexPath.init(row: 4, section: 1), at: .top, animated: true)
+        if textView.restorationIdentifier == "title"{
+            self.tableView.scrollToRow(at: IndexPath.init(row: 2, section: 1), at: .top, animated: true)
+            titlePlaceHolder.isHidden = true
+        } else if textView.restorationIdentifier == "discription"{
+            self.tableView.scrollToRow(at: IndexPath.init(row: 4, section: 1), at: .top, animated: true)
+            discriptionPlaceHolder.isHidden = true
+        }
     }
     
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.restorationIdentifier == "title"{
+            titlePlaceHolder.isHidden = textView.text != ""
+            titleLength.text = "\(titleTextView.text.characters.count)/150 Letters"
+        } else if textView.restorationIdentifier == "discription"{
+            discriptionPlaceHolder.isHidden = textView.text != ""
+            discriptionLength.text = "\(discriptionTextView.text.characters.count)/1500 Letters"
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.restorationIdentifier == "title"{
+            titlePlaceHolder.isHidden = textView.text != ""
+            titleLength.text = "\(titleTextView.text.characters.count)/150 Letters"
+        } else if textView.restorationIdentifier == "discription"{
+            discriptionPlaceHolder.isHidden = textView.text != ""
+            discriptionLength.text = "\(discriptionTextView.text.characters.count)/1500 Letters"
+        }
+    }
+    
+    // end editing when done is pressed
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if(text == "\n") {
             textView.resignFirstResponder()
             return false
         }
         return true
+    }
+}
+extension PostItemTableVC: PostItemChangeSchoolTableVCDelegate, PostImageCollectionViewCellDelegate{
+    func setSchoolName(name: String){
+        self.item.location = name
+    }
+    
+    func deleteImage(index: Int){
+        item.images.removeImage(atIndex: index)
+        numberOfImagesHasChanged()
     }
 }

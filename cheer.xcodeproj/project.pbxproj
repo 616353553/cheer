@@ -35,6 +35,8 @@
 		914C7C161E44C159000B8BD4 /* MeMain.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 914C7C151E44C159000B8BD4 /* MeMain.storyboard */; };
 		914C7C191E450164000B8BD4 /* DiscoverMain.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 914C7C171E450164000B8BD4 /* DiscoverMain.storyboard */; };
 		914C7C1B1E450B3D000B8BD4 /* InputChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914C7C1A1E450B3D000B8BD4 /* InputChecker.swift */; };
+		915942561E981D5B0035DA94 /* ManageImagePageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915942551E981D5B0035DA94 /* ManageImagePageVC.swift */; };
+		915942581E981D890035DA94 /* ManageImageContentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915942571E981D890035DA94 /* ManageImageContentVC.swift */; };
 		916E8F141DB0BADE002A48D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916E8F131DB0BADE002A48D5 /* AppDelegate.swift */; };
 		916E8F191DB0BADE002A48D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 916E8F171DB0BADE002A48D5 /* Main.storyboard */; };
 		916E8F1B1DB0BADE002A48D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 916E8F1A1DB0BADE002A48D5 /* Assets.xcassets */; };
@@ -53,9 +55,11 @@
 		917B6A751E85D30D00266F74 /* WelcomeResetPasswordTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917B6A741E85D30D00266F74 /* WelcomeResetPasswordTableVC.swift */; };
 		917B6A771E89C33700266F74 /* SchoolData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917B6A761E89C33700266F74 /* SchoolData.swift */; };
 		917B6A791E89D1A500266F74 /* ChooseSchoolTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917B6A781E89D1A500266F74 /* ChooseSchoolTableVC.swift */; };
-		919D671F1E83626A00045BFA /* SendSMS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919D671E1E83626A00045BFA /* SendSMS.swift */; };
+		917B6A7B1E8DA1F800266F74 /* PostItemChangeSchoolTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917B6A7A1E8DA1F800266F74 /* PostItemChangeSchoolTableVC.swift */; };
+		917B6A7F1E8DE2D600266F74 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 917B6A7E1E8DE2D500266F74 /* GoogleService-Info.plist */; };
 		91B5D3E81E524EC80047AB0D /* WelcomeSignInTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B5D3E71E524EC80047AB0D /* WelcomeSignInTableVC.swift */; };
 		91B5D3EC1E52747F0047AB0D /* WelcomeSignUpTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B5D3EB1E52747F0047AB0D /* WelcomeSignUpTableVC.swift */; };
+		91DDC7081E955C48001D72BA /* ButtonDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DDC7071E955C48001D72BA /* ButtonDesign.swift */; };
 		91F6379F1E43B866004C9CB8 /* Market.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91F6379E1E43B866004C9CB8 /* Market.storyboard */; };
 		91F637A11E43B8DD004C9CB8 /* MarketMainTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F637A01E43B8DD004C9CB8 /* MarketMainTableVC.swift */; };
 		91F637A41E442D83004C9CB8 /* ItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F637A21E442D83004C9CB8 /* ItemCollectionViewCell.swift */; };
@@ -118,6 +122,8 @@
 		914C7C151E44C159000B8BD4 /* MeMain.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MeMain.storyboard; sourceTree = "<group>"; };
 		914C7C181E450164000B8BD4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/DiscoverMain.storyboard; sourceTree = "<group>"; };
 		914C7C1A1E450B3D000B8BD4 /* InputChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputChecker.swift; sourceTree = "<group>"; };
+		915942551E981D5B0035DA94 /* ManageImagePageVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageImagePageVC.swift; sourceTree = "<group>"; };
+		915942571E981D890035DA94 /* ManageImageContentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageImageContentVC.swift; sourceTree = "<group>"; };
 		916E8F101DB0BADE002A48D5 /* cheer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cheer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		916E8F131DB0BADE002A48D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		916E8F181DB0BADE002A48D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -142,9 +148,12 @@
 		917B6A741E85D30D00266F74 /* WelcomeResetPasswordTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeResetPasswordTableVC.swift; sourceTree = "<group>"; };
 		917B6A761E89C33700266F74 /* SchoolData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolData.swift; sourceTree = "<group>"; };
 		917B6A781E89D1A500266F74 /* ChooseSchoolTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseSchoolTableVC.swift; sourceTree = "<group>"; };
-		919D671E1E83626A00045BFA /* SendSMS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendSMS.swift; sourceTree = "<group>"; };
+		917B6A7A1E8DA1F800266F74 /* PostItemChangeSchoolTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostItemChangeSchoolTableVC.swift; sourceTree = "<group>"; };
+		917B6A7E1E8DE2D500266F74 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		917B6A801E8DE6DB00266F74 /* cheer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = cheer.entitlements; sourceTree = "<group>"; };
 		91B5D3E71E524EC80047AB0D /* WelcomeSignInTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeSignInTableVC.swift; sourceTree = "<group>"; };
 		91B5D3EB1E52747F0047AB0D /* WelcomeSignUpTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeSignUpTableVC.swift; sourceTree = "<group>"; };
+		91DDC7071E955C48001D72BA /* ButtonDesign.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonDesign.swift; sourceTree = "<group>"; };
 		91F6379E1E43B866004C9CB8 /* Market.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Market.storyboard; path = cheer/Market.storyboard; sourceTree = "<group>"; };
 		91F637A01E43B8DD004C9CB8 /* MarketMainTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketMainTableVC.swift; sourceTree = "<group>"; };
 		91F637A21E442D83004C9CB8 /* ItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -304,8 +313,10 @@
 		916E8F121DB0BADE002A48D5 /* cheer */ = {
 			isa = PBXGroup;
 			children = (
+				917B6A801E8DE6DB00266F74 /* cheer.entitlements */,
 				916E8F1F1DB0BADE002A48D5 /* Info.plist */,
 				916E8F131DB0BADE002A48D5 /* AppDelegate.swift */,
+				917B6A7E1E8DE2D500266F74 /* GoogleService-Info.plist */,
 				916E8F1A1DB0BADE002A48D5 /* Assets.xcassets */,
 				916E8F541DB1D7D4002A48D5 /* Class */,
 				916E8F591DB1DA54002A48D5 /* custom cells */,
@@ -368,7 +379,7 @@
 				91F96ED91E590D22005AC13F /* Alert.swift */,
 				9103CF1C1E5D1814009DF132 /* RadomGenerator.swift */,
 				917B6A721E84E05600266F74 /* Masker.swift */,
-				919D671E1E83626A00045BFA /* SendSMS.swift */,
+				91DDC7071E955C48001D72BA /* ButtonDesign.swift */,
 			);
 			name = Class;
 			sourceTree = "<group>";
@@ -389,9 +400,12 @@
 				91F6379E1E43B866004C9CB8 /* Market.storyboard */,
 				91F637A01E43B8DD004C9CB8 /* MarketMainTableVC.swift */,
 				91F637A61E446B16004C9CB8 /* PostItemTableVC.swift */,
+				917B6A7A1E8DA1F800266F74 /* PostItemChangeSchoolTableVC.swift */,
 				914C7C0C1E44952D000B8BD4 /* CategoryCollectionViewCell.swift */,
 				914C7C0E1E4496AD000B8BD4 /* DeliveryMethodCollectionViewCell.swift */,
 				914C7C101E44974F000B8BD4 /* PostImageCollectionViewCell.swift */,
+				915942551E981D5B0035DA94 /* ManageImagePageVC.swift */,
+				915942571E981D890035DA94 /* ManageImageContentVC.swift */,
 			);
 			name = Market;
 			path = ..;
@@ -493,6 +507,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
 						};
 					};
 					916E8F231DB0BADF002A48D5 = {
@@ -546,6 +563,7 @@
 				916E8F1B1DB0BADE002A48D5 /* Assets.xcassets in Resources */,
 				9112516F1DB5D18700D79252 /* Welcome.storyboard in Resources */,
 				916E8F191DB0BADE002A48D5 /* Main.storyboard in Resources */,
+				917B6A7F1E8DE2D600266F74 /* GoogleService-Info.plist in Resources */,
 				914C7C191E450164000B8BD4 /* DiscoverMain.storyboard in Resources */,
 				912BAB921E438489009ADB33 /* HotActivitiesTableViewCell.xib in Resources */,
 				912CDEA01E43182900E45206 /* Home.storyboard in Resources */,
@@ -707,16 +725,19 @@
 				914C7C0D1E44952D000B8BD4 /* CategoryCollectionViewCell.swift in Sources */,
 				912CDEA21E43186200E45206 /* HomeMainTableVC.swift in Sources */,
 				916E8F141DB0BADE002A48D5 /* AppDelegate.swift in Sources */,
+				91DDC7081E955C48001D72BA /* ButtonDesign.swift in Sources */,
+				915942561E981D5B0035DA94 /* ManageImagePageVC.swift in Sources */,
 				91F96ED81E590B68005AC13F /* Spinner.swift in Sources */,
 				912CDEA71E432DF400E45206 /* ScrollViewTableViewCell.swift in Sources */,
 				914C7C111E44974F000B8BD4 /* PostImageCollectionViewCell.swift in Sources */,
 				91F637A71E446B16004C9CB8 /* PostItemTableVC.swift in Sources */,
 				917B6A771E89C33700266F74 /* SchoolData.swift in Sources */,
 				910C1D081DB467B80095BE66 /* SchoolCell.swift in Sources */,
-				919D671F1E83626A00045BFA /* SendSMS.swift in Sources */,
 				917B6A6D1E84816100266F74 /* CountryCodeData.swift in Sources */,
 				917B6A751E85D30D00266F74 /* WelcomeResetPasswordTableVC.swift in Sources */,
 				9103CF1D1E5D1814009DF132 /* RadomGenerator.swift in Sources */,
+				917B6A7B1E8DA1F800266F74 /* PostItemChangeSchoolTableVC.swift in Sources */,
+				915942581E981D890035DA94 /* ManageImageContentVC.swift in Sources */,
 				914C7C1B1E450B3D000B8BD4 /* InputChecker.swift in Sources */,
 				916E8F641DB1DC36002A48D5 /* ItemCell.swift in Sources */,
 				912BAB911E438489009ADB33 /* HotActivitiesTableViewCell.swift in Sources */,
@@ -889,6 +910,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = cheer/cheer.entitlements;
 				DEVELOPMENT_TEAM = X73E52W442;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -896,7 +918,7 @@
 				);
 				INFOPLIST_FILE = cheer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.EvolvementApps.cheer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cheer.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "cheer/cheer-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -910,6 +932,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = cheer/cheer.entitlements;
 				DEVELOPMENT_TEAM = X73E52W442;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -917,7 +940,7 @@
 				);
 				INFOPLIST_FILE = cheer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.EvolvementApps.cheer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cheer.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "cheer/cheer-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;

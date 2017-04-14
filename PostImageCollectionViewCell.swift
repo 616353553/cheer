@@ -8,11 +8,23 @@
 
 import UIKit
 
+protocol PostImageCollectionViewCellDelegate {
+    func deleteImage(index: Int)
+}
+
 class PostImageCollectionViewCell: UICollectionViewCell {
+    
     @IBOutlet weak var itemImage: UIImageView!
+    @IBOutlet weak var deleteButton: UIButton!
+    
+    var delegate: PostItemTableVC!
+    var index: Int!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         itemImage.contentMode = .scaleAspectFill
+    }
+    @IBAction func deleteIsPushed(_ sender: UIButton) {
+        delegate.deleteImage(index: index)
     }
 }

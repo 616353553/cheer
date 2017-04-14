@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class MarketMainTableVC: UITableViewController {
 
@@ -14,16 +15,24 @@ class MarketMainTableVC: UITableViewController {
         super.viewDidLoad()
         setUpTableView()
         createSearchBar()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    @IBAction func addPostIsPushed(_ sender: UIBarButtonItem) {
+        if FIRAuth.auth()?.currentUser == nil{
+            print("login please")
+        }
+        else{
+            performSegue(withIdentifier: "addPost", sender: self)
+        }
     }
     
     func setUpTableView(){
@@ -73,15 +82,17 @@ class MarketMainTableVC: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        switch segue.identifier!{
+        case "postItem":
+            self.tabBarController?.tabBar.isHidden = true
+        default:
+            break
+        }
     }
-    */
 
 }
 

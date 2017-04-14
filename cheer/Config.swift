@@ -22,7 +22,7 @@ public struct Config{
     static let EmailLengthMin: Int = 2
     static let EmailLengthMax: Int = 64
     
-    static let maxImagesAllowed: Int = 6
+    static let maxImagesAllowed: Int = 9
     static let contactMethodChoices = ["Choose Method", "Cellphone", "Email", "Kakao Talk", "LINE", "Messenger", "Whatsapp", "Wechat"]
     static let addPhotoButtonImage = UIImage(named: "AddPhotoButton")
     static let maxContactsAllowed: Int = 3
@@ -34,6 +34,7 @@ public struct Config{
     static let imageHolder: UIImage = UIImage(named: "launch icon")!
     static let queryLimit: Int = 10
     static var themeColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 1)
+    static let placeHolderColor = UIColor.init(red: 187, green: 187, blue: 194, alpha: 1)
     static let blueColor: UIColor = UIColor.init(red: 0/255.0, green: 128/255.0, blue: 255/255.0, alpha: 1)
     static let redColor: UIColor = UIColor.init(red: 255/255.0, green: 0/255.0, blue: 0/255.0, alpha: 1)
     static var isFirstRun = true

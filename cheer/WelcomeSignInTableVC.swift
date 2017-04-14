@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Parse
+import Firebase
 
 class WelcomeSignInTableVC: UITableViewController {
 
@@ -72,6 +72,14 @@ class WelcomeSignInTableVC: UITableViewController {
     }
     
     @IBAction func countinueWithoutSignIn(_ sender: UIButton) {
+        if FIRAuth.auth()!.currentUser != nil{
+            do {
+                try FIRAuth.auth()!.signOut()
+            }
+            catch {
+                Alert.displayAlertWithOneButton(title: "Error", message: error.localizedDescription, vc: self)
+            }
+        }
         self.performSegue(withIdentifier: "selectSchool", sender: self)
     }
     
@@ -85,12 +93,12 @@ class WelcomeSignInTableVC: UITableViewController {
         else{
             Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
             // Send a request to login
-            PFUser.logInWithUsername(inBackground: emailTextField.text!, password: passwordTextField.text!, block: {(user, error) -> Void in
+            FIRAuth.auth()!.signIn(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: {(user, error) in
                 Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
-                if ((user) != nil) {
+                if user != nil{
                     self.performSegue(withIdentifier: "selectSchool", sender: self)
                 }
-                else {
+                else{
                     Alert.displayAlertWithOneButton(title: "Error", message: error!.localizedDescription, vc: self)
                 }
             })
