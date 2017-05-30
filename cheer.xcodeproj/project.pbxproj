@@ -10,6 +10,8 @@
 		189BA5091ED5039D00990E41 /* Calendar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 189BA5071ED5039D00990E41 /* Calendar.storyboard */; };
 		189BA50A1ED5039D00990E41 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189BA5081ED5039D00990E41 /* FirstViewController.swift */; };
 		189BA50C1ED615E800990E41 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189BA50B1ED615E800990E41 /* TestViewController.swift */; };
+		18E129D01ED77E0B00844CC4 /* TestKimTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E129CE1ED77E0B00844CC4 /* TestKimTableViewCell.swift */; };
+		18E129D11ED77E0B00844CC4 /* TestKimTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18E129CF1ED77E0B00844CC4 /* TestKimTableViewCell.xib */; };
 		1B5265350505C24450D0AC2E /* Pods_cheer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5019B9291116C00E1BA93B6F /* Pods_cheer.framework */; };
 		9103CF1D1E5D1814009DF132 /* RadomGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9103CF1C1E5D1814009DF132 /* RadomGenerator.swift */; };
 		910C1CF51DB37F650095BE66 /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910C1CF41DB37F650095BE66 /* ImageData.swift */; };
@@ -95,6 +97,8 @@
 		189BA5071ED5039D00990E41 /* Calendar.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Calendar.storyboard; sourceTree = "<group>"; };
 		189BA5081ED5039D00990E41 /* FirstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		189BA50B1ED615E800990E41 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		18E129CE1ED77E0B00844CC4 /* TestKimTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestKimTableViewCell.swift; sourceTree = "<group>"; };
+		18E129CF1ED77E0B00844CC4 /* TestKimTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestKimTableViewCell.xib; sourceTree = "<group>"; };
 		1B09188713C5E7367E93A097 /* Pods_cheerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cheerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ABF351514AC5AC3FBD32684 /* Pods-cheerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cheerUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-cheerUITests/Pods-cheerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		5019B9291116C00E1BA93B6F /* Pods_cheer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cheer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -329,6 +333,8 @@
 		916E8F121DB0BADE002A48D5 /* cheer */ = {
 			isa = PBXGroup;
 			children = (
+				18E129CE1ED77E0B00844CC4 /* TestKimTableViewCell.swift */,
+				18E129CF1ED77E0B00844CC4 /* TestKimTableViewCell.xib */,
 				189BA5061ED5038300990E41 /* Calender */,
 				917B6A801E8DE6DB00266F74 /* cheer.entitlements */,
 				916E8F1F1DB0BADE002A48D5 /* Info.plist */,
@@ -571,6 +577,7 @@
 				91F6379F1E43B866004C9CB8 /* Market.storyboard in Resources */,
 				912BAB961E438C5F009ADB33 /* HotActivitiesCollectionViewCell.xib in Resources */,
 				912CDEAC1E4357E700E45206 /* HotItemsTableViewCell.xib in Resources */,
+				18E129D11ED77E0B00844CC4 /* TestKimTableViewCell.xib in Resources */,
 				189BA5091ED5039D00990E41 /* Calendar.storyboard in Resources */,
 				91F637A51E442D83004C9CB8 /* ItemCollectionViewCell.xib in Resources */,
 				916E8F651DB1DC36002A48D5 /* ItemCell.xib in Resources */,
@@ -734,6 +741,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				189BA50C1ED615E800990E41 /* TestViewController.swift in Sources */,
+				18E129D01ED77E0B00844CC4 /* TestKimTableViewCell.swift in Sources */,
 				91F637A41E442D83004C9CB8 /* ItemCollectionViewCell.swift in Sources */,
 				916E8F581DB1D835002A48D5 /* Config.swift in Sources */,
 				91B5D3EC1E52747F0047AB0D /* WelcomeSignUpTableVC.swift in Sources */,

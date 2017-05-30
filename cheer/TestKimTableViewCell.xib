@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="184" id="KGk-i7-Jjw" customClass="TestKimTableViewCell" customModule="cheer" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ekk-Mf-Eem">
+                        <rect key="frame" x="124" y="54" width="42" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9R-N2-XuT">
+                        <rect key="frame" x="124" y="96" width="88" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="ekk-Mf-Eem" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="116" id="0Jv-ig-7ee"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="r9R-N2-XuT" secondAttribute="bottom" constant="59" id="Chn-Ir-0OH"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="r9R-N2-XuT" secondAttribute="trailing" constant="100" id="UGg-EG-1TL"/>
+                    <constraint firstItem="r9R-N2-XuT" firstAttribute="top" secondItem="ekk-Mf-Eem" secondAttribute="bottom" constant="21" id="UIS-8t-wN1"/>
+                    <constraint firstItem="r9R-N2-XuT" firstAttribute="leading" secondItem="ekk-Mf-Eem" secondAttribute="leading" id="obW-8e-DPz"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="ekk-Mf-Eem" secondAttribute="trailing" constant="146" id="slm-gm-ua9"/>
+                    <constraint firstItem="ekk-Mf-Eem" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="46" id="yfH-xh-vb4"/>
+                </constraints>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="-170" y="270"/>
+        </tableViewCell>
+    </objects>
+</document>
