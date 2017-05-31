@@ -88,9 +88,6 @@ class SearchButton: UIView{
         l.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
         
         
-        // future 421 
-        // 
-        
     }
 }
 
@@ -103,10 +100,10 @@ class TextViewBlock: UIView{
     var bottomMargin = 10
     var size = 5
     var lineMargin = 10
+    var priority_stack = 0
     
 
     // the key is to add art board automation to our layout guide
-    
     
     // MARK:- Basic Information
     func setupOverallLayout(){
@@ -139,7 +136,11 @@ class TextViewBlock: UIView{
         
         for (i, bottom) in allButFirst.enumerated() {
             let top = allButLast[i]
-            bottom.topAnchor.constraint(equalTo: top.bottomAnchor, constant: CGFloat(lineMargin)).isActive = true
+            let k = bottom.topAnchor.constraint(equalTo: top.bottomAnchor, constant: CGFloat(lineMargin))
+            // test - how to use priority
+            priority_stack += 1
+            k.priority = Float(priority_stack)
+            k.isActive = true
         }
         
         
@@ -166,9 +167,7 @@ class TextViewBlock: UIView{
     
     // bookmark1
     var texts: [String] = ["Mon Thu Fri", "11:00AM - 12:00PM", "CS225", "Data Structure", "Dan Roth", "Kelong Wu", "CNN - 3242343", "LOC - Siebel 1024"]
-    var list: [(String, String, String)] = [("(2,3)", ".color", ".hex(0076FF)")]
-    
-    //
+    var list: [(String, String, String)] = [("All", ".color", ".hex(42E700)"), ("0", ".color", ".hex(151515)"), ("3", ".top_margin", ".int(30)"), ("1", ".top_margin", ".int(35)"), ("1", ".font_size", ".int(28)")]
     
     
     // Caution: return when the action is performed
@@ -261,7 +260,7 @@ class TextViewBlock: UIView{
             colorParser(range: range, value: value)
         case ".top_margin":
             marginParser(range: range, value: value)
-        case ".font-size":
+        case ".font_size":
             fontSizeParser(range: range, value: value)
         default:
             print("\(action) is not a valid instruction type")
@@ -286,20 +285,51 @@ class TextViewBlock: UIView{
         // .__id__str__(__p1__,__p2__,__p3___) -> ("id", "raw_value_group") -> parse_raw_value_group!
         let (name, value) = parseDFormat(dLine: value)
         if name == "hex" && value != nil {
-            if let color = UIColor(hexString: value!) // hex format does not checked
+            if let color = UIColor(hexString: value!) // hex format does not checked - this is unchecked
             {
                 colorSetter(range: range, value: color)
             }
         }
     }
-
+    
+    func marginParser(range: Int, value: String){
+        let (name, value) = parseDFormat(dLine: value)
+        if name == "int" && value != nil {
+            if let m = Int(value!){
+                let margin = CGFloat(m)
+                marginSetter(range: range, value: margin)
+            }
+        }
+    }
+    
+    func fontSizeParser(range: Int, value: String){
+        let (name, value) = parseDFormat(dLine: value)
+        if name == "int" && value != nil {
+            if let m = Int(value!){
+                let font = CGFloat(m)
+                fontSetter(range: range, value: font)
+            }
+        }
+    }
+    
     // step 4 - excution layer
     func colorSetter(range: Int, value: UIColor){
         (subviews[range] as! UILabel).textColor = value         // caution as! force-cast UILabel
     }
     
-    func fontSetter(){
-        
+    func marginSetter(range: Int, value: CGFloat){
+        if (range != 0) {
+            //subviews[4].topAnchor.
+            let k = subviews[range].topAnchor.constraint(equalTo: subviews[range - 1].bottomAnchor, constant: value)
+            priority_stack += 1
+            k.priority = Float(priority_stack)
+            k.isActive = true
+        }
+    }
+    
+    func fontSetter(range: Int, value: CGFloat){
+        let l = (subviews[range] as! UILabel)
+        l.font = l.font.withSize(value)
     }
     
     // step x - toolkit layer
@@ -365,6 +395,7 @@ class TestViewController: UIViewController {
         v.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
         v.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         v.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        
         
         v.setupOverallLayout()
         v.reloadData()
