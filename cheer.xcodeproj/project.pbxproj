@@ -7,9 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		189BA5091ED5039D00990E41 /* Calendar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 189BA5071ED5039D00990E41 /* Calendar.storyboard */; };
-		189BA50A1ED5039D00990E41 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189BA5081ED5039D00990E41 /* FirstViewController.swift */; };
-		189BA50C1ED615E800990E41 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189BA50B1ED615E800990E41 /* TestViewController.swift */; };
+		18B319F21F00A39C00262541 /* Calendar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18B319E61F00A39C00262541 /* Calendar.storyboard */; };
+		18B319F41F00A39C00262541 /* CourseManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B319E81F00A39C00262541 /* CourseManageViewController.swift */; };
+		18B319F51F00A39C00262541 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B319E91F00A39C00262541 /* FirstViewController.swift */; };
+		18B319F61F00A39C00262541 /* list_view_controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B319EA1F00A39C00262541 /* list_view_controller.swift */; };
+		18B319F71F00A39C00262541 /* restful_request_manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B319EB1F00A39C00262541 /* restful_request_manager.swift */; };
+		18B319F81F00A39C00262541 /* search_navigation_controller_delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B319EC1F00A39C00262541 /* search_navigation_controller_delegate.swift */; };
+		18B319F91F00A39C00262541 /* SectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B319ED1F00A39C00262541 /* SectionData.swift */; };
+		18B319FA1F00A39C00262541 /* SectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B319EE1F00A39C00262541 /* SectionTableViewCell.swift */; };
+		18B319FB1F00A39C00262541 /* SectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18B319EF1F00A39C00262541 /* SectionTableViewCell.xib */; };
+		18B319FC1F00A39C00262541 /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B319F01F00A39C00262541 /* SelectionViewController.swift */; };
+		18B319FD1F00A39C00262541 /* transition_manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B319F11F00A39C00262541 /* transition_manager.swift */; };
 		18E129D01ED77E0B00844CC4 /* TestKimTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E129CE1ED77E0B00844CC4 /* TestKimTableViewCell.swift */; };
 		18E129D11ED77E0B00844CC4 /* TestKimTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18E129CF1ED77E0B00844CC4 /* TestKimTableViewCell.xib */; };
 		1B5265350505C24450D0AC2E /* Pods_cheer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5019B9291116C00E1BA93B6F /* Pods_cheer.framework */; };
@@ -94,9 +102,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		189BA5071ED5039D00990E41 /* Calendar.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Calendar.storyboard; sourceTree = "<group>"; };
-		189BA5081ED5039D00990E41 /* FirstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		189BA50B1ED615E800990E41 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		18B319E61F00A39C00262541 /* Calendar.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Calendar.storyboard; sourceTree = "<group>"; };
+		18B319E81F00A39C00262541 /* CourseManageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseManageViewController.swift; sourceTree = "<group>"; };
+		18B319E91F00A39C00262541 /* FirstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
+		18B319EA1F00A39C00262541 /* list_view_controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = list_view_controller.swift; sourceTree = "<group>"; };
+		18B319EB1F00A39C00262541 /* restful_request_manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = restful_request_manager.swift; sourceTree = "<group>"; };
+		18B319EC1F00A39C00262541 /* search_navigation_controller_delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = search_navigation_controller_delegate.swift; sourceTree = "<group>"; };
+		18B319ED1F00A39C00262541 /* SectionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionData.swift; sourceTree = "<group>"; };
+		18B319EE1F00A39C00262541 /* SectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionTableViewCell.swift; sourceTree = "<group>"; };
+		18B319EF1F00A39C00262541 /* SectionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SectionTableViewCell.xib; sourceTree = "<group>"; };
+		18B319F01F00A39C00262541 /* SelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
+		18B319F11F00A39C00262541 /* transition_manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = transition_manager.swift; sourceTree = "<group>"; };
 		18E129CE1ED77E0B00844CC4 /* TestKimTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestKimTableViewCell.swift; sourceTree = "<group>"; };
 		18E129CF1ED77E0B00844CC4 /* TestKimTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestKimTableViewCell.xib; sourceTree = "<group>"; };
 		1B09188713C5E7367E93A097 /* Pods_cheerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cheerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -215,9 +231,17 @@
 		189BA5061ED5038300990E41 /* Calender */ = {
 			isa = PBXGroup;
 			children = (
-				189BA5071ED5039D00990E41 /* Calendar.storyboard */,
-				189BA50B1ED615E800990E41 /* TestViewController.swift */,
-				189BA5081ED5039D00990E41 /* FirstViewController.swift */,
+				18B319E61F00A39C00262541 /* Calendar.storyboard */,
+				18B319E81F00A39C00262541 /* CourseManageViewController.swift */,
+				18B319E91F00A39C00262541 /* FirstViewController.swift */,
+				18B319EA1F00A39C00262541 /* list_view_controller.swift */,
+				18B319EB1F00A39C00262541 /* restful_request_manager.swift */,
+				18B319EC1F00A39C00262541 /* search_navigation_controller_delegate.swift */,
+				18B319ED1F00A39C00262541 /* SectionData.swift */,
+				18B319EE1F00A39C00262541 /* SectionTableViewCell.swift */,
+				18B319EF1F00A39C00262541 /* SectionTableViewCell.xib */,
+				18B319F01F00A39C00262541 /* SelectionViewController.swift */,
+				18B319F11F00A39C00262541 /* transition_manager.swift */,
 			);
 			name = Calender;
 			sourceTree = "<group>";
@@ -523,7 +547,7 @@
 				TargetAttributes = {
 					916E8F0F1DB0BADE002A48D5 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = C3X63JTJ6N;
+						DevelopmentTeam = 44JQGKTEQ7;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -578,7 +602,6 @@
 				912BAB961E438C5F009ADB33 /* HotActivitiesCollectionViewCell.xib in Resources */,
 				912CDEAC1E4357E700E45206 /* HotItemsTableViewCell.xib in Resources */,
 				18E129D11ED77E0B00844CC4 /* TestKimTableViewCell.xib in Resources */,
-				189BA5091ED5039D00990E41 /* Calendar.storyboard in Resources */,
 				91F637A51E442D83004C9CB8 /* ItemCollectionViewCell.xib in Resources */,
 				916E8F651DB1DC36002A48D5 /* ItemCell.xib in Resources */,
 				912CDEA81E432DF400E45206 /* ScrollViewTableViewCell.xib in Resources */,
@@ -587,10 +610,12 @@
 				916E8F1E1DB0BADE002A48D5 /* LaunchScreen.storyboard in Resources */,
 				916E8F1B1DB0BADE002A48D5 /* Assets.xcassets in Resources */,
 				9112516F1DB5D18700D79252 /* Welcome.storyboard in Resources */,
+				18B319FB1F00A39C00262541 /* SectionTableViewCell.xib in Resources */,
 				916E8F191DB0BADE002A48D5 /* Main.storyboard in Resources */,
 				917B6A7F1E8DE2D600266F74 /* GoogleService-Info.plist in Resources */,
 				914C7C191E450164000B8BD4 /* DiscoverMain.storyboard in Resources */,
 				912BAB921E438489009ADB33 /* HotActivitiesTableViewCell.xib in Resources */,
+				18B319F21F00A39C00262541 /* Calendar.storyboard in Resources */,
 				912CDEA01E43182900E45206 /* Home.storyboard in Resources */,
 				914C7C161E44C159000B8BD4 /* MeMain.storyboard in Resources */,
 			);
@@ -740,7 +765,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				189BA50C1ED615E800990E41 /* TestViewController.swift in Sources */,
+				18B319F41F00A39C00262541 /* CourseManageViewController.swift in Sources */,
+				18B319F81F00A39C00262541 /* search_navigation_controller_delegate.swift in Sources */,
 				18E129D01ED77E0B00844CC4 /* TestKimTableViewCell.swift in Sources */,
 				91F637A41E442D83004C9CB8 /* ItemCollectionViewCell.swift in Sources */,
 				916E8F581DB1D835002A48D5 /* Config.swift in Sources */,
@@ -749,13 +775,15 @@
 				917B6A731E84E05600266F74 /* Masker.swift in Sources */,
 				91F96EDA1E590D22005AC13F /* Alert.swift in Sources */,
 				916E8F561DB1D805002A48D5 /* Item.swift in Sources */,
+				18B319F71F00A39C00262541 /* restful_request_manager.swift in Sources */,
 				914C7C0D1E44952D000B8BD4 /* CategoryCollectionViewCell.swift in Sources */,
 				912CDEA21E43186200E45206 /* HomeMainTableVC.swift in Sources */,
-				189BA50A1ED5039D00990E41 /* FirstViewController.swift in Sources */,
+				18B319FC1F00A39C00262541 /* SelectionViewController.swift in Sources */,
 				916E8F141DB0BADE002A48D5 /* AppDelegate.swift in Sources */,
 				91DDC7081E955C48001D72BA /* ButtonDesign.swift in Sources */,
 				915942561E981D5B0035DA94 /* ManageImagePageVC.swift in Sources */,
 				91F96ED81E590B68005AC13F /* Spinner.swift in Sources */,
+				18B319FA1F00A39C00262541 /* SectionTableViewCell.swift in Sources */,
 				912CDEA71E432DF400E45206 /* ScrollViewTableViewCell.swift in Sources */,
 				914C7C111E44974F000B8BD4 /* PostImageCollectionViewCell.swift in Sources */,
 				91F637A71E446B16004C9CB8 /* PostItemTableVC.swift in Sources */,
@@ -763,11 +791,15 @@
 				910C1D081DB467B80095BE66 /* SchoolCell.swift in Sources */,
 				917B6A6D1E84816100266F74 /* CountryCodeData.swift in Sources */,
 				917B6A751E85D30D00266F74 /* WelcomeResetPasswordTableVC.swift in Sources */,
+				18B319F61F00A39C00262541 /* list_view_controller.swift in Sources */,
 				9103CF1D1E5D1814009DF132 /* RadomGenerator.swift in Sources */,
+				18B319FD1F00A39C00262541 /* transition_manager.swift in Sources */,
 				917B6A7B1E8DA1F800266F74 /* PostItemChangeSchoolTableVC.swift in Sources */,
+				18B319F91F00A39C00262541 /* SectionData.swift in Sources */,
 				915942581E981D890035DA94 /* ManageImageContentVC.swift in Sources */,
 				914C7C1B1E450B3D000B8BD4 /* InputChecker.swift in Sources */,
 				916E8F641DB1DC36002A48D5 /* ItemCell.swift in Sources */,
+				18B319F51F00A39C00262541 /* FirstViewController.swift in Sources */,
 				912BAB911E438489009ADB33 /* HotActivitiesTableViewCell.swift in Sources */,
 				912CDEAB1E4357E700E45206 /* HotItemsTableViewCell.swift in Sources */,
 				91F637A11E43B8DD004C9CB8 /* MarketMainTableVC.swift in Sources */,
@@ -939,14 +971,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = cheer/cheer.entitlements;
-				DEVELOPMENT_TEAM = C3X63JTJ6N;
+				DEVELOPMENT_TEAM = 44JQGKTEQ7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/cheer",
 				);
 				INFOPLIST_FILE = cheer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.cheer-a.ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cheer-ksk.ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "cheer/cheer-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -961,14 +993,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = cheer/cheer.entitlements;
-				DEVELOPMENT_TEAM = C3X63JTJ6N;
+				DEVELOPMENT_TEAM = 44JQGKTEQ7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/cheer",
 				);
 				INFOPLIST_FILE = cheer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.cheer-a.ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cheer-ksk.ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "cheer/cheer-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;

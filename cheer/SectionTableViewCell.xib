@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="section" rowHeight="215" id="KGk-i7-Jjw" customClass="SectionTableViewCell" customModule="cheer" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="349" height="215"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="349" height="215"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f16-BH-3Oc">
+                        <rect key="frame" x="8" y="9" width="8" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checkmark Filled" translatesAutoresizingMaskIntoConstraints="NO" id="zkI-p5-ELg">
+                        <rect key="frame" x="321" y="69" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="Kgh-eU-ZHV"/>
+                            <constraint firstAttribute="height" constant="20" id="kBl-FO-b5g"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mon Wed Fri" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OSh-7b-4Ah">
+                        <rect key="frame" x="30" y="18" width="277" height="28"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11:00AM - 11:50AM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u5a-Lx-7xh">
+                        <rect key="frame" x="30" y="46" width="277" height="28"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1002 Electrical &amp; Computer Eng Bldg" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="chE-RV-4VR">
+                        <rect key="frame" x="30" y="76" width="277" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Beckman, A                                                          Fagen-Ulmschneider, W" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8oQ-R9-Fls">
+                        <rect key="frame" x="30" y="90" width="277" height="52.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CRN 35917                                                                    Section AL1" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XC3-5X-AXc">
+                        <rect key="frame" x="30" y="158.5" width="277" height="33.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.31601607799530029" green="0.31628179550170898" blue="0.31605726480484009" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailingMargin" secondItem="OSh-7b-4Ah" secondAttribute="trailing" constant="34" id="00N-HH-aI8"/>
+                    <constraint firstItem="XC3-5X-AXc" firstAttribute="leading" secondItem="8oQ-R9-Fls" secondAttribute="leading" id="1Nt-Jl-AE2"/>
+                    <constraint firstItem="chE-RV-4VR" firstAttribute="width" secondItem="u5a-Lx-7xh" secondAttribute="width" id="62P-bj-4NT"/>
+                    <constraint firstItem="u5a-Lx-7xh" firstAttribute="top" secondItem="OSh-7b-4Ah" secondAttribute="bottom" id="Hul-ZC-yl3"/>
+                    <constraint firstAttribute="leadingMargin" secondItem="f16-BH-3Oc" secondAttribute="leading" id="Iuo-hp-YRi"/>
+                    <constraint firstItem="OSh-7b-4Ah" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="Sf6-a5-XRa"/>
+                    <constraint firstItem="u5a-Lx-7xh" firstAttribute="leading" secondItem="OSh-7b-4Ah" secondAttribute="leading" id="Tub-0F-RiH"/>
+                    <constraint firstItem="8oQ-R9-Fls" firstAttribute="leading" secondItem="chE-RV-4VR" secondAttribute="leading" id="Xti-kx-y4O"/>
+                    <constraint firstItem="u5a-Lx-7xh" firstAttribute="trailing" secondItem="OSh-7b-4Ah" secondAttribute="trailing" id="YE1-Xr-d5L"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="XC3-5X-AXc" secondAttribute="bottom" constant="14.5" id="YNm-bT-RSb"/>
+                    <constraint firstItem="OSh-7b-4Ah" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="22" id="cbW-Gj-nKR"/>
+                    <constraint firstItem="chE-RV-4VR" firstAttribute="top" secondItem="u5a-Lx-7xh" secondAttribute="bottom" constant="2" id="cgB-WA-URT"/>
+                    <constraint firstItem="XC3-5X-AXc" firstAttribute="width" secondItem="8oQ-R9-Fls" secondAttribute="width" id="cjT-q6-VHU"/>
+                    <constraint firstItem="XC3-5X-AXc" firstAttribute="top" secondItem="8oQ-R9-Fls" secondAttribute="bottom" constant="16" id="jX8-8n-Njn"/>
+                    <constraint firstItem="chE-RV-4VR" firstAttribute="leading" secondItem="u5a-Lx-7xh" secondAttribute="leading" id="jZ0-S2-2dq"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="zkI-p5-ELg" secondAttribute="trailing" id="lNI-Zc-sNm"/>
+                    <constraint firstAttribute="topMargin" secondItem="f16-BH-3Oc" secondAttribute="top" constant="-1" id="lu4-J0-KJF"/>
+                    <constraint firstItem="zkI-p5-ELg" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="61" id="nyh-dJ-a8M"/>
+                    <constraint firstItem="8oQ-R9-Fls" firstAttribute="top" secondItem="chE-RV-4VR" secondAttribute="bottom" constant="-3" id="uFn-gZ-cSu"/>
+                    <constraint firstItem="8oQ-R9-Fls" firstAttribute="width" secondItem="chE-RV-4VR" secondAttribute="width" id="uNO-Bs-1EW"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="checkmark" destination="zkI-p5-ELg" id="ASK-7i-aLE"/>
+                <outlet property="date" destination="OSh-7b-4Ah" id="O5n-oN-K7w"/>
+                <outlet property="extra" destination="XC3-5X-AXc" id="cRs-66-tyy"/>
+                <outlet property="location" destination="chE-RV-4VR" id="bWv-z4-Knf"/>
+                <outlet property="num" destination="f16-BH-3Oc" id="BRe-w6-lnK"/>
+                <outlet property="professor" destination="8oQ-R9-Fls" id="fxW-dw-Hgz"/>
+                <outlet property="time" destination="u5a-Lx-7xh" id="Qi7-mg-oU9"/>
+            </connections>
+            <point key="canvasLocation" x="99" y="80"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Checkmark Filled" width="32" height="30"/>
+    </resources>
+</document>
