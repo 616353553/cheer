@@ -15,11 +15,15 @@ target 'cheer' do
   pod 'Firebase/Storage'
 
   # Pods for cheer
-  pod 'SwiftyStarRatingView'
+  pod 'Cosmos', '~> 9.0'
+  #pod 'SwiftyStarRatingView'
   #pod 'StarryStars', '~> 0.0.1'
 
   # image picker
   pod "BSImagePicker", "~> 2.4"
+
+  # circular progress bar
+  pod 'KDCircularProgress'
 
   target 'cheerTests' do
     inherit! :search_paths

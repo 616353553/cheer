@@ -7,15 +7,17 @@
 //
 
 import UIKit
+import KDCircularProgress
 
 class ItemCollectionViewCell: UICollectionViewCell {
-
+    
+    @IBOutlet weak var progressView: KDCircularProgress!
     @IBOutlet weak var itemImage: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-        itemImage.contentMode = .scaleAspectFit
+        itemImage.image = nil
+        itemImage.contentMode = .scaleAspectFill
+        progressView.glowMode = .noGlow
     }
-
 }

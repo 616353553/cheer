@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,22 +19,57 @@
                 <rect key="frame" x="0.0" y="0.0" width="128" height="131"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HIE-DM-BkZ">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch icon" translatesAutoresizingMaskIntoConstraints="NO" id="HIE-DM-BkZ">
                         <rect key="frame" x="0.0" y="0.0" width="128" height="131"/>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aOp-X4-X1A" customClass="KDCircularProgress" customModule="KDCircularProgress">
+                        <rect key="frame" x="15" y="16.5" width="98.5" height="98.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="aOp-X4-X1A" secondAttribute="height" multiplier="1:1" id="jmS-3g-Vxu"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="angle">
+                                <real key="value" value="100"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="startAngle">
+                                <real key="value" value="270"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="clockwise" value="YES"/>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="roundedCorners" value="YES"/>
+                            <userDefinedRuntimeAttribute type="color" keyPath="trackColor">
+                                <color key="value" red="1" green="0.9999879599" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="trackThickness">
+                                <real key="value" value="0.29999999999999999"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="progressThickness">
+                                <real key="value" value="0.20000000000000001"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="IBColor1">
+                                <color key="value" red="0.73333333329999995" green="0.73333333329999995" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                 </subviews>
             </view>
             <constraints>
+                <constraint firstItem="aOp-X4-X1A" firstAttribute="centerX" secondItem="HIE-DM-BkZ" secondAttribute="centerX" id="CEW-CN-7uh"/>
+                <constraint firstItem="aOp-X4-X1A" firstAttribute="centerY" secondItem="HIE-DM-BkZ" secondAttribute="centerY" id="Fhj-yN-FAR"/>
                 <constraint firstAttribute="bottom" secondItem="HIE-DM-BkZ" secondAttribute="bottom" id="Mgd-iB-oxm"/>
                 <constraint firstItem="HIE-DM-BkZ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="d2g-j4-HNy"/>
                 <constraint firstItem="HIE-DM-BkZ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="kmM-h5-GDj"/>
                 <constraint firstAttribute="trailing" secondItem="HIE-DM-BkZ" secondAttribute="trailing" id="pen-dB-WTU"/>
+                <constraint firstItem="aOp-X4-X1A" firstAttribute="width" secondItem="HIE-DM-BkZ" secondAttribute="height" multiplier="3:4" id="tLu-wP-u1B"/>
             </constraints>
             <size key="customSize" width="128" height="131"/>
             <connections>
                 <outlet property="itemImage" destination="HIE-DM-BkZ" id="uSb-ja-mIt"/>
+                <outlet property="progressView" destination="aOp-X4-X1A" id="aqb-MN-vxh"/>
             </connections>
             <point key="canvasLocation" x="40" y="46.5"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="launch icon" width="1024" height="1024"/>
+    </resources>
 </document>

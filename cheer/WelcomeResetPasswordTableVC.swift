@@ -57,21 +57,16 @@ class WelcomeResetPasswordTableVC: UITableViewController {
     @IBAction func sendIsPushed(_ sender: UIButton) {
         if timerCount <= 0{
             if emailValid.image == #imageLiteral(resourceName: "Ok_fill"){
-                Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
-                FIRAuth.auth()!.sendPasswordReset(withEmail: emailTextField.text!, completion: {(error) in
-                    Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
+                Authorization.resetPassword(email: emailTextField.text!, vc: self) { (error) in
                     if error != nil{
-                        Alert.displayAlertWithOneButton(title: "Error", message: error!.localizedDescription, vc: self)
                         self.timerCount = 0
                         self.setSendButton()
-                    }
-                    else{
-                        Alert.displayAlertWithOneButton(title: "Success", message: "A link is sent to your email, please check your email", vc: self)
+                    } else {
                         self.timerCount = 60
                         self.setSendButton()
                         self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.setSendButton), userInfo: nil, repeats: true)
                     }
-                })
+                }
             } else {
                 Alert.displayAlertWithOneButton(title: "Error", message: "Invalid email format", vc: self)
             }
@@ -130,13 +125,6 @@ class WelcomeResetPasswordTableVC: UITableViewController {
             return 0
         }
     }
-
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-    }
-
 }
 
 extension WelcomeResetPasswordTableVC: UITextFieldDelegate{

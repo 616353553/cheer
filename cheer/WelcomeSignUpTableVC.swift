@@ -26,8 +26,6 @@ class WelcomeSignUpTableVC: UITableViewController {
     var isEditingPassword = false
     let spinner = UIActivityIndicatorView()
     var tap: UITapGestureRecognizer!
-    //var emailChecker = PFUser.query()!
-    //var user = PFUser()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +47,6 @@ class WelcomeSignUpTableVC: UITableViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        //emailChecker.cancel()
         self.view.endEditing(true)
     }
     
@@ -61,20 +58,11 @@ class WelcomeSignUpTableVC: UITableViewController {
             Alert.displayAlertWithOneButton(title: "Error", message: "Invalid password", vc: self)
         }
         else{
-            //print(FIRAuth.auth()!.currentUser?.email ?? "none")
-            Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
-            FIRAuth.auth()!.createUser(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: {(user, error) in
+            Authorization.signUp(email: emailTextField.text!, password: passwordTextField.text!, vc: self){ (user, error) in
                 if user != nil{
-                    user!.sendEmailVerification(completion: {(error) in
-                        Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
-                        self.performSegue(withIdentifier: "selectSchool", sender: self)
-                    })
+                    self.performSegue(withIdentifier: "selectSchool", sender: self)
                 }
-                else{
-                    Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
-                    Alert.displayAlertWithOneButton(title: "Error", message: error!.localizedDescription, vc: self)
-                }
-            })
+            }
         }
     }
     
@@ -139,12 +127,6 @@ class WelcomeSignUpTableVC: UITableViewController {
         default:
             return 0
         }
-    }
- 
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // do something?
     }
 }
 

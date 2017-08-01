@@ -10,16 +10,58 @@ import Foundation
 
 class InputChecker{
     
-    // check if the given string only has white spaces
+    /**
+     
+     Check if the given string only has white space (space and tab, etc.).
+     
+     - parameter text: The String which need to be verified.
+     
+     - returns: A boolean which indicates whether given string only has white space.
+     
+     */
     static func onlyHasWhiteSpace(text: String) -> Bool{
         let whiteSpaceSet = NSCharacterSet.whitespaces
         return text.trimmingCharacters(in: whiteSpaceSet).isEmpty
     }
     
-    // check if the given string only has number
-    static func onlyHasNumber(price: String!) -> Bool{
-        return Double(price) != nil
+    
+    
+    
+    /**
+     
+     Check if the given string is a double.
+     
+     - parameter text: The String which need to be verified.
+     
+     - returns: A boolean which indicates whether given string is a double or not.
+     
+     */
+    static func isDouble(text: String!) -> Bool{
+        return Double(text) != nil
     }
+    
+    
+    
+    
+    /**
+     
+     Check if the given string is an integer.
+     
+     - parameter text: The String which need to be verified.
+     
+     - returns: A boolean which indicates whether given string is an integer or not.
+     
+     */
+    static func isInt(text: String!) -> Bool{
+        return Int(text) != nil
+    }
+    
+    
+
+    
+    
+    
+    
     
     // check if the given string has allowed length
     static func hasCorrectLength(min: Int, max: Int, text: String) -> Bool{

@@ -8,12 +8,36 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class MarketMainTableVC: UITableViewController {
 
+    //var items: [Item]!
+    var items_test: [Item]!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpTableView()
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 140
+        
+        
+        items_test = [Item]()
+        print("b")
+        let ref = Database.database().reference().child(UserDefaults.standard.string(forKey: "selectedSchool")!).child("Items")
+        ref.observe(.value, with: {(snapshot) in
+            for child in snapshot.children{
+                let itemData = child as! DataSnapshot
+                let item = Item()
+                item.initialize(snapshot: itemData)
+                self.items_test.append(item)
+            }
+            print(self.items_test.count)
+            self.tableView.reloadData()
+        })
+        
+        
+        
         createSearchBar()
     }
 
@@ -27,16 +51,11 @@ class MarketMainTableVC: UITableViewController {
     }
     
     @IBAction func addPostIsPushed(_ sender: UIBarButtonItem) {
-        if FIRAuth.auth()?.currentUser == nil{
-            print("login please")
-        }
-        else{
+        if Auth.auth().currentUser == nil{
+            print("login please?!")
+        }else{
             performSegue(withIdentifier: "addPost", sender: self)
         }
-    }
-    
-    func setUpTableView(){
-        tableView.register(UINib(nibName: "ItemCell", bundle: nil), forCellReuseIdentifier: "itemCell")
     }
 
     func createSearchBar(){
@@ -47,40 +66,58 @@ class MarketMainTableVC: UITableViewController {
         self.navigationItem.titleView = searchBar
     }
     
+//    func loadData(){
+//        items = [Item]()
+//        let ref = FIRDatabase.database().reference().child(UserDefaults.standard.string(forKey: "selectedSchool")!).child("Items")
+//        ref.observe(.value, with: {(snapshot) in
+//            for child in snapshot.children{
+//                let itemData = child as! FIRDataSnapshot
+//                let item = Item()
+//                item.initialize(snapshot: itemData)
+//                self.items.append(item)
+//            }
+//            print(self.items.count)
+//            self.tableView.reloadData()
+//        })
+//    }
+    
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return items_test.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath) as! ItemCell
-        return cell
-    }
-    
-//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if indexPath.row == 0{
-//            return self.view.frame.height/4
+//        if items_test[indexPath.row].images.numOfImages > 0{
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "withImage", for: indexPath) as! ItemWithImageCell
+//            cell.item = items_test[indexPath.row]
+//            cell.updateCell()
+//            cell.layoutSubviews()
+//            return cell
+//        }else{
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "withoutImage", for: indexPath) as! ItemWithoutImageCell
+//            cell.item = items_test[indexPath.row]
+//            cell.updateCell()
+//            cell.layoutSubviews()
+//            return cell
 //        }
-//        return self.view.frame.height * 0.55
+        return UITableViewCell()
+    }
+//    
+//    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        if items[indexPath.row].images.numOfImages > 0{
+//            let cell = cell as! ItemWithImageCell
+//            cell.updateCell()
+//        }else{
+//            let cell = cell as! ItemWithoutImageCell
+//            cell.updateCell()
+//        }
 //    }
 
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
 
     // MARK: - Navigation
 
@@ -89,6 +126,8 @@ class MarketMainTableVC: UITableViewController {
         switch segue.identifier!{
         case "postItem":
             self.tabBarController?.tabBar.isHidden = true
+        case "test":
+            print("test")
         default:
             break
         }

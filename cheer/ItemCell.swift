@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SwiftyStarRatingView
+import FirebaseStorage
 
 class ItemCell: UITableViewCell {
 
@@ -24,12 +24,11 @@ class ItemCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         setUpCollectionView()
+        collectionView.backgroundColor = UIColor.clear
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        super.setSelected(false, animated: animated)
     }
     
     func setUpCollectionView(){
@@ -48,7 +47,8 @@ extension ItemCell: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.numOfImages
+        print("test")
+        return images.numOfImages()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -57,12 +57,21 @@ extension ItemCell: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let itemCell = cell as! ItemCollectionViewCell
-        itemCell.itemImage.image = #imageLiteral(resourceName: "TestingImage_car")
+//        let itemCell = cell as! ItemCollectionViewCell
+//        let ref = FIRStorage.storage().reference(withPath: images.imageIds[indexPath.row])
+//        let downloadTask = ref.data(withMaxSize: 1*1000*1000) { (data, error) in
+//            if error == nil{
+//                itemCell.itemImage.image = UIImage(data: data!)
+//                itemCell.progressView.isHidden = true
+//            }
+//        }
+//        downloadTask.observe(.progress) {(snapshot) in
+//            itemCell.progressView.angle = snapshot.progress!.fractionCompleted * 360
+//        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let collectionCellWidth = (UIScreen.main.bounds.width - 50)/3
+        let collectionCellWidth = (UIScreen.main.bounds.width - 100)/3
         let collectionCellHeight = collectionCellWidth
         return CGSize.init(width: collectionCellWidth, height: collectionCellHeight)
     }

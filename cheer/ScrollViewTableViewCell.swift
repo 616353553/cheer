@@ -82,7 +82,7 @@ class ScrollViewTableViewCell: UITableViewCell {
 extension ScrollViewTableViewCell: UIScrollViewDelegate{
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         adjustPosition()
-        print(adsScrollView.contentOffset)
+        //print(adsScrollView.contentOffset)
         adsPageControl.currentPage = currentPageIndex - 1
     }
     

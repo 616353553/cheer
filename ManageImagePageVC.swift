@@ -16,14 +16,14 @@ class ManageImagePageVC: UIPageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.dataSource = self
-        self.delegate = self
-        for i in 0..<images.numOfImages{
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ImageContentView") as! ManageImageContentVC
-            vc.image = images.images[i]!
-            VCs.append(vc)
-        }
-        self.setViewControllers([VCs[startIndex]], direction: .forward, animated: true, completion: nil)
+//        self.dataSource = self
+//        self.delegate = self
+//        for i in 0..<images.numOfImages{
+//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ImageContentView") as! ManageImageContentVC
+//            vc.image = images.images[i]!
+//            VCs.append(vc)
+//        }
+//        self.setViewControllers([VCs[startIndex]], direction: .forward, animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {

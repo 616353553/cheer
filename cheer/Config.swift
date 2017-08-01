@@ -15,28 +15,33 @@ public struct Config{
     static let mailgunClientDomain = "mg.cheerapp.host"
     static let twilioSID = "ACfe949dd0c6fdd7b1653a00f4281bbcf0"
     static let twilioKey = "608b14f5ecd808ba0692fd4350a21c35"
-    static let UsernameLengthMin: Int = 1
-    static let UsernameLengthMax: Int = 16
-    static let PasswordLengthMin: Int = 1
-    static let PasswordLengthMax: Int = 20
-    static let EmailLengthMin: Int = 2
-    static let EmailLengthMax: Int = 64
     
     static let maxImagesAllowed: Int = 9
-    static let contactMethodChoices = ["Choose Method", "Cellphone", "Email", "Kakao Talk", "LINE", "Messenger", "Whatsapp", "Wechat"]
-    static let addPhotoButtonImage = UIImage(named: "AddPhotoButton")
-    static let maxContactsAllowed: Int = 3
     
     static let screenSize: CGSize = UIScreen.main.bounds.size
-    static let uploadImageQuality: CGFloat = 0.5
-    static let minZoomScale: CGFloat = 1.0
-    static let maxZoomScale: CGFloat = 3.0
+    
+    //image maximum size allowed in Bytes
+    static let imageMaxSize: Int = 100 * 1024
+    static let thumbImageMaxSize: Int = 20 * 1024
+//    static let minZoomScale: CGFloat = 1.0
+//    static let maxZoomScale: CGFloat = 3.0
     static let imageHolder: UIImage = UIImage(named: "launch icon")!
     static let queryLimit: Int = 10
-    static var themeColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 1)
+    static var themeColor = UIColor.init(red: 0, green: 89/255.0, blue: 178/255.0, alpha: 1)
     static let placeHolderColor = UIColor.init(red: 187, green: 187, blue: 194, alpha: 1)
+    static let tableViewBackGroundColor = UIColor.init(red: 239, green: 239, blue: 244, alpha: 1)
     static let blueColor: UIColor = UIColor.init(red: 0/255.0, green: 128/255.0, blue: 255/255.0, alpha: 1)
     static let redColor: UIColor = UIColor.init(red: 255/255.0, green: 0/255.0, blue: 0/255.0, alpha: 1)
+    static let tableViewGrey: UIColor = UIColor.init(red: 247/255.0, green: 247/255.0, blue: 247/255.0, alpha: 1)
     static var isFirstRun = true
     static var userIsLoggedIn = false
+    static let locale = Locale.init(identifier: "us")
+    
+    static let groupTitleLength: Int = 300
+    static let maxProfessors: Int = 10
+    static let maxDepartments: Int = 5
+    static let maxSchedules: Int = 8
+    static let minMembersAllowed: Int = 1
+    static let maxMembersAllowed: Int = 500
+    
 }

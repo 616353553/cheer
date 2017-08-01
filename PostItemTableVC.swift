@@ -35,6 +35,7 @@ class PostItemTableVC: UITableViewController {
     let deliveryMethodImages = [#imageLiteral(resourceName: "Deliver_unselected"),#imageLiteral(resourceName: "Pickup_unselected"),#imageLiteral(resourceName: "Both_unselected"),#imageLiteral(resourceName: "NotApply_unselected")]
     let deliveryMethodSelectedImages = [#imageLiteral(resourceName: "Deliver_selected"), #imageLiteral(resourceName: "Pickup_selected"),#imageLiteral(resourceName: "Both_selected"), #imageLiteral(resourceName: "NotApply_selected")]
     let deliveryMethodTitles = ["Deliver", "Pick up", "Both", "N/A"]
+    let spinner = UIActivityIndicatorView()
     var tap: UITapGestureRecognizer!
     var imagePicker: BSImagePickerViewController!
     
@@ -43,7 +44,10 @@ class PostItemTableVC: UITableViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        //setup cell 2
+        let backButton = UIBarButtonItem.init(title: "Back", style: .plain, target: self, action: #selector(backIsPushed))
+        self.navigationItem.setLeftBarButton(backButton, animated: false)
+        
+        //setup category cell
         for catagoryButton in catagoryButtons{
             catagoryButton.adjustsImageWhenHighlighted = false
             ButtonDesign.round(button: catagoryButton, color: Config.themeColor, radius: 12, borderWidth: 1)
@@ -70,6 +74,7 @@ class PostItemTableVC: UITableViewController {
     }
     
     @IBAction func PostButtonIsPushed(_ sender: UIBarButtonItem) {
+        
         if InputChecker.onlyHasWhiteSpace(text: titleTextView.text!){
             Alert.displayAlertWithOneButton(title: "Error", message: "Invalid title", vc: self)
         }
@@ -87,9 +92,19 @@ class PostItemTableVC: UITableViewController {
         }
         else{
             item.title = titleTextView.text!
-            item.price = priceTextField.text! == "" ? "N/A" : priceTextField.text!
+            item.price = priceTextField.text! == "" ? "N/A" : String(round(100 * Double(priceTextField.text!)!)/100)
             item.discription = discriptionTextView.text!
-            // upload to server
+            Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
+            item.upload(){(success, error) in
+                Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
+                if success{
+                    Alert.displayAlertWithOneButton(title: "Success", message: "Your item is post successfully" , vc: self){(action) in
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }else{
+                    Alert.displayAlertWithOneButton(title: "Fail", message: error!, vc: self)
+                }
+            }
         }
     }
     
@@ -97,6 +112,12 @@ class PostItemTableVC: UITableViewController {
         for catagoryButton in catagoryButtons{
             item.category = sender.titleLabel!.text!
             ButtonDesign.selectButton(button: catagoryButton, setSelect: catagoryButton.titleLabel!.text! == item.category!)
+        }
+    }
+    
+    func backIsPushed(){
+        Alert.displayAlertWithTwoButtons(title: "Alert", message: "This action will discard all the change you have made", vc: self) {(action) in
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -147,10 +168,10 @@ class PostItemTableVC: UITableViewController {
     }
     
     func numberOfImagesHasChanged(){
-        imagesCollectionView.reloadData()
-        numberOfImages.text = "\(self.item.images.numOfImages!)/\(Config.maxImagesAllowed) Images"
-        tableView.beginUpdates()
-        tableView.endUpdates()
+//        imagesCollectionView.reloadData()
+//        numberOfImages.text = "\(self.item.images.numOfImages!)/\(Config.maxImagesAllowed) Images"
+//        tableView.beginUpdates()
+//        tableView.endUpdates()
     }
     
 
@@ -160,32 +181,32 @@ class PostItemTableVC: UITableViewController {
         return 2
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch indexPath{
-        case [0, 0]:
-            return 80
-        case [1, 0]:
-            return 150
-        case [1, 1]:
-            return 0.3 * UIScreen.main.bounds.width + 11
-        case [1, 2]:
-            return 140
-        case [1, 3]:
-            return UITableViewAutomaticDimension
-        case [1, 4]:
-            return 230
-        case [1, 5]:
-            if item.images.numOfImages < 3{
-                return (UIScreen.main.bounds.width - 70)/3 + 100
-            }else if item.images.numOfImages < 6{
-                return 2*(UIScreen.main.bounds.width - 70)/3 + 110
-            }else{
-                return 3*(UIScreen.main.bounds.width - 70)/3 + 120
-            }
-        default:
-            return UITableViewAutomaticDimension
-        }
-    }
+//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        switch indexPath{
+//        case [0, 0]:
+//            return 80
+//        case [1, 0]:
+//            return 150
+//        case [1, 1]:
+//            return 0.3 * UIScreen.main.bounds.width + 11
+//        case [1, 2]:
+//            return 140
+//        case [1, 3]:
+//            return UITableViewAutomaticDimension
+//        case [1, 4]:
+//            return 230
+//        case [1, 5]:
+//            if item.images.numOfImages < 3{
+//                return (UIScreen.main.bounds.width - 70)/3 + 100
+//            }else if item.images.numOfImages < 6{
+//                return 2*(UIScreen.main.bounds.width - 70)/3 + 110
+//            }else{
+//                return 3*(UIScreen.main.bounds.width - 70)/3 + 120
+//            }
+//        default:
+//            return UITableViewAutomaticDimension
+//        }
+//    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath{
@@ -224,37 +245,44 @@ extension PostItemTableVC: UICollectionViewDelegate, UICollectionViewDataSource,
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
-            return 4
-        }else if collectionView.restorationIdentifier == "imageCollectionView"{
-            return (item.images.numOfImages + 1) > Config.maxImagesAllowed ? Config.maxImagesAllowed : (item.images.numOfImages + 1)
-        }else{
-            return 0
-        }
+//        if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
+//            return 4
+//        }else if collectionView.restorationIdentifier == "imageCollectionView"{
+//            return (item.images.numOfImages + 1) > Config.maxImagesAllowed ? Config.maxImagesAllowed : (item.images.numOfImages + 1)
+//        }else{
+//            return 0
+//        }
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "deliveryMethodCell", for: indexPath) as! DeliveryMethodCollectionViewCell
-            cell.deliveryMethodLabel.text = deliveryMethodTitles[indexPath.row]
-            if cell.deliveryMethodLabel.text == item.deliveryMethod!{
-                cell.deliveryMethodImage.image = deliveryMethodSelectedImages[indexPath.row]
-            }else{
-                cell.deliveryMethodImage.image = deliveryMethodImages[indexPath.row]
-            }
-            return cell
-        }
-        else if collectionView.restorationIdentifier == "imageCollectionView"{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! PostImageCollectionViewCell
-            cell.itemImage.image = item.images.images[indexPath.row]!
-            cell.delegate = self
-            cell.index = indexPath.row
-            cell.deleteButton.isHidden = cell.itemImage.image == #imageLiteral(resourceName: "add_image")
-            return cell
-        }
-        else{
-            return UICollectionViewCell()
-        }
+//        if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "deliveryMethodCell", for: indexPath) as! DeliveryMethodCollectionViewCell
+//            cell.deliveryMethodLabel.text = deliveryMethodTitles[indexPath.row]
+//            if cell.deliveryMethodLabel.text == item.deliveryMethod!{
+//                cell.deliveryMethodImage.image = deliveryMethodSelectedImages[indexPath.row]
+//            }else{
+//                cell.deliveryMethodImage.image = deliveryMethodImages[indexPath.row]
+//            }
+//            return cell
+//        }
+//        else if collectionView.restorationIdentifier == "imageCollectionView"{
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! PostImageCollectionViewCell
+//            cell.delegate = self
+//            cell.index = indexPath.row
+//            if indexPath.row < item.images.numOfImages{
+//                cell.itemImage.image = item.images.images[indexPath.row]!
+//                cell.deleteButton.isHidden = false
+//            }else{
+//                cell.itemImage.image = #imageLiteral(resourceName: "add_image")
+//                cell.deleteButton.isHidden = true
+//            }
+//            return cell
+//        }
+//        else{
+//            return UICollectionViewCell()
+//        }
+        return UICollectionViewCell()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -272,40 +300,43 @@ extension PostItemTableVC: UICollectionViewDelegate, UICollectionViewDataSource,
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
-            item.category = deliveryMethodTitles[indexPath.row]
-            let targetCell = collectionView.cellForItem(at: indexPath) as! DeliveryMethodCollectionViewCell
-            for cell in collectionView.visibleCells{
-                let temp = cell as! DeliveryMethodCollectionViewCell
-                temp.deliveryMethodImage.image = deliveryMethodImages[collectionView.indexPath(for: temp)!.row]
-            }
-            targetCell.deliveryMethodImage.image = deliveryMethodSelectedImages[indexPath.row]
-        }
-        else if collectionView.restorationIdentifier == "imageCollectionView"{
-            if indexPath.row == item.images.numOfImages{
-                imagePicker = BSImagePickerViewController()
-                imagePicker.maxNumberOfSelections = Config.maxImagesAllowed - item.images.numOfImages
-                var assets: [PHAsset?]? = [PHAsset?]()
-                bs_presentImagePickerController(imagePicker, animated: true,
-                                                select: {(asset) in assets!.append(asset)},
-                                                deselect: {(asset) in
-                                                    for i in 0..<assets!.count{
-                                                        if assets![i] == asset{
-                                                            assets!.remove(at: i)
-                                                            break
-                                                        }
-                                                    }},
-                                                cancel: {(asset) in assets = nil},
-                                                finish: {(asset) in
-                                                    self.item.images.appendImages(from: assets)
-                                                    DispatchQueue.main.async(execute: {() in
-                                                        self.numberOfImagesHasChanged()
-                                                    })},
-                                                completion: nil)
-            }else{
-                performSegue(withIdentifier: "manageImages", sender: indexPath)
-            }
-        }
+//        if collectionView.restorationIdentifier == "deliveryMethodsCollectionView"{
+//            item.deliveryMethod = deliveryMethodTitles[indexPath.row]
+//            let targetCell = collectionView.cellForItem(at: indexPath) as! DeliveryMethodCollectionViewCell
+//            for cell in collectionView.visibleCells{
+//                let temp = cell as! DeliveryMethodCollectionViewCell
+//                temp.deliveryMethodImage.image = deliveryMethodImages[collectionView.indexPath(for: temp)!.row]
+//            }
+//            targetCell.deliveryMethodImage.image = deliveryMethodSelectedImages[indexPath.row]
+//        }
+//        else if collectionView.restorationIdentifier == "imageCollectionView"{
+//            if indexPath.row == item.images.numOfImages{
+//                imagePicker = BSImagePickerViewController()
+//                imagePicker.maxNumberOfSelections = Config.maxImagesAllowed - item.images.numOfImages
+//                var assets: [PHAsset?]? = [PHAsset?]()
+//                bs_presentImagePickerController(imagePicker, animated: true,
+//                                                select: {(asset) in assets!.append(asset)},
+//                                                deselect: {(asset) in
+//                                                    for i in 0..<assets!.count{
+//                                                        if assets![i] == asset{
+//                                                            assets!.remove(at: i)
+//                                                            break
+//                                                        }
+//                                                    }},
+//                                                cancel: {(asset) in assets = nil},
+//                                                finish: {(asset) in
+//                                                    Spinner.enableActivityIndicator(activityIndicator: self.spinner, vc: self, disableInteraction: true)
+//                                                    self.item.images.appendImages(from: assets){
+//                                                        DispatchQueue.main.sync(execute: {() in
+//                                                            self.numberOfImagesHasChanged()
+//                                                            Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
+//                                                        })
+//                                                    }},
+//                                                completion: nil)
+//            }else{
+//                performSegue(withIdentifier: "manageImages", sender: indexPath)
+//            }
+//        }
     }
 }
 

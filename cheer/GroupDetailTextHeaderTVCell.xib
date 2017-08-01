@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="151" id="KGk-i7-Jjw" customClass="GroupDetailTextHeaderTVCell" customModule="cheer" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="378" height="152.5"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="378" height="152"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZpP-XR-Y9a">
+                        <rect key="frame" x="16" y="12" width="346" height="72"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zw3-Wd-ZUC">
+                        <rect key="frame" x="36" y="92" width="70" height="2"/>
+                        <color key="backgroundColor" red="0.59210336210000003" green="0.59219121929999996" blue="0.59208422900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="2" id="asE-bY-30R"/>
+                            <constraint firstAttribute="width" constant="70" id="vwe-tf-GXi"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Computer Science" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hiq-8q-SMg">
+                        <rect key="frame" x="16" y="102" width="346" height="15"/>
+                        <fontDescription key="fontDescription" type="italicSystem" pointSize="12"/>
+                        <color key="textColor" red="0.59210336210000003" green="0.59219121929999996" blue="0.59208422900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by Craig Zileas" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vsL-o1-4KX">
+                        <rect key="frame" x="16" y="125" width="346" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="ZpP-XR-Y9a" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="47w-Z9-Bqo"/>
+                    <constraint firstAttribute="trailing" secondItem="ZpP-XR-Y9a" secondAttribute="trailing" constant="16" id="5JN-e4-l6E"/>
+                    <constraint firstItem="vsL-o1-4KX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="6dS-Y5-PfL"/>
+                    <constraint firstAttribute="bottom" secondItem="vsL-o1-4KX" secondAttribute="bottom" constant="12" id="6da-Cp-Hz8"/>
+                    <constraint firstItem="Zw3-Wd-ZUC" firstAttribute="top" secondItem="ZpP-XR-Y9a" secondAttribute="bottom" constant="8" id="AHl-k2-FSX"/>
+                    <constraint firstItem="Zw3-Wd-ZUC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="36" id="TUR-5D-R9L"/>
+                    <constraint firstItem="hiq-8q-SMg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Tom-4L-Xhe"/>
+                    <constraint firstAttribute="trailing" secondItem="hiq-8q-SMg" secondAttribute="trailing" constant="16" id="XdO-7C-iXI"/>
+                    <constraint firstItem="ZpP-XR-Y9a" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="c9a-PK-qYi"/>
+                    <constraint firstAttribute="trailing" secondItem="vsL-o1-4KX" secondAttribute="trailing" constant="16" id="fQi-yq-142"/>
+                    <constraint firstItem="vsL-o1-4KX" firstAttribute="top" secondItem="hiq-8q-SMg" secondAttribute="bottom" constant="8" id="jG5-RV-wCp"/>
+                    <constraint firstItem="hiq-8q-SMg" firstAttribute="top" secondItem="Zw3-Wd-ZUC" secondAttribute="bottom" constant="8" id="rNs-4u-55f"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="department" destination="hiq-8q-SMg" id="gci-mc-bmM"/>
+                <outlet property="departmentTopConstraint" destination="rNs-4u-55f" id="3o7-hG-Xlq"/>
+                <outlet property="professor" destination="vsL-o1-4KX" id="f6e-pK-j9P"/>
+                <outlet property="professorTopConstraint" destination="jG5-RV-wCp" id="vJH-aE-wb1"/>
+                <outlet property="title" destination="ZpP-XR-Y9a" id="bLE-HH-MCm"/>
+            </connections>
+            <point key="canvasLocation" x="40" y="-41"/>
+        </tableViewCell>
+    </objects>
+</document>

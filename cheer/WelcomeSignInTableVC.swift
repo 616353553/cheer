@@ -23,16 +23,9 @@ class WelcomeSignInTableVC: UITableViewController {
         super.viewDidLoad()
         emailTextField.delegate = self
         passwordTextField.delegate = self
-        // sign in button round corner
-        signInButton.layer.cornerRadius = 20
-        signInButton.layer.borderWidth = 1
-        signInButton.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
-        signInButton.titleLabel?.textColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 1)
-        // tourist button round corner
-        touristButton.layer.cornerRadius = 13
-        touristButton.layer.borderWidth = 1
-        touristButton.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
-        touristButton.titleLabel?.textColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 1)
+        // set buttons with round corners
+        ButtonDesign.round(button: signInButton, color: Config.themeColor, radius: 20, borderWidth: 1)
+        ButtonDesign.round(button: touristButton, color: Config.themeColor, radius: 13, borderWidth: 1)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,9 +65,9 @@ class WelcomeSignInTableVC: UITableViewController {
     }
     
     @IBAction func countinueWithoutSignIn(_ sender: UIButton) {
-        if FIRAuth.auth()!.currentUser != nil{
+        if Auth.auth().currentUser != nil{
             do {
-                try FIRAuth.auth()!.signOut()
+                try Auth.auth().signOut()
             }
             catch {
                 Alert.displayAlertWithOneButton(title: "Error", message: error.localizedDescription, vc: self)
@@ -93,7 +86,7 @@ class WelcomeSignInTableVC: UITableViewController {
         else{
             Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
             // Send a request to login
-            FIRAuth.auth()!.signIn(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: {(user, error) in
+            Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: {(user, error) in
                 Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
                 if user != nil{
                     self.performSegue(withIdentifier: "selectSchool", sender: self)
