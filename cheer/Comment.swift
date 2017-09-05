@@ -16,11 +16,13 @@ import FirebaseDatabase
 
 struct CommentStruct {
     var commentType: CommentType
-    var uid: String
-    var directory: String
-    var recipient: UserPortfolio?
+    var parentDirectory: String?
+    var directory: String?
+    var childDirectory: String?
+    var author: UserProfile
+    var recipient: UserProfile?
     var content: String
-    var time: Date
+    var time: Date?
     var replyCount: Int?
 }
 
@@ -57,30 +59,33 @@ class Comment{
      
      - reply: For reply.
      
-     - parameter directory: Target directory
+     - parameter directory: "group directory" if comment type is ".comment"; "comment directory" if comment type is ".reply"
      
      - parameter recipientID: User whom is replied to.
      
      */
     
-    func initialize(commentType: CommentType, directory: String, recipientID: String?) {
+    func initialize(commentType: CommentType, parentDirectory: String, recipientID: String?) {
         guard Auth.auth().currentUser != nil else {
             fatalError("Error: user must be signed in to comment/reply")
         }
         data = CommentStruct(commentType: commentType,
-                             uid: Auth.auth().currentUser!.uid,
-                             directory: directory,
+                             parentDirectory: parentDirectory,
+                             directory: nil,
+                             childDirectory: nil,
+                             author: UserProfile(),
                              recipient: nil,
                              content: "",
-                             time: Date(),
+                             time: nil,
                              replyCount: nil)
         switch commentType {
         case .comment:
             break
         case .reply:
-            data.recipient = UserPortfolio()
+            data.recipient = UserProfile()
             data.recipient!.initialize(uid: recipientID!)
         }
+        data.author.initialize(uid: Auth.auth().currentUser!.uid)
     }
     
     
@@ -95,62 +100,41 @@ class Comment{
      
      */
     
-    func initialize(commentData: [String: AnyObject]){
+    func initialize(commentDirectory: String, commentData: [String: AnyObject]){
         
-        timeFormatter.locale = Config.locale
-        timeFormatter.dateFormat = "yyyy-MM-dd HH:mm Z"
+        timeFormatter.locale = Locale(identifier: "en_US_POSIX")
+        timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+        timeFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         
         data = CommentStruct(commentType: .comment,
-                             uid: "",
-                             directory: "",
+                             parentDirectory: nil,
+                             directory: commentDirectory,
+                             childDirectory: "",
+                             author: UserProfile(),
                              recipient: nil,
                              content: "",
                              time: Date(),
-                             replyCount: nil)
+                             replyCount: 0)
         
-        // comment type
-        // set default value
         data.commentType = .comment
         if let commentTypeString = commentData["commentType"] as? String {
             if let commentType = CommentType(rawValue: commentTypeString) {
                 data.commentType = commentType
             }
         }
-        
-        // user ID
-        if let uid = commentData["uid"] as? String {
-            data.uid = uid
-        }
-        
-        // replies list directory / comment list directory (Based on comment type)
+        data.author.initialize(uid: (commentData["authorID"] as? String) ?? "")
         switch data.commentType {
         case .comment:
-            if let repliesListDirectory = commentData["replyList"] as? String {
-                data.directory = repliesListDirectory
-            }
-            if let replyCount = commentData["count"] as? Int {
-                data.replyCount = replyCount
-            }
+            data.childDirectory = (commentData["replyList"] as? String) ?? ""
+            data.replyCount = (commentData["replyCount"] as? Int) ?? 0
         case .reply:
-            if let commentsListDirectory = commentData["commentList"] as? String {
-                data.directory = commentsListDirectory
-            }
-            data.recipient = UserPortfolio()
-            // recipient
-            if let recipientID = commentData["recipient"] as? String {
-                data.recipient!.initialize(uid: recipientID)
-            } else {
-                data.recipient!.initialize(uid: "")
-            }
+            data.recipient = UserProfile()
+            data.recipient!.initialize(uid: (commentData["recipientID"] as? String) ?? "")
         }
-        
-        // content
-        if let content = commentData["content"] as? String {
-            data.content = content
-        }
+        data.content = (commentData["content"] as? String) ?? ""
         
         // time
-        if let timeString = commentData["time"] as? String {
+        if let timeString = commentData["createdAt"] as? String {
             if let time = timeFormatter.date(from: timeString) {
                 data.time = time
             }
@@ -168,14 +152,22 @@ class Comment{
     }
     
     func setUID(uid: String) {
-        data.uid = uid
+        data.author.setUID(uid: uid)
     }
     
-    func setDirectory(directory: String) {
+    func setParentDirectory(parentDirectory: String?) {
+        data.parentDirectory = parentDirectory
+    }
+    
+    func setDirectory(directory: String?) {
         data.directory = directory
     }
     
-    func setRecipient(recipient: UserPortfolio) {
+    func setChildDirectory(childDirectory: String) {
+        data.childDirectory = childDirectory
+    }
+    
+    func setRecipient(recipient: UserProfile?) {
         data.recipient = recipient
     }
     
@@ -183,7 +175,7 @@ class Comment{
         data.content = content
     }
     
-    func setTime(time: Date) {
+    func setTime(time: Date?) {
         data.time = time
     }
     
@@ -198,15 +190,23 @@ class Comment{
         return data.commentType
     }
     
-    func getUID() -> String {
-        return data.uid
+    func getAuthor() -> UserProfile {
+        return data.author
+    }
+    
+    func getParentDirectory() -> String {
+        return data.parentDirectory ?? ""
     }
     
     func getDirectory() -> String {
-        return data.directory
+        return data.directory ?? ""
+    }
+    
+    func getChildDirectory() -> String {
+        return data.childDirectory ?? ""
     }
 
-    func getRecipient() -> UserPortfolio? {
+    func getRecipient() -> UserProfile? {
         return data.recipient
     }
     
@@ -214,12 +214,23 @@ class Comment{
         return data.content
     }
     
-    func getTime() -> Date {
+    func getTime() -> Date? {
         return data.time
     }
     
+    func getTimeString() -> String? {
+        let tempFormatter = DateFormatter()
+        tempFormatter.locale = Config.locale
+        tempFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        if let time = data.time {
+            return tempFormatter.string(from: time)
+        } else {
+            return nil
+        }
+    }
+    
     func getReplyCount() -> Int {
-        return data.replyCount!
+        return data.replyCount ?? 0
     }
     
     
@@ -237,20 +248,16 @@ class Comment{
         guard self.data != nil else {
             fatalError("Error: Object must be iniilialized before use.")
         }
-        var jsonFile: [String: AnyObject] = ["directory": data.directory as AnyObject]
+        var jsonFile: [String: AnyObject] = ["directory": (data.parentDirectory ?? "") as AnyObject]
         // create JSON file
         var comment = ["commentType": data.commentType.rawValue as AnyObject,
-                       "uid": data.uid as AnyObject,
+                       "authorID": data.author.getUID() as AnyObject,
                        "content": data.content as AnyObject]
         switch data.commentType {
         case .comment:
             break
         case .reply:
-            if data.recipient != nil {
-                comment["recipient"] = data.recipient!.getUID() as AnyObject
-            } else {
-                comment["recipient"] = "" as AnyObject
-            }
+            comment["recipientID"] = (data.recipient?.getUID() ?? "") as AnyObject
         }
         jsonFile["data"] = comment as AnyObject
         return jsonFile

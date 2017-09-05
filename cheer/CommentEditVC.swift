@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol CommentEditVCDelegate {
+    func commentPosted()
+}
+
 class CommentEditVC: UIViewController {
 
     @IBOutlet weak var recipientLabel: UILabel!
@@ -16,8 +20,10 @@ class CommentEditVC: UIViewController {
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
     
     @IBAction func cancelPushed(_ sender: UIBarButtonItem) {
-        self.resignFirstResponder()
-        self.dismiss(animated: true, completion: nil)
+        Alert.displayAlertWithTwoButtons(title: "Alert", message: "Performing this action will discard all the changes you have made", vc: self) { (action) in
+            self.resignFirstResponder()
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     @IBAction func postPushed(_ sender: UIBarButtonItem) {
@@ -29,23 +35,31 @@ class CommentEditVC: UIViewController {
                 Alert.displayAlertWithOneButton(title: "Error", message: errorString!, vc: self)
             } else {
                 Alert.displayAlertWithOneButton(title: "Success", message: "Comment uploaded sucessfully", vc: self, alertActionHandler: { (action) in
-                    self.dismiss(animated: true, completion: nil)
+                    self.dismiss(animated: true, completion: { 
+                        self.delegate.commentPosted()
+                    })
                 })
             }
         }
     }
     
     var comment: Comment!
+    var delegate: CommentEditVCDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let vc = self.parent as! CommentEditNVC
         self.comment = vc.comment
+        self.delegate = vc.commentEditVCDelegate
         switch comment.getCommentType() {
         case .comment:
             recipientLabel.text = nil
+            navigationItem.title = "Comment"
+            placeholderLabel.text = "Enter comment here"
         case .reply:
-            recipientLabel.text = "+ \(comment.getRecipient()!.getUserName())"
+            recipientLabel.text = "+ \(comment.getRecipient()!.getNickname())"
+            navigationItem.title = "Reply"
+            placeholderLabel.text = "Enter reply here"
         }
         textView.delegate = self
     }

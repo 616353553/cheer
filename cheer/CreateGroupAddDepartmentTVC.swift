@@ -11,8 +11,7 @@ import UIKit
 class CreateGroupAddDepartmentTVC: UITableViewController {
 
     @IBAction func nextPushed(_ sender: UIBarButtonItem) {
-        if group!.isValidDepartments() {
-            group.setDepartments(departments: departments)
+        if !group.getDepartments().isEmpty() {
             self.performSegue(withIdentifier: "toSchedules", sender: self)
         } else {
             Alert.displayAlertWithOneButton(title: "Error", message: "Must have at least 1 department", vc: self)
@@ -20,7 +19,6 @@ class CreateGroupAddDepartmentTVC: UITableViewController {
     }
     
     var group: Group!
-    var departments: [String?]!
     var tap: UITapGestureRecognizer!
     
     override func viewDidLoad() {
@@ -56,16 +54,16 @@ class CreateGroupAddDepartmentTVC: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return departments.count
+        return group.getDepartments().count()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AddProfessorDepartmentTVCell") as! AddProfessorDepartmentTVCell
-        if indexPath.row + 1 == departments.count && departments.count < Config.maxDepartments {
-            cell.updateCell(indexPath: indexPath, placeholder: "Enter department here", input: departments[indexPath.row], delegate: self, buttonAction: .addCell)
-        } else {
-            cell.updateCell(indexPath: indexPath, placeholder: "Enter department here", input: departments[indexPath.row], delegate: self, buttonAction: .removeCell)
+        var buttonAction: ButtonAction = .removeCell
+        if indexPath.row + 1 == group.getDepartments().count() && group.getDepartments().count() < Config.maxDepartments {
+            buttonAction = .addCell
         }
+        cell.updateCell(indexPath: indexPath, placeholder: "Enter department here", input: group.getDepartments().get(at: indexPath.row), delegate: self, buttonAction: buttonAction)
         return cell
     }
     
@@ -93,19 +91,17 @@ extension CreateGroupAddDepartmentTVC: AddProfessorDepartmentTVCellDelegate {
         tableView.beginUpdates()
         switch action {
         case .addCell:
-            departments.append(nil)
+            group.getDepartments().append(department: nil)
             tableView.insertRows(at: [[0, indexPath.row + 1]], with: .automatic)
         case .removeCell:
-            departments.remove(at: indexPath.row)
+            group.getDepartments().remove(at: indexPath.row)
             tableView.deleteRows(at: [[0, indexPath.row]], with: .none)
         }
-        group!.setDepartments(departments: departments)
         tableView.endUpdates()
         tableView.reloadData()
     }
     
     func textFieldChanged(indexPath: IndexPath, text: String?) {
-        departments[indexPath.row] = text
-        group!.setDepartments(departments: departments)
+        group.getDepartments().set(at: indexPath.row, department: text)
     }
 }

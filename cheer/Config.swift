@@ -44,4 +44,7 @@ public struct Config{
     static let minMembersAllowed: Int = 1
     static let maxMembersAllowed: Int = 500
     
+    
+    static let reportMaxLettersAllowed: Int = 300
+    
 }

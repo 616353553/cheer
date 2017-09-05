@@ -14,6 +14,9 @@ target 'cheer' do
   pod ‘Firebase/Database’
   pod 'Firebase/Storage'
 
+  # chat
+  pod 'JSQMessagesViewController'
+
   # Pods for cheer
   pod 'Cosmos', '~> 9.0'
   #pod 'SwiftyStarRatingView'

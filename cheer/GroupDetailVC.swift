@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 import FirebaseDatabase
 
 enum GroupDetailCellType {
@@ -37,15 +38,18 @@ class GroupDetailVC: UIViewController {
     }
     
     @IBAction func commentPushed(_ sender: UIButton) {
-        print("AA")
-        let storyboard = UIStoryboard.init(name: "Comment", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "CommentMainTVC") as! CommentMainTVC
-        vc.comments = CommentList()
-        vc.comments.initialize(directory: group.getCommentList(), numOfQuery: 20, commentType: .comment)
-        self.navigationController?.pushViewController(vc, animated: true)
+        group.getComments().initialize(parentDirectory: group.getGroupDirectory(), directory: group.getCommentListDirectory(), numOfQuery: 20, commentType: .comment)
+        let commentVC = CommentViewController()
+        commentVC.initialize(comments: group.getComments())
+        commentVC.presentOnNavigationController(navigationController: self.navigationController!)
+    }
+    
+    @IBAction func morePushed(_ sender: UIBarButtonItem) {
+        self.present(actionSheet, animated: true, completion: nil)
     }
     
     var group: Group!
+    var actionSheet: UIAlertController!
     var cellTypes: [[GroupDetailCellType]] = [[.headerCell], [.queueCell], [.scheduleCell]]
     
     override func viewDidLoad() {
@@ -73,6 +77,8 @@ class GroupDetailVC: UIViewController {
         if group!.getLocation() != "" {
             cellTypes[2].append(.locationCell)
         }
+        
+        createActionSheet()
     }
 
     override func didReceiveMemoryWarning() {
@@ -97,6 +103,37 @@ class GroupDetailVC: UIViewController {
             scheduleText.append(schedules[i].toString()!)
         }
         return scheduleText
+    }
+    
+    func createActionSheet(){
+        actionSheet = UIAlertController(title: "Group", message: "More options", preferredStyle: .actionSheet)
+        let chatAction = UIAlertAction(title: "Chat with creator", style: .default) { (action) in
+            if Auth.auth().currentUser == nil{
+                let authVC = AuthorizationViewController()
+                authVC.initialize(authType: .regular, delegate: self)
+                authVC.presentFromBottom(viewController: self, completion: nil)
+            } else {
+                print("Chat")
+            }
+        }
+        let reportAction = UIAlertAction(title: "Report", style: .destructive) { (action) in
+            if Auth.auth().currentUser == nil{
+                let authVC = AuthorizationViewController()
+                authVC.initialize(authType: .regular, delegate: self)
+                authVC.presentFromBottom(viewController: self, completion: nil)
+            } else {
+                let reportVC = ReportViewController()
+                reportVC.initialize(directory: self.group.getGroupDirectory(), reasons: ["Inappropriate Content" : "Verbal abuse/insulting/etc.",
+                                                                                         "Spam": "Ads/etc.",
+                                                                                         "Scam": "Online scams/etc."])
+                reportVC.presentFromBottom(viewController: self, completion: nil)
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        // add actions to action sheet
+        actionSheet.addAction(chatAction)
+        actionSheet.addAction(reportAction)
+        actionSheet.addAction(cancelAction)
     }
     
 
@@ -189,5 +226,11 @@ extension GroupDetailVC: UITableViewDelegate, UITableViewDataSource {
 extension GroupDetailVC: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive press: UIPress) -> Bool {
         return true
+    }
+}
+
+extension GroupDetailVC: AuthorizationViewControllerDelegate {
+    func authorizationViewControllerWillDisappear() {
+        
     }
 }

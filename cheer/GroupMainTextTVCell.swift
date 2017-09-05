@@ -40,30 +40,34 @@ class GroupMainTextTVCell: UITableViewCell {
     }
     
     private func initialize() {
-        title.text = nil
-        department.text = nil
-        professor.text = nil
-        descriptionLabel.text = nil
-        maxSlots.text = nil
-        addBookmarkText.setTitle(nil, for: .normal)
-        addBookmarkImage.setImage(nil, for: .normal)
+        self.title.text = nil
+        self.department.text = nil
+        self.professor.text = nil
+        self.descriptionLabel.text = nil
+        self.maxSlots.text = nil
+        self.addBookmarkText.setTitle(nil, for: .normal)
+        self.addBookmarkImage.setImage(nil, for: .normal)
     }
     
     func updateCell(group: Group) {
-        title.text = group.getTitle()
-        descriptionLabel.text = group.getDescription()
-        maxSlots.text = "\(group.getMaxSlots())"
+        self.title.text = group.getTitle()
+        self.descriptionLabel.text = group.getDescription()
+        self.maxSlots.text = "\(group.getMaxSlots())"
         if group.getGroupType() == .professorProject {
-            departmentProfessorTopConstraint.constant = 8
-            departmentProfessorHeightConstraint.constant = 14.5
-            department.text = group.getDepartments()[0]
-            professor.text = group.getProfessors()[0]
+            self.departmentProfessorTopConstraint.constant = 8
+            self.departmentProfessorHeightConstraint.constant = 14.5
+            if group.getDepartments().count() > 0 {
+                self.department.text = group.getDepartments().get(at: 0)
+            }
+            if group.getProfessors().count() > 0 {
+                self.professor.text = group.getProfessors().get(at: 0)
+            }
         } else {
-            departmentProfessorTopConstraint.constant = 0
-            departmentProfessorHeightConstraint.constant = 0
-            department.text = nil
-            professor.text = nil
+            self.departmentProfessorTopConstraint.constant = 0
+            self.departmentProfessorHeightConstraint.constant = 0
+            self.department.text = nil
+            self.professor.text = nil
         }
-        layoutIfNeeded()
+        self.layoutIfNeeded()
     }
 }

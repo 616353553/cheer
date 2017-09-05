@@ -7,85 +7,210 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
 
 class CommentReplyTVC: UITableViewController {
     
+    @IBAction func addReplyPushed(_ sender: UIBarButtonItem) {
+        if Auth.auth().currentUser == nil{
+            let authVC = AuthorizationViewController()
+            authVC.initialize(authType: .regular, delegate: self)
+            authVC.presentFromBottom(viewController: self, completion: nil)
+        }else{
+            addReply(parentDirectory: replies.getParentDirectory(), recipientID: commentAuthorID)
+        }
+    }
+    
     var replies: CommentList!
+    var commentAuthorID: String!
+    var createReply: Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.register(UINib.init(nibName: "CommentTVCell", bundle: nil), forCellReuseIdentifier: "CommentTVCell")
+        
+        setTableViewBackground(text: "loading replies...")
+        let spinner = UIActivityIndicatorView()
+        Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self)
+        replies.loadMoreIfPossible(cleanData: false){ (snapshot) in
+            if self.replies.count() == 0 {
+                self.setTableViewBackground(text: "There is no reply yet")
+            } else {
+                self.setTableViewBackground(text: nil)
+            }
+            self.tableView.reloadData()
+            Spinner.disableActivityIndicator(activityIndicator: spinner)
+        }
+        
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl!.backgroundColor = UIColor.groupTableViewBackground
+        self.refreshControl!.tintColor = UIColor.darkGray
+        self.refreshControl!.attributedTitle = NSAttributedString(string: "Refreshing data...")
+        self.refreshControl!.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        self.refreshControl!.addTarget(self, action: #selector(refreshReplies), for: UIControlEvents.valueChanged)
+        
+        
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 200
+        if createReply {
+            addReply(parentDirectory: replies.getParentDirectory(), recipientID: commentAuthorID)
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    func setTableViewBackground(text: String?) {
+        if text == nil {
+            tableView.separatorStyle = .singleLine
+            tableView.backgroundView = nil
+        } else {
+            let noDataLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+            noDataLabel.text = text
+            noDataLabel.textColor = UIColor.darkGray
+            noDataLabel.font = UIFont(name: "Helvetica", size: 12.0)
+            noDataLabel.textAlignment = .center
+            tableView.backgroundView = noDataLabel
+            tableView.separatorStyle = .none
+        }
+    }
+    
+    func addReply(parentDirectory: String, recipientID: String) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CommentEditNVC") as! CommentEditNVC
+        vc.commentEditVCDelegate = self
+        vc.comment = Comment()
+        vc.comment.initialize(commentType: .reply, parentDirectory: parentDirectory, recipientID: recipientID)
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    func reportReply(indexPath: IndexPath) {
+        if Auth.auth().currentUser == nil {
+            let authVC = AuthorizationViewController()
+            authVC.initialize(authType: .regular, delegate: self)
+            authVC.presentFromBottom(viewController: self, completion: nil)
+        } else {
+            let reportVC = ReportViewController()
+            reportVC.initialize(directory: replies.getComment(at: indexPath.row).getDirectory(), reasons: ["Inappropriate Content" : "Verbal abuse/insulting/etc.", "Spam": "Ads/etc."])
+            reportVC.presentFromBottom(viewController: self, completion: nil)
+        }
+    }
+    
+    func refreshReplies() {
+        replies.loadMoreIfPossible(cleanData: true) { (snapshot) in
+            self.refreshControl?.endRefreshing()
+            self.setTableViewBackground(text: self.replies.count() == 0 ? "There is no reply yet" : nil)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return replies.count() > 0 ? 1 : 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return replies.count()
     }
-
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        guard !self.refreshControl!.isRefreshing else {
+            return UITableViewCell()
+        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTVCell") as! CommentTVCell
+        cell.updateCell(commentType: .reply, comment: replies.getComment(at: indexPath.row), indexPath: indexPath, delegate: self)
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0.1
     }
-    */
+}
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+
+
+
+
+
+
+
+
+
+extension CommentReplyTVC: CommentTVCellDelegate {
+    func replyPushed(indexPath: IndexPath) {
+        if Auth.auth().currentUser == nil{
+            let authVC = AuthorizationViewController()
+            authVC.initialize(authType: .regular, delegate: self)
+            authVC.presentFromBottom(viewController: self, completion: nil)
+        }else{
+            addReply(parentDirectory: replies.getParentDirectory(), recipientID: replies.getComment(at: indexPath.row).getAuthor().getUID())
+        }
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+    
+    func readReplyPushed(indexPath: IndexPath) {
+        // should not be called
+        return
+    }
+    
+    func morePushed(indexPath: IndexPath) {
+        let actionSheet = UIAlertController(title: "Reply", message: "More options", preferredStyle: .actionSheet)
+        let replyAction = UIAlertAction(title: "Reply", style: .default) { (action) in
+            self.addReply(parentDirectory: self.replies.getParentDirectory(), recipientID: self.replies.getComment(at: indexPath.row).getAuthor().getUID())
+        }
+        let reportAction = UIAlertAction(title: "Report", style: .destructive) { (action) in
+            self.reportReply(indexPath: indexPath)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        // add actions to action sheet
+        actionSheet.addAction(replyAction)
+        actionSheet.addAction(reportAction)
+        actionSheet.addAction(cancelAction)
+        self.present(actionSheet, animated: true, completion: nil)
 
     }
-    */
+}
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+
+
+
+
+
+
+
+
+extension CommentReplyTVC: CommentEditVCDelegate {
+    func commentPosted() {
+        refreshReplies()
     }
-    */
+}
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+
+
+
+
+
+extension CommentReplyTVC: AuthorizationViewControllerDelegate {
+    func authorizationViewControllerWillDisappear() {
+        
     }
-    */
-
 }

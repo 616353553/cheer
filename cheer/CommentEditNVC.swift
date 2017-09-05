@@ -11,6 +11,7 @@ import UIKit
 class CommentEditNVC: UINavigationController {
 
     var comment: Comment!
+    var commentEditVCDelegate: CommentEditVCDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseStorage
+import KDCircularProgress
 
 class GroupDetailImageHeaderTVCell: UITableViewCell {
 
@@ -15,9 +16,11 @@ class GroupDetailImageHeaderTVCell: UITableViewCell {
     @IBOutlet weak var departments: UILabel!
     @IBOutlet weak var professors: UILabel!
     @IBOutlet weak var groupImage: UIImageView!
+    @IBOutlet weak var blurView: UIVisualEffectView!
+    @IBOutlet weak var progressView: KDCircularProgress!
     
-    @IBOutlet weak var imageRatioConstraint: NSLayoutConstraint!
-    @IBOutlet weak var imageBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var departmentTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var professorTopConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,65 +37,70 @@ class GroupDetailImageHeaderTVCell: UITableViewCell {
     }
     
     func initialize() {
-        title.text = nil
-        departments.text = nil
-        professors.text = nil
-        groupImage.image = nil
+        self.title.text = nil
+        self.departments.text = nil
+        self.professors.text = nil
+        self.groupImage.image = nil
+        self.blurView.isHidden = true
+        self.progressView.isHidden = true
+        self.progressView.angle = 0
     }
     
-    func updateCell(title: String, departments: [String?], professors: [String?], imageData: ImageData) {
+    
+    
+    
+    
+    func updateCell(title: String, departments: GroupDepartments, professors: GroupProfessors, imageData: ImageData) {
         self.title.text = title
+        self.departmentTopConstraint.constant = (departments.count() == 0) ? 0 : 8
+        self.professorTopConstraint.constant = (professors.count() == 0) ? 0 : 8
+        self.departments.text = departments.toString()
+        self.professors.text = professors.toString()
         
-        // set departments
-        if departments.count == 0 {
-            
-        } else {
-            
-        }
-        
-        // set professors
-        if professors.count == 0 {
-            
-        } else {
-            
-        }
-        
-        // retrieve image
-        if imageData.numOfImages() == 0 {
-            imageBottomConstraint.constant = 0
-            imageRatioConstraint = NSLayoutConstraint(item: self.groupImage,
-                                                      attribute: .height,
-                                                      relatedBy: .equal,
-                                                      toItem: self.groupImage,
-                                                      attribute: .width,
-                                                      multiplier: 0/13,
-                                                      constant: 0)
-        } else {
-            imageBottomConstraint.constant = 12
-            imageRatioConstraint = NSLayoutConstraint(item: self.groupImage,
-                                                      attribute: .height,
-                                                      relatedBy: .equal,
-                                                      toItem: self.groupImage,
-                                                      attribute: .width,
-                                                      multiplier: 8/13,
-                                                      constant: 0)
-            if imageData.getImage(atIndex: 0) == nil && imageData.getDirectories()[0] != nil {
-                let ref = Storage.storage().reference()
-                ref.child(imageData.getDirectories()[0]!).getData(maxSize: 1 * 1024 * 1024, completion: { (data, error) in
-                    if error == nil {
-                        let image = UIImage(data: data!)
-                        self.groupImage.image = image
-                        imageData.setImage(atIndex: 0, image: image)
-                    } else {
-                        print(error!.localizedDescription)
+        if imageData.getImage(atIndex: 0) == nil && imageData.getDirectories()[0] != nil {
+            // retrieve thumb nail image
+            if imageData.getImage(atIndex: 1) == nil && imageData.getDirectories()[1] != nil {
+                imageData.retrieveImage(atIndex: 1, completion: { (thumbImage, error) in
+                    if thumbImage != nil {
+                        self.progressView.isHidden = true
+                        self.blurView.isHidden = false
+                        self.groupImage.image = thumbImage
                     }
-                })
-            } else {
-                self.groupImage.image = imageData.getImage(atIndex: 0)
+                    self.retrieveImage(imageData: imageData)
+                }, progress: nil, success: nil, failure: nil)
+            } else if imageData.getImage(atIndex: 1) != nil {
+                self.progressView.isHidden = true
+                self.blurView.isHidden = false
+                self.groupImage.image = imageData.getImage(atIndex: 1)
+                self.retrieveImage(imageData: imageData)
             }
+        } else if imageData.getImage(atIndex: 0) != nil {
+            self.progressView.isHidden = true
+            self.blurView.isHidden = true
+            self.groupImage.image = imageData.getImage(atIndex: 0)
         }
-        
         self.layoutIfNeeded()
+    }
+    
+    
+    
+    
+    private func retrieveImage(imageData: ImageData) {
+        self.progressView.isHidden = false
+        imageData.retrieveImage(atIndex: 0, completion: { (image, error) in
+            if image != nil {
+                self.blurView.isHidden = true
+                self.groupImage.image = image
+            }
+        }, progress: { (snapshot) in
+            if snapshot.progress != nil {
+                if snapshot.progress!.totalUnitCount > 0 {
+                    self.progressView.angle = Double(snapshot.progress!.completedUnitCount)/Double(snapshot.progress!.totalUnitCount) * 360.0
+                }
+            }
+        }, success: { (snapshot) in
+            self.progressView.isHidden = true
+        }, failure: nil)
     }
     
 }

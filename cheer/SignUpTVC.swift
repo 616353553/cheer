@@ -8,6 +8,14 @@
 
 import UIKit
 
+private enum SignUpValidType {
+    case email
+    case password
+    case passwordLength
+    case passwordContent
+    case passwordSpecial
+}
+
 class SignUpTVC: UITableViewController {
 
     // textfields
@@ -23,19 +31,45 @@ class SignUpTVC: UITableViewController {
     // sign up button
     @IBOutlet weak var signUpButton: UIButton!
     
+    @IBAction func signUpIsPushed(_ sender: Any) {
+        if !isValidEmail {
+            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid email", vc: self)
+        } else if !isValidPassword {
+            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid password", vc: self)
+        } else {
+            Authorization.signUp(email: emailTextField.text!, password: passwordTextField.text!, vc: self){ (user, error) in
+                if user != nil{
+                    switch self.authType! {
+                    case AuthType.regular:
+                        self.dismiss(animated: true) {
+                            self.authorizationViewControllerDelegate.authorizationViewControllerWillDisappear()
+                        }
+                    case AuthType.firstTime:
+                        let vc = ChooseSchoolTableViewController()
+                        vc.initialize(delegate: self)
+                        vc.presentOnNavigationController(navigationController: self.navigationController!)
+                    }
+                }
+            }
+        }
+    }
+    
     var isEditingPassword = false
     var tap: UITapGestureRecognizer!
-    var authType: AuthType?
+    var authType: AuthType!
+    var authorizationViewControllerDelegate: AuthorizationViewControllerDelegate!
+    
+    var isValidEmail: Bool! = false
+    var isValidPassword: Bool! = false
+    var isValidPasswordLength: Bool! = false
+    var isValidPasswordContent: Bool! = false
+    var isValidPasswordSepcial: Bool! = true
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard authType != nil else {
-            fatalError("Error: Must set value for 'authType' before using 'SignInTVC.")
-        }
-        
-        // "sign up" button round corner
         ButtonDesign.round(button: signUpButton, color: Config.themeColor, radius: 20, borderWidth: 1)
-
+        
         // set up delegates
         emailTextField.delegate = self
         passwordTextField.delegate = self
@@ -49,7 +83,7 @@ class SignUpTVC: UITableViewController {
         // set up gesture recognizer
         tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -62,15 +96,12 @@ class SignUpTVC: UITableViewController {
     func textDidChange(_ textField: UITextField){
         switch textField.restorationIdentifier! {
         case "email":
-            emailValid.image = InputChecker.isValidEmail(text: emailTextField.text!) ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
+            setValid(type: .email, value: InputChecker.isValidEmail(text: emailTextField.text!))
         case "password":
-            let passwordHasValidLength = InputChecker.hasCorrectLength(min: 6, max: 16, text: passwordTextField.text!)
-            let passwordHasValidContent = InputChecker.hasValidPasswordContent(text: passwordTextField.text!)
-            let passwordHasNoSpecial = InputChecker.hasNoSpecialLetters(text: passwordTextField.text!)
-            passwordValid.image = (passwordHasValidLength && passwordHasValidContent) && passwordHasNoSpecial ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
-            passwordValidLength.image = passwordHasValidLength ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
-            passwordValidContent.image = passwordHasValidContent ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
-            passwordValidSpecial.image = passwordHasNoSpecial ? #imageLiteral(resourceName: "Ok_fill") : #imageLiteral(resourceName: "Ok")
+            setValid(type: .passwordLength, value: InputChecker.hasCorrectLength(min: 6, max: 16, text: passwordTextField.text!))
+            setValid(type: .passwordContent, value: InputChecker.hasValidPasswordContent(text: passwordTextField.text!))
+            setValid(type: .passwordSpecial, value: InputChecker.hasNoSpecialLetters(text: passwordTextField.text!))
+            setValid(type: .password, value: isValidPasswordLength && isValidPasswordContent && isValidPasswordSepcial)
         default:
             break
         }
@@ -88,23 +119,23 @@ class SignUpTVC: UITableViewController {
         self.view.endEditing(true)
     }
     
-    @IBAction func signUpIsPushed(_ sender: Any) {
-        if emailValid.image! == #imageLiteral(resourceName: "Ok") {
-            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid email", vc: self)
-        } else if passwordValid.image! == #imageLiteral(resourceName: "Ok") {
-            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid password", vc: self)
-        } else {
-            Authorization.signUp(email: emailTextField.text!, password: passwordTextField.text!, vc: self){ (user, error) in
-                if user != nil{
-                    switch self.authType! {
-                    case AuthType.regular:
-                        self.dismiss(animated: true, completion: nil)
-                    case AuthType.firstTime:
-                        let storyboard = UIStoryboard.init(name: "ChooseSchool", bundle: nil)
-                        self.navigationController?.pushViewController(storyboard.instantiateInitialViewController()!, animated: true)
-                    }
-                }
-            }
+    fileprivate func setValid(type: SignUpValidType, value: Bool) {
+        switch type {
+        case .email:
+            isValidEmail = value
+            emailValid.image = value ? #imageLiteral(resourceName: "valid_darkGray_fill") : #imageLiteral(resourceName: "valid_lightGray")
+        case .password:
+            isValidPassword = value
+            passwordValid.image = value ? #imageLiteral(resourceName: "valid_darkGray_fill") : #imageLiteral(resourceName: "valid_lightGray")
+        case .passwordLength:
+            isValidPasswordLength = value
+            passwordValidLength.image = value ? #imageLiteral(resourceName: "valid_darkGray_fill") : #imageLiteral(resourceName: "valid_lightGray")
+        case .passwordContent:
+            isValidPasswordContent = value
+            passwordValidContent.image = value ? #imageLiteral(resourceName: "valid_darkGray_fill") : #imageLiteral(resourceName: "valid_lightGray")
+        case .passwordSpecial:
+            isValidPasswordSepcial = value
+            passwordValidSpecial.image = value ? #imageLiteral(resourceName: "valid_darkGray_fill") : #imageLiteral(resourceName: "valid_lightGray")
         }
     }
 
@@ -161,5 +192,15 @@ extension SignUpTVC: UITextFieldDelegate{
         }
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
+    }
+}
+
+extension SignUpTVC: ChooseSchoolTVCDelegate {
+    func schoolChoosed(vc: ChooseSchoolTVC) {
+        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+        let mainVC = storyboard.instantiateInitialViewController()
+        self.present(mainVC!, animated: false) {
+            self.authorizationViewControllerDelegate.authorizationViewControllerWillDisappear()
+        }
     }
 }

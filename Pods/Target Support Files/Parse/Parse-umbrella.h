@@ -36,6 +36,7 @@
 #import "PFObject+Subclass.h"
 #import "PFObject+Synchronous.h"
 #import "PFObject.h"
+#import "PFPolygon.h"
 #import "PFProduct.h"
 #import "PFPurchase.h"
 #import "PFPush+Deprecated.h"

@@ -9,41 +9,43 @@
 import Foundation
 
 struct QueueMemberStruct {
-    var uid: String
-    var userImage: ImageData
-    var userName: String?
+    var groupDirectory: String
+    var user: UserProfile
+    var time: Date?
 }
 
 class QueueMember {
     
-    var data: QueueMemberStruct?
+    private var data: QueueMemberStruct!
     
-    func initialize(uid: String) {
-        data = QueueMemberStruct(uid: uid, userImage: ImageData(), userName: nil)
-        data!.userImage.initialize(withCapacity: 1)
+    func initialize(groupDirectory: String, uid: String) {
+        let user = UserProfile()
+        user.initialize(uid: uid)
+        data = QueueMemberStruct(groupDirectory: groupDirectory,
+                                 user: user,
+                                 time: nil)
     }
     
-    func setUid(uid: String){
-        data!.uid = uid
+    
+    
+    
+    func setUser(user: UserProfile){
+        data.user = user
     }
     
-    func getUid() -> String {
-        return data!.uid
+    func setTime(time: Date?) {
+        data.time = time
     }
     
-    func setUserImage(imageData: ImageData) {
-        data!.userImage = imageData
+    
+    
+    
+    
+    func getUser() -> UserProfile {
+        return data.user
     }
     
-    func getUserImage() -> ImageData {
-        return data!.userImage
-    }
-    
-    func setUserName(userName: String?) {
-        data!.userName = userName
-    }
-    
-    func getUserName() -> String? {
-        return data!.userName
+    func getTime() -> Date? {
+        return data.time
     }
 }

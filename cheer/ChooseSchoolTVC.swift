@@ -8,13 +8,19 @@
 
 import UIKit
 
+protocol ChooseSchoolTVCDelegate {
+    func schoolChoosed(vc: ChooseSchoolTVC)
+}
+
 class ChooseSchoolTVC: UITableViewController {
     
-    let searchBar = UISearchBar()
-    var filteredSchools = [String]()
-    var schools = [String]()
-    var tap: UITapGestureRecognizer!
-    var selectedSchool: String?
+    fileprivate var filteredSchools = [String]()
+    fileprivate var schools = [String]()
+    private let searchBar = UISearchBar()
+    private var tap: UITapGestureRecognizer!
+    private var selectedSchool: String?
+    var delegate: ChooseSchoolTVCDelegate!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,13 +29,6 @@ class ChooseSchoolTVC: UITableViewController {
         searchBar.placeholder = "Search school name"
         searchBar.returnKeyType = .done
         searchBar.keyboardType = .asciiCapable
-        
-        // solve the problem that search bar flashes
-        searchBar.barTintColor = UIColor.clear
-        searchBar.isTranslucent = true
-        //        self.navigationController?.navigationBar.isTranslucent = false
-        //        self.navigationController?.navigationBar.backgroundColor = UIColor.white
-        
         searchBar.delegate = self
         for data in SchoolData.schoolData{
             schools.append(data.key)
@@ -50,10 +49,11 @@ class ChooseSchoolTVC: UITableViewController {
     
     @IBAction func doneIsPushed(_ sender: UIBarButtonItem) {
         if selectedSchool != nil{
-            UserDefaults.standard.set(selectedSchool!, forKey: "selectedSchool")
-            let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateInitialViewController()
-            self.present(vc!, animated: false, completion: nil)
+            if let errorString = CoreDataManagement.updateSchool(schoolName: selectedSchool!) {
+                Alert.displayAlertWithOneButton(title: "Error", message: errorString, vc: self)
+            } else {
+                self.delegate.schoolChoosed(vc: self)
+            }
         }
         else{
             Alert.displayAlertWithOneButton(title: "Error", message: "Please select a school", vc: self)
@@ -115,7 +115,6 @@ class ChooseSchoolTVC: UITableViewController {
 }
 
 extension ChooseSchoolTVC: UISearchBarDelegate{
-    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
     }

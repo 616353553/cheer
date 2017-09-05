@@ -9,18 +9,6 @@
 import UIKit
 import FirebaseAuth
 
-/**
-    Types of sign in view controllers
- 
-    - regular: Sign in during the use of app. (Navigation bar will show, "continue as tourist" button will hide, and no school needed to be choose after sign in/up.)
- 
-    - firstTime: First time use this app. ("Continue as tourist" button will show, navigation bar will hide, and the user will be asked to choose a school.)
- */
-public enum AuthType {
-    case regular
-    case firstTime
-}
-
 class SignInTVC: UITableViewController {
 
     @IBOutlet weak var emailTextField: UITextField!
@@ -28,86 +16,6 @@ class SignInTVC: UITableViewController {
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var touristButton: UIButton!
     
-    private var authType: AuthType?
-    var tap: UITapGestureRecognizer!
-    
-    
-    
-    /**
-     Used for setting value of "authType".
-     
-     - parameter authType: Types of sign in view controllers.
-     */
-    func setAuthType(authType: AuthType){
-        self.authType = authType
-    }
-    
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        if authType == nil{
-            if let parent = self.parent as? AuthorizationNVC{
-                authType = parent.getAuthType()
-            }
-        }
-        guard authType != nil else {
-            fatalError("Error: Must set value for 'authType' before using 'SignInTVC.")
-        }
-        // set delegates for textfiedlds
-        emailTextField.delegate = self
-        passwordTextField.delegate = self
-        // set buttons with round corners
-        ButtonDesign.round(button: signInButton, color: Config.themeColor, radius: 20, borderWidth: 1)
-        ButtonDesign.round(button: touristButton, color: Config.themeColor, radius: 13, borderWidth: 1)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        // set appaerance
-        switch authType! {
-        case AuthType.regular:
-            touristButton.isHidden = true
-            self.navigationController?.navigationBar.isHidden = false
-        case AuthType.firstTime:
-            touristButton.isHidden = false
-            self.navigationController?.navigationBar.isHidden = true
-        }
-        self.tabBarController?.tabBar.isHidden = true
-        
-        // hide the keyboard when touch outside
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        switch authType! {
-        case AuthType.firstTime:
-            self.navigationController?.navigationBar.isHidden = false
-        default:
-            break
-        }
-        self.view.endEditing(true)
-        self.tabBarController?.tabBar.isHidden = false
-    }
-    
-    func keyboardWillShow(notification: NSNotification){
-        self.view.addGestureRecognizer(tap)
-    }
-    
-    func keyboardWillHide(notification: NSNotification){
-        self.view.removeGestureRecognizer(tap)
-    }
-    
-    func dismissKeyboard(){
-        self.view.endEditing(true)
-    }
-    
-    // change the password visibility
     @IBAction func passwordVisibility(_ sender: UIButton) {
         sender.setImage(passwordTextField.isSecureTextEntry ? #imageLiteral(resourceName: "visible") : #imageLiteral(resourceName: "invisible"), for: .normal)
         passwordTextField.isSecureTextEntry = !passwordTextField.isSecureTextEntry
@@ -139,10 +47,101 @@ class SignInTVC: UITableViewController {
     }
     
     @IBAction func cancelIsPushed(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true) { 
+            self.authorizationViewControllerDelegate.authorizationViewControllerWillDisappear()
+        }
     }
     
     
+    
+    private var authType: AuthType!
+    fileprivate var authorizationViewControllerDelegate: AuthorizationViewControllerDelegate!
+    private var tap: UITapGestureRecognizer!
+    
+    
+    
+    /**
+     Used for setting value of "authType".
+     
+     - parameter authType: Types of sign in view controllers.
+     */
+//    func setAuthType(authType: AuthType){
+//        self.authType = authType
+//    }
+    
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if let parent = self.parent as? AuthorizationNVC {
+            if authType == nil {
+                authType = parent.getAuthType()
+            }
+            if authorizationViewControllerDelegate == nil {
+                authorizationViewControllerDelegate = parent.getDelegate()
+            }
+        }
+        guard authType != nil && authorizationViewControllerDelegate != nil else {
+            fatalError("Error: 'authType' and 'authorizationViewControllerDelegate' must not be nil.")
+        }
+        
+        // set delegates for textfiedlds
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        
+        // set buttons with round corners
+        ButtonDesign.round(button: signInButton, color: Config.themeColor, radius: 20, borderWidth: 1)
+        ButtonDesign.round(button: touristButton, color: Config.themeColor, radius: 13, borderWidth: 1)
+        
+        // hide the keyboard when touch outside
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        switch authType! {
+        case .firstTime:
+            touristButton.isHidden = false
+            self.navigationController?.navigationBar.isHidden = true
+        case .regular:
+            touristButton.isHidden = true
+            self.navigationController?.navigationBar.isHidden = false
+        }
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        switch authType! {
+        case AuthType.firstTime:
+            self.navigationController?.navigationBar.isHidden = false
+        default:
+            break
+        }
+        self.view.endEditing(true)
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    
+    
+    
+    
+    
+    func keyboardWillShow(notification: NSNotification){
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    func keyboardWillHide(notification: NSNotification){
+        self.view.removeGestureRecognizer(tap)
+    }
+    
+    func dismissKeyboard(){
+        self.view.endEditing(true)
+    }
     
     
     
@@ -157,10 +156,13 @@ class SignInTVC: UITableViewController {
     func signInFinished(){
         switch authType! {
         case AuthType.regular:
-            self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: true) {
+                self.authorizationViewControllerDelegate.authorizationViewControllerWillDisappear()
+            }
         case AuthType.firstTime:
-            let storyboard = UIStoryboard.init(name: "ChooseSchool", bundle: nil)
-            self.navigationController?.pushViewController(storyboard.instantiateInitialViewController()!, animated: true)
+            let vc = ChooseSchoolTableViewController()
+            vc.initialize(delegate: self)
+            vc.presentOnNavigationController(navigationController: self.navigationController!)
         }
     }
     
@@ -170,7 +172,7 @@ class SignInTVC: UITableViewController {
     
     // unwind segue
     @IBAction func unwindToSignInTVC(unwindSeague: UIStoryboardSegue){
-        // do something
+        // do something?
     }
 
     // MARK: - Table view data source
@@ -205,6 +207,7 @@ class SignInTVC: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? SignUpTVC{
             vc.authType = self.authType
+            vc.authorizationViewControllerDelegate = self.authorizationViewControllerDelegate
         }
     }
 }
@@ -217,5 +220,15 @@ extension SignInTVC: UITextFieldDelegate{
     
     func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.view.endEditing(true)
+    }
+}
+
+extension SignInTVC: ChooseSchoolTVCDelegate {
+    func schoolChoosed(vc: ChooseSchoolTVC) {
+        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+        let mainVC = storyboard.instantiateInitialViewController()
+        self.present(mainVC!, animated: false) {
+            self.authorizationViewControllerDelegate.authorizationViewControllerWillDisappear()
+        }
     }
 }

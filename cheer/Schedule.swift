@@ -10,33 +10,26 @@ import Foundation
 
 struct ScheduleStruct {
     var repeating: Bool
-    var repeatType: ScheduleRepeatingType?
-    var frequency: [String]?
-    var startDate: Date?
-    var endDate: Date?
-    var date: Date?
+    var repeatType: ScheduleRepeatingType
+    var frequency: [String]
+    var startDate: Date
+    var endDate: Date
+    var date: Date
     var wholeDay: Bool
-    var startTime: Date?
-    var endTime: Date?
+    var startTime: Date
+    var endTime: Date
 }
 
-enum ScheduleRepeatingType {
-    case repeatByDay
-    case repeatByWeek
-    case repeatByMonth
+
+
+enum ScheduleRepeatingType: String {
+    case repeatByDay = "repeatByDay"
+    case repeatByWeek = "repeatByWeek"
+    case repeatByMonth = "repeatByMonth"
 }
 
-enum scheduleDataType {
-    case repeating
-    case repeatType
-    case frequency
-    case startDate
-    case endDate
-    case date
-    case wholeDay
-    case startTime
-    case endTime
-}
+
+
 
 class Schedule {
     
@@ -54,7 +47,15 @@ class Schedule {
         let gregorian = Calendar(identifier: .gregorian)
         let date = Date()
 
-        data = ScheduleStruct(repeating: false, repeatType: .repeatByDay, frequency: nil, startDate: nil, endDate: nil, date: nil, wholeDay: false, startTime: nil, endTime: nil)
+        data = ScheduleStruct(repeating: false,
+                              repeatType: .repeatByDay,
+                              frequency: ["1"],
+                              startDate: Date(),
+                              endDate: Date(),
+                              date: Date(),
+                              wholeDay: false,
+                              startTime: Date(),
+                              endTime: Date())
         
         var dayComponents = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
         dayComponents.hour = 0
@@ -83,79 +84,65 @@ class Schedule {
         timeFormatter.locale = Config.locale
         timeFormatter.dateFormat = "hh:mm a"
         
-        data = ScheduleStruct(repeating: scheduleData["repeating"] as! Bool, repeatType: .repeatByDay, frequency: nil, startDate: nil, endDate: nil, date: nil, wholeDay: scheduleData["wholeDay"] as! Bool, startTime: nil, endTime: nil)
+        data = ScheduleStruct(repeating: false,
+                              repeatType: .repeatByDay,
+                              frequency: ["1"],
+                              startDate: Date(),
+                              endDate: Date(),
+                              date: Date(),
+                              wholeDay: false,
+                              startTime: Date(),
+                              endTime: Date())
+        
+        if let repeating = scheduleData["repeating"] as? Bool {
+            data.repeating = repeating
+        }
         
         if data.repeating {
-            data.startDate = dateFormatter.date(from: scheduleData["startDate"] as! String)
-            data.endDate = dateFormatter.date(from: scheduleData["endDate"] as! String)
-            switch scheduleData["repeatType"] as! String {
-            case "repeatByDay":
-                data.repeatType = .repeatByDay
-            case "repeatByWeek":
-                data.repeatType = .repeatByWeek
-            case "repeatByMonth":
-                data.repeatType = .repeatByMonth
-            default:
-                break
+            if let repeatTypeString = scheduleData["repeatType"] as? String {
+                if let repeatType = ScheduleRepeatingType.init(rawValue: repeatTypeString) {
+                    data.repeatType = repeatType
+                }
             }
-            data.frequency = scheduleData["frequency"] as? [String]
+            if let startDateString = scheduleData["startDate"] as? String {
+                if let startDate = dateFormatter.date(from: startDateString) {
+                    data.startDate = startDate
+                }
+            }
+            if let endDateString = scheduleData["endDate"] as? String {
+                if let endDate = dateFormatter.date(from: endDateString) {
+                    data.endDate = endDate
+                }
+            }
+            if let frequency = scheduleData["frequency"] as? [String] {
+                data.frequency = frequency
+            }
         } else {
-            data.date = dateFormatter.date(from: scheduleData["date"] as! String)
+            if let dateString = scheduleData["date"] as? String {
+                if let date = dateFormatter.date(from: dateString) {
+                    data.date = date
+                }
+            }
         }
         
-        if !data.wholeDay {
-            data.startTime = timeFormatter.date(from: scheduleData["startTime"] as! String)
-            data.endTime = timeFormatter.date(from: scheduleData["endTime"] as! String)
+        if let wholeDay = scheduleData["wholeDay"] as? Bool {
+            data.wholeDay = wholeDay
+        }
+        
+        if data.wholeDay == false {
+            if let startTimeString = scheduleData["startTime"] as? String {
+                if let startTime = timeFormatter.date(from: startTimeString) {
+                    data.startTime = startTime
+                }
+            }
+            if let endTimeString = scheduleData["endTime"] as? String {
+                if let endTime = timeFormatter.date(from: endTimeString) {
+                    data.endTime = endTime
+                }
+            }
         }
     }
     
-    
-    
-    private func set(dataType: scheduleDataType, value: Any?) {
-        switch dataType {
-        case .repeating:
-            data!.repeating = value as! Bool
-        case .repeatType:
-            data!.repeatType = value as! ScheduleRepeatingType?
-        case .frequency:
-            data!.frequency = value as! [String]?
-        case .startDate:
-            data!.startDate = value as! Date?
-        case .endDate:
-            data!.endDate = value as! Date?
-        case .date:
-            data!.date = value as! Date?
-        case .wholeDay:
-            data!.wholeDay = value as! Bool
-        case .startTime:
-            data!.startTime = value as! Date?
-        case .endTime:
-            data!.endTime = value as! Date?
-        }
-    }
-    
-    private func get(dataType: scheduleDataType) -> Any? {
-        switch dataType {
-        case .repeating:
-            return data!.repeating as Any?
-        case .repeatType:
-            return data!.repeatType as Any?
-        case .frequency:
-            return data!.frequency as Any?
-        case .startDate:
-            return data!.startDate as Any?
-        case .endDate:
-            return data!.endDate as Any?
-        case .date:
-            return data!.date as Any?
-        case .wholeDay:
-            return data!.wholeDay as Any?
-        case .startTime:
-            return data!.startTime as Any?
-        case .endTime:
-            return data!.endTime as Any?
-        }
-    }
     
     
     
@@ -163,40 +150,40 @@ class Schedule {
 
     // setters
     
-    func setRepeating(repeating: Bool?) {
-        set(dataType: .repeating, value: repeating)
+    func setRepeating(repeating: Bool) {
+        data.repeating = repeating
     }
     
-    func setRepeatType(repeatType: ScheduleRepeatingType?) {
-        set(dataType: .repeatType, value: repeatType)
+    func setRepeatType(repeatType: ScheduleRepeatingType) {
+        data.repeatType = repeatType
     }
     
-    func setFrequency(frequency: [String]?) {
-        set(dataType: .frequency, value: frequency)
+    func setFrequency(frequency: [String]) {
+        data.frequency = frequency
     }
     
-    func setStartDate(startDate: Date?) {
-        set(dataType: .startDate, value: startDate)
+    func setStartDate(startDate: Date) {
+        data.startDate = startDate
     }
     
-    func setEndDate(endDate: Date?) {
-        set(dataType: .endDate, value: endDate)
+    func setEndDate(endDate: Date) {
+        data.endDate = endDate
     }
     
-    func setDate(date: Date?) {
-        set(dataType: .date, value: date)
+    func setDate(date: Date) {
+        data.date = date
     }
     
-    func setWholeDay(wholeDay: Bool?) {
-        set(dataType: .wholeDay, value: wholeDay)
+    func setWholeDay(wholeDay: Bool) {
+        data.wholeDay = wholeDay
     }
     
-    func setStartTime(startTime: Date?) {
-        set(dataType: .startTime, value: startTime)
+    func setStartTime(startTime: Date) {
+        data.startTime = startTime
     }
     
-    func setEndTime(endTime: Date?) {
-        set(dataType: .endTime, value: endTime)
+    func setEndTime(endTime: Date) {
+        data.endTime = endTime
     }
     
     
@@ -205,40 +192,40 @@ class Schedule {
     
     // getters
     
-    func getRepeating() -> Bool?{
-        return get(dataType: .repeating) as! Bool?
+    func getRepeating() -> Bool {
+        return data.repeating
     }
     
-    func getRepeatType() -> ScheduleRepeatingType? {
-        return get(dataType: .repeatType) as! ScheduleRepeatingType?
+    func getRepeatType() -> ScheduleRepeatingType {
+        return data.repeatType
     }
     
-    func getFrequency() -> [String]? {
-        return get(dataType: .frequency) as! [String]?
+    func getFrequency() -> [String] {
+        return data.frequency
     }
     
-    func getStartDate() -> Date? {
-        return get(dataType: .startDate) as! Date?
+    func getStartDate() -> Date {
+        return data.startDate
     }
     
-    func getEndDate() -> Date? {
-        return get(dataType: .endDate) as! Date?
+    func getEndDate() -> Date {
+        return data.endDate
     }
     
-    func getDate() -> Date? {
-        return get(dataType: .date) as! Date?
+    func getDate() -> Date {
+        return data.date
     }
     
-    func getWholeDay() -> Bool? {
-        return get(dataType: .wholeDay) as! Bool?
+    func getWholeDay() -> Bool {
+        return data.wholeDay
     }
     
-    func getStartTime() -> Date? {
-        return get(dataType: .startTime) as! Date?
+    func getStartTime() -> Date {
+        return data.startTime
     }
     
-    func getEndTime() -> Date? {
-        return get(dataType: .endTime) as! Date?
+    func getEndTime() -> Date {
+        return data.endTime
     }
     
     
@@ -263,46 +250,23 @@ class Schedule {
     }
     
     
+
     
-    
-    func toStringArray() -> [[String]]? {
-        if isValidSchedule() == nil{
-            var strs: [[String]] = [["", ""], ["", "", "", ""]]
-            if data.repeating {
-                strs[0][0] = "For"
-                strs[0][1] = frequencyToString()!
-            } else {
-                strs[0][0] = "On"
-                strs[0][1] = dateToString()!
-            }
-            if data.wholeDay {
-                strs[1][0] = "At"
-                strs[1][1] = "anytime"
-            } else {
-                strs[1][0] = "From"
-                strs[1][1] = startTimeToString()!
-                strs[1][2] = "to"
-                strs[1][3] = endTimeToString()!
-            }
-            return strs
-        }
-        return nil
-    }
     
     
     func toString() -> String? {
         if isValidSchedule() == nil {
             var result = ""
             if data.repeating {
-                result.append("From \(startDateToString()!) to \(endDateToString()!) \n")
-                result.append("On \(frequencyToString()!) \n")
+                result.append("From \(startDateToString()) to \(endDateToString()) \n")
+                result.append("On \(frequencyToString()) \n")
             } else {
-                result.append("On \(dateToString()!) \n")
+                result.append("On \(dateToString()) \n")
             }
             if data.wholeDay {
                 result.append("At any time \n")
             } else {
-                result.append("At \(startTimeToString()!) to \(endTimeToString()!)")
+                result.append("At \(startTimeToString()) to \(endTimeToString())")
             }
             return result
         }
@@ -311,22 +275,61 @@ class Schedule {
     
     
     
-    func isValidDates() -> Bool {
-        if data!.startDate != nil && data!.endDate != nil {
-            return data!.startDate! < data!.endDate!
-        } else {
-            return true
+    
+    
+    
+    func toColorString() -> NSMutableAttributedString? {
+        if isValidSchedule() == nil {
+            let result = NSMutableAttributedString(string: "")
+            if data.repeating {
+                result.append(NSMutableAttributedString(string: "From", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!,
+                                                                                       NSForegroundColorAttributeName: Config.themeColor]))
+                result.append(NSMutableAttributedString(string: " \(startDateToString()) ", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!]))
+                result.append(NSMutableAttributedString(string: "to", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!,
+                                                                                   NSForegroundColorAttributeName: Config.themeColor]))
+                result.append(NSMutableAttributedString(string: " \(endDateToString())\n", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!]))
+                result.append(NSMutableAttributedString(string: "On", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!,
+                                                                                   NSForegroundColorAttributeName: Config.themeColor]))
+                result.append(NSMutableAttributedString(string: " \(frequencyToString())\n", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!]))
+            } else {
+                result.append(NSMutableAttributedString(string: "On", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!,
+                                                                                   NSForegroundColorAttributeName: Config.themeColor]))
+                result.append(NSMutableAttributedString(string: " \(dateToString())\n", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!]))
+            }
+            
+            if data.wholeDay {
+                result.append(NSMutableAttributedString(string: "At", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!,
+                                                                                   NSForegroundColorAttributeName: Config.themeColor]))
+                result.append(NSMutableAttributedString(string: " any time", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!]))
+            } else {
+                result.append(NSMutableAttributedString(string: "At", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!,
+                                                                                   NSForegroundColorAttributeName: Config.themeColor]))
+                result.append(NSMutableAttributedString(string: " \(startTimeToString()) ", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!]))
+                result.append(NSMutableAttributedString(string: "to", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!,
+                                                                                   NSForegroundColorAttributeName: Config.themeColor]))
+                result.append(NSMutableAttributedString(string: " \(endTimeToString())", attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!]))
+            }
+            return result
         }
+        return nil
     }
     
     
     
+    
+    
+    func isValidDates() -> Bool {
+        return data.startDate < data.endDate
+    }
+    
+    
+    
+    
+    
+    
+    
     func isValidTimes() -> Bool {
-        if data!.startTime != nil && data!.endTime != nil {
-            return data!.startTime! < data!.endTime!
-        } else {
-            return true
-        }
+        return data.startTime < data.endTime
     }
     
     
@@ -366,61 +369,49 @@ class Schedule {
     
     
     
-    func dateToString() -> String? {
-        if data!.date != nil {
-            return dateFormatter.string(from: data!.date!)
-        }
-        return nil
+    func dateToString() -> String {
+        return dateFormatter.string(from: data.date)
     }
     
-    func startDateToString() -> String? {
-        if data!.startDate != nil {
-            return dateFormatter.string(from: data!.startDate!)
-        }
-        return nil
+    func startDateToString() -> String {
+        return dateFormatter.string(from: data.startDate)
     }
     
-    func endDateToString() -> String? {
-        if data!.endDate != nil {
-            return dateFormatter.string(from: data!.endDate!)
-        }
-        return nil
+    func endDateToString() -> String {
+        return dateFormatter.string(from: data.endDate)
     }
     
-    func startTimeToString() -> String? {
-        if data!.startTime != nil {
-            return timeFormatter.string(from: data!.startTime!)
-        }
-        return nil
+    func startTimeToString() -> String {
+        return timeFormatter.string(from: data.startTime)
     }
     
-    func endTimeToString() -> String? {
-        if data!.endTime != nil {
-            return timeFormatter.string(from: data!.endTime!)
-        }
-        return nil
+    func endTimeToString() -> String {
+        return timeFormatter.string(from: data.endTime)
     }
     
-    func frequencyToString() -> String? {
-        if data!.frequency != nil {
-            switch data!.repeatType! {
-            case .repeatByDay:
-                return "every \(data!.frequency![0]) day(s)"
-            case .repeatByWeek:
-                return "every \(data!.frequency![0]) week(s) on \(data!.frequency![1])"
-            case .repeatByMonth:
-                return "every \(data!.frequency![0]) month(s) on the \(data!.frequency![1]) \(data!.frequency![2])"
-            }
+    func frequencyToString() -> String {
+        switch data.repeatType {
+        case .repeatByDay:
+            return "every \(data.frequency[0]) day(s)"
+        case .repeatByWeek:
+            return "every \(data.frequency[0]) week(s) on \(data.frequency[1])"
+        case .repeatByMonth:
+            return "every \(data.frequency[0]) month(s) on the \(data.frequency[1]) \(data.frequency[2])"
         }
-        return nil
     }
+    
+    
+    
+    
+    
+    
     
     func toJSON() -> [String: AnyObject] {
         var result = ["repeating": data.repeating as AnyObject,
                       "wholeDay": data.wholeDay as AnyObject]
         
         if data.repeating {
-            switch data.repeatType! {
+            switch data.repeatType {
             case .repeatByDay:
                 result["repeatType"] = "repeatByDay" as AnyObject
             case .repeatByWeek:
@@ -428,16 +419,16 @@ class Schedule {
             case .repeatByMonth:
                 result["repeatType"] = "repeatByMonth" as AnyObject
             }
-            result["frequency"] = data.frequency! as AnyObject
-            result["startDate"] = dateFormatter.string(from: data.startDate!) as AnyObject
-            result["endDate"] = dateFormatter.string(from: data.endDate!) as AnyObject
+            result["frequency"] = data.frequency as AnyObject
+            result["startDate"] = dateFormatter.string(from: data.startDate) as AnyObject
+            result["endDate"] = dateFormatter.string(from: data.endDate) as AnyObject
         } else {
-            result["date"] = dateFormatter.string(from: data.date!) as AnyObject
+            result["date"] = dateFormatter.string(from: data.date) as AnyObject
         }
         
         if !data.wholeDay {
-            result["startTime"] = timeFormatter.string(from: data.startTime!) as AnyObject
-            result["endTime"] = timeFormatter.string(from: data.endTime!) as AnyObject
+            result["startTime"] = timeFormatter.string(from: data.startTime) as AnyObject
+            result["endTime"] = timeFormatter.string(from: data.endTime) as AnyObject
         }
         
         return result

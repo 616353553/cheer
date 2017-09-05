@@ -91,7 +91,6 @@ class CreateGroupTitleVC: UIViewController {
         if segue.identifier! == "toProfessors" {
             let vc = segue.destination as! CreateGroupAddProfessorTVC
             vc.group = self.group
-            vc.professors = group!.getProfessors()
         } else if segue.identifier == "toSchedules" {
             let vc = segue.destination as! CreateGroupAddScheduleTVC
             vc.group = self.group

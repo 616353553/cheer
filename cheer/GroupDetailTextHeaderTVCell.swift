@@ -11,20 +11,20 @@ import UIKit
 class GroupDetailTextHeaderTVCell: UITableViewCell {
 
     @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var department: UILabel!
-    @IBOutlet weak var professor: UILabel!
+    @IBOutlet weak var departments: UILabel!
+    @IBOutlet weak var professors: UILabel!
     
     @IBOutlet weak var departmentTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var professorTopConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        initialize()
+        self.initialize()
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        initialize()
+        self.initialize()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -32,32 +32,17 @@ class GroupDetailTextHeaderTVCell: UITableViewCell {
     }
     
     private func initialize() {
-        title.text = nil
-        department.text = nil
-        professor.text = nil
+        self.title.text = nil
+        self.departments.text = nil
+        self.professors.text = nil
     }
     
-    func updateCell(title: String, departments: [String?], professors: [String?]) {
+    func updateCell(title: String, departments: GroupDepartments, professors: GroupProfessors) {
         self.title.text = title
-        departmentTopConstraint.constant = (departments.count == 0) ? 0: 8
-        professorTopConstraint.constant = (professors.count == 0) ? 0 : 8
-        self.department.text = arrayToString(array: departments)
-        self.professor.text = arrayToString(array: professors)
-        layoutIfNeeded()
+        self.departmentTopConstraint.constant = (departments.count() == 0) ? 0: 8
+        self.professorTopConstraint.constant = (professors.count() == 0) ? 0 : 8
+        self.departments.text = departments.toString()
+        self.professors.text = professors.toString()
+        self.layoutIfNeeded()
     }
-    
-    private func arrayToString(array: [String?]) -> String {
-        var str = ""
-        if array.count > 0 {
-            for element in array {
-                if element != nil {
-                    str.append(element!)
-                    str.append(",")
-                }
-            }
-            str.remove(at: str.endIndex)
-        }
-        return str
-    }
-    
 }

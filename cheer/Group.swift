@@ -25,8 +25,8 @@ public struct groupStruct{
     var groupType: GroupType
     var image: ImageData
     var title: String
-    var professors: [String?]
-    var departments: [String?]
+    var professors: GroupProfessors
+    var departments: GroupDepartments
     var maxSlots: Int
     var location: String
     var contact: String
@@ -42,8 +42,8 @@ public struct groupStruct{
     var queueMemberCount: Int
     var queuePendingCount: Int
     
-    var comments: [Comment]
-    var commentList: String
+    var comments: CommentList
+    var commentListDirectory: String
     var commentCount: Int
 }
 
@@ -68,8 +68,8 @@ class Group{
                                groupType: groupType,
                                image: ImageData(),
                                title: "",
-                               professors: [nil],
-                               departments: [nil],
+                               professors: GroupProfessors(),
+                               departments: GroupDepartments(),
                                maxSlots: -1,
                                location: "",
                                contact: "",
@@ -85,13 +85,13 @@ class Group{
                                queueMemberCount: 0,
                                queuePendingCount: 0,
                                
-                               comments: [Comment](),
-                               commentList: "",
+                               comments: CommentList(),
+                               commentListDirectory: "",
                                commentCount: 0)
-            data!.image.initialize(withCapacity: 2)
-            data!.queue.initialize(creatorId: data!.uid)
-            
-            
+            data.image.initialize(withCapacity: 2)
+            data.queue.initialize(creatorId: data!.uid)
+            data.professors.initialize(professors: [nil])
+            data.departments.initialize(departments: [nil])
         } else {
             fatalError("Error: user must be signed in to comment/reply")
         }
@@ -116,8 +116,8 @@ class Group{
                            groupType: .professorProject,
                            image: ImageData(),
                            title: "",
-                           professors: [],
-                           departments: [],
+                           professors: GroupProfessors(),
+                           departments: GroupDepartments(),
                            maxSlots: -1,
                            location: "",
                            contact: "",
@@ -133,8 +133,8 @@ class Group{
                            queueMemberCount: 0,
                            queuePendingCount: 0,
                            
-                           comments: [],
-                           commentList: "",
+                           comments: CommentList(),
+                           commentListDirectory: "",
                            commentCount: 0)
     }
     
@@ -165,14 +165,19 @@ class Group{
                     self.data!.groupType = GroupType.init(rawValue: groupType)!
                     switch self.data!.groupType {
                     case .professorProject:
-                        if let professors = groupData["professors"] as? [String] {
-                            self.data!.professors = professors
+                        if let professors = groupData["professors"] as? [String?] {
+                            self.data.professors.initialize(professors: professors)
+                        } else {
+                            self.data.professors.initialize()
                         }
-                        if let departments = groupData["departments"] as? [String] {
-                            self.data!.departments = departments
+                        if let departments = groupData["departments"] as? [String?] {
+                            self.data.departments.initialize(departments: departments)
+                        } else {
+                            self.data.departments.initialize()
                         }
                     default:
-                        break
+                        self.data.professors.initialize()
+                        self.data.departments.initialize()
                     }
                 }
                 
@@ -246,8 +251,8 @@ class Group{
                 }
                 
                 // commentList
-                if let commentList = groupData["commentList"] as? String {
-                    self.data!.commentList = commentList
+                if let commentListDirectory = groupData["commentList"] as? String {
+                    self.data!.commentListDirectory = commentListDirectory
                 }
                 
                 // commentCount
@@ -280,14 +285,6 @@ class Group{
 
     func setTitle(title: String) {
         data.title = title
-    }
-
-    func setProfessors(professors: [String?]) {
-        data.professors = professors
-    }
-
-    func setDepartments(departments: [String?]){
-        data.departments = departments
     }
     
     func setMaxSlots(maxSlots: Int) {
@@ -334,6 +331,11 @@ class Group{
     
     
     
+    
+    func getGroupDirectory() -> String {
+        return data.groupDirectory
+    }
+    
     func getUID() -> String {
         return data.uid
     }
@@ -350,11 +352,11 @@ class Group{
         return data.title
     }
     
-    func getProfessors() -> [String?] {
+    func getProfessors() -> GroupProfessors {
         return data.professors
     }
     
-    func getDepartments() -> [String?] {
+    func getDepartments() -> GroupDepartments {
         return data.departments
     }
     
@@ -409,12 +411,12 @@ class Group{
         return data.queuePendingCount
     }
     
-    func getComments() -> [Comment] {
+    func getComments() -> CommentList {
         return data.comments
     }
     
-    func getCommentList() -> String {
-        return data.commentList
+    func getCommentListDirectory() -> String {
+        return data.commentListDirectory
     }
     
     func getCommentCount() -> Int {
@@ -430,27 +432,6 @@ class Group{
     
     func isValidTitle() -> Bool {
         return InputChecker.hasCorrectLength(min: 1, max: Config.groupTitleLength, text: data!.title)
-    }
-    
-    
-    func isValidProfessors() -> Bool {
-        for professor in data!.professors {
-            if professor != "" && professor != nil {
-                return true
-            }
-        }
-        return false
-    }
-    
-    
-    
-    func isValidDepartments() -> Bool {
-        for department in data!.departments {
-            if department != "" && department != nil {
-                return true
-            }
-        }
-        return false
     }
     
     
@@ -475,10 +456,10 @@ class Group{
             return false
         }
         if data!.groupType == .professorProject {
-            guard isValidProfessors() else {
+            guard !data.professors.isEmpty() else {
                 return false
             }
-            guard isValidDepartments() else {
+            guard !data.departments.isEmpty() else {
                 return false
             }
         }
@@ -517,8 +498,8 @@ class Group{
         
         switch self.data!.groupType {
         case .professorProject:
-            groupJSON["professors"] = removeEmptyElements(array: data!.professors) as AnyObject
-            groupJSON["departments"] = removeEmptyElements(array: data!.departments) as AnyObject
+            groupJSON["professors"] = data!.professors.arrayWithoutEmpty() as AnyObject
+            groupJSON["departments"] = data!.departments.arrayWithoutEmpty() as AnyObject
         default:
             break
         }

@@ -16,6 +16,7 @@ class CreateGroupScheduleTVCell: UITableViewCell {
 
     @IBOutlet var dateLabels: [UILabel]!
     @IBOutlet var timeLabels: [UILabel]!
+    @IBOutlet weak var scheduleLabel: UILabel!
     @IBAction func deleteButtonPushed(_ sender: UIButton) {
         delegate!.deleteButtonPushed(indexPath: indexPath!)
     }
@@ -38,18 +39,13 @@ class CreateGroupScheduleTVCell: UITableViewCell {
     }
     
     func initialize() {
-        
+        scheduleLabel.attributedText = nil
         indexPath = nil
         delegate = nil
     }
     
-    func updateCell(text: [[String]], indexPath: IndexPath, delegate: CreateGroupScheduleTVCellDelegate) {
-        for i in 0..<dateLabels.count {
-            dateLabels[i].text = text[0][dateLabels[i].tag]
-        }
-        for i in 0..<timeLabels.count {
-            timeLabels[i].text = text[1][timeLabels[i].tag]
-        }
+    func updateCell(text: NSMutableAttributedString?, indexPath: IndexPath, delegate: CreateGroupScheduleTVCellDelegate) {
+        scheduleLabel.attributedText = text
         self.indexPath = indexPath
         self.delegate = delegate
         self.layoutIfNeeded()

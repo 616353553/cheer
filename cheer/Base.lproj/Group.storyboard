@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="FNu-o9-bon">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="FNu-o9-bon">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -146,6 +146,9 @@
                         <barButtonItem key="backBarButtonItem" title="Back" id="TW9-ic-hyA"/>
                         <barButtonItem key="rightBarButtonItem" image="More" id="ffa-S4-8C7">
                             <color key="tintColor" red="0.4352535307" green="0.4353200793" blue="0.43523901700000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="morePushed:" destination="MGd-T6-ifT" id="EzN-km-zpa"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -180,7 +183,7 @@
         <!--Bookmarks-->
         <scene sceneID="IYz-jf-vV9">
             <objects>
-                <tableViewController id="rPV-ko-lMa" sceneMemberID="viewController">
+                <tableViewController id="rPV-ko-lMa" customClass="GroupBookmarkMainTVC" customModule="cheer" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="jwy-fM-wfZ">
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

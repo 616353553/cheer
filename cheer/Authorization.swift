@@ -13,7 +13,7 @@ import FirebaseAuth
 /**
  The class which only dealing with the sign in/sign up/ reset password.
  */
-class Authorization{
+class Authorization {
     
     /**
      Sign in with the given information, all user interaction will be disabled during the process, and an UIAlert will be shown if the action failed.

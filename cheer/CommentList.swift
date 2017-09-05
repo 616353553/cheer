@@ -12,32 +12,40 @@ import FirebaseDatabase
 class CommentList {
     
     private var comments: [Comment]!
+    private var parentDirectory: String!
     private var directory: String!
     private var numOfQuery: UInt!
     private var commentType: CommentType!
     
-    func initialize(directory: String, numOfQuery: UInt, commentType: CommentType) {
+    func initialize(parentDirectory: String, directory: String, numOfQuery: UInt, commentType: CommentType) {
         self.comments = []
+        self.parentDirectory = parentDirectory
         self.directory = directory
         self.numOfQuery = numOfQuery
         self.commentType = commentType
     }
     
-    func loadMoreIfPossible(completion: @escaping (DataSnapshot) -> Void) {
-        let query = Database.database().reference().child(directory).queryLimited(toLast: numOfQuery)
+    func loadMoreIfPossible(cleanData: Bool, completion: @escaping (DataSnapshot) -> Void) {
+        if cleanData {
+            comments.removeAll()
+        }
+        let query = Database.database().reference().child(directory).queryLimited(toLast: numOfQuery).queryOrderedByKey()
         query.observe(.value, with: { (snapshot) in
+            query.removeAllObservers()
             if let commentsData = snapshot.value as? [String: [String: AnyObject]] {
-                for commentData in commentsData {
+                let data = commentsData.sorted(by: { $0.0 > $1.0 })
+                for commentData in data {
                     let comment = Comment()
-                    comment.initialize(commentData: commentData.value)
+                    comment.initialize(commentDirectory: self.directory.appending("/\(commentData.key)"), commentData: commentData.value)
                     self.comments.append(comment)
                 }
-            } else {
-                // error?
             }
             completion(snapshot)
         })
-        
+    }
+    
+    func clear() {
+        comments.removeAll()
     }
     
     
@@ -76,6 +84,13 @@ class CommentList {
     
     
     
+    func getParentDirectory() -> String {
+        return parentDirectory
+    }
+    
+    
+    
+    
     
     func getDirectory() -> String {
         return directory
@@ -97,14 +112,11 @@ class CommentList {
      
      */
     
-    func getComment(atIndex index: Int) -> Comment? {
-        if index < comments.count {
-            return comments[index]
-        }
-        return nil
+    func getComment(at index: Int) -> Comment {
+        return comments[index]
     }
     
-    func getCommentsCount() -> Int {
+    func count() -> Int {
         return comments.count
     }
 }

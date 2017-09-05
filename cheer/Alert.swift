@@ -19,7 +19,7 @@ class Alert{
     static func displayAlertWithTwoButtons(title: String, message: String, vc: UIViewController, handler: ((UIAlertAction) -> Void)? = nil) -> Void{
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: handler))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
         vc.present(alert, animated: true, completion: nil)
     }
     

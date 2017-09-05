@@ -47,32 +47,41 @@ class GroupMainImageTVCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func initialize(){
-        groupImage.image = nil
-        progressView.angle = 0
-        progressView.isHidden = true
-        blurView.isHidden = true
-        title.text = nil
-        department.text = nil
-        professor.text = nil
-        descriptionLabel.text = nil
-        maxSlots.text = nil
-        addBookmarkText.setTitle(nil, for: .normal)
-        addBookmarkImage.setImage(nil, for: .normal)
+    private func initialize(){
+        self.groupImage.image = nil
+        self.progressView.angle = 0
+        self.progressView.isHidden = true
+        self.blurView.isHidden = true
+        self.title.text = nil
+        self.department.text = nil
+        self.professor.text = nil
+        self.descriptionLabel.text = nil
+        self.maxSlots.text = nil
+        self.addBookmarkText.setTitle(nil, for: .normal)
+        self.addBookmarkImage.setImage(nil, for: .normal)
     }
+    
+    
+    
+    
+    
     
     func updateCell(group: Group) {
         self.title.text = group.getTitle()
         self.descriptionLabel.text = group.getDescription()
         self.maxSlots.text = "\(group.getMaxSlots())"
         if group.getGroupType() == .professorProject {
-            stackViewHeightConstraint.constant = 14.5
-            stackViewTopConstraint.constant = 8
-            self.department.text = group.getDepartments()[0]
-            self.professor.text = group.getProfessors()[0]
+            self.stackViewHeightConstraint.constant = 14.5
+            self.stackViewTopConstraint.constant = 8
+            if group.getDepartments().count() > 0 {
+                self.department.text = group.getDepartments().get(at: 0)
+            }
+            if group.getProfessors().count() > 0 {
+                self.professor.text = group.getProfessors().get(at: 0)
+            }
         } else {
-            stackViewHeightConstraint.constant = 0
-            stackViewTopConstraint.constant = 0
+            self.stackViewHeightConstraint.constant = 0
+            self.stackViewTopConstraint.constant = 0
             self.department.text = nil
             self.professor.text = nil
         }
@@ -99,10 +108,15 @@ class GroupMainImageTVCell: UITableViewCell {
         self.layoutIfNeeded()
     }
     
+    
+    
+    
+    
+    
     private func retrieveImage(imageData: ImageData) {
         progressView.isHidden = false
         imageData.retrieveImage(atIndex: 0, completion: { (image, error) in
-            if error == nil {
+            if image != nil {
                 self.blurView.isHidden = true
                 self.groupImage.image = image
             }

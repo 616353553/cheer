@@ -63,12 +63,12 @@ class CreateGroupScheduleContentTVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if schedule!.getRepeating()! {
+        if schedule.getRepeating() {
             cells[0] = dateCells[0]
         } else {
             cells[0] = dateCells[1]
         }
-        if schedule!.getWholeDay()! {
+        if schedule.getWholeDay() {
             cells[1] = timeCells[0]
         } else {
             cells[1] = timeCells[1]
@@ -153,10 +153,10 @@ class CreateGroupScheduleContentTVC: UITableViewController {
             switch cellType {
             case .repeatSwitchCell:
                 labelText = "Repeat"
-                isOn = schedule!.getRepeating()!
+                isOn = schedule.getRepeating()
             case .wholeDaySwitchCell:
                 labelText = "Whole day"
-                isOn = schedule!.getWholeDay()!
+                isOn = schedule.getWholeDay()
             default:
                 break
             }
@@ -169,38 +169,28 @@ class CreateGroupScheduleContentTVC: UITableViewController {
             var isValid: Bool!
             switch cellType {
             case .frequencyCell:
-                if schedule!.getFrequency() == nil {
-                    switch schedule!.getRepeatType()! {
-                    case .repeatByDay:
-                        schedule!.setFrequency(frequency: ["1"])
-                    case .repeatByWeek:
-                        schedule!.setFrequency(frequency: ["1", "Sunday"])
-                    case .repeatByMonth:
-                        schedule!.setFrequency(frequency: ["1", "1st", "day"])
-                    }
-                }
                 labelText = "For"
-                result = schedule!.frequencyToString()!
+                result = schedule.frequencyToString()
                 isValid = true
             case .dateCell:
                 labelText = "On"
-                result = schedule!.dateToString()!
+                result = schedule.dateToString()
                 isValid = true
             case .startDateCell:
                 labelText = "Start repeat on"
-                result = schedule!.startDateToString()!
+                result = schedule.startDateToString()
                 isValid = schedule!.isValidDates()
             case .endDateCell:
                 labelText = "End repeat on"
-                result = schedule!.endDateToString()!
+                result = schedule.endDateToString()
                 isValid = schedule!.isValidDates()
             case .startTimeCell:
                 labelText = "Start time"
-                result = schedule!.startTimeToString()!
+                result = schedule.startTimeToString()
                 isValid = schedule!.isValidTimes()
             case .endTimeCell:
                 labelText = "End time"
-                result = schedule!.endTimeToString()!
+                result = schedule.endTimeToString()
                 isValid = schedule!.isValidTimes()
             default:
                 break
@@ -210,7 +200,7 @@ class CreateGroupScheduleContentTVC: UITableViewController {
         case .frequencyPickerCell:
             let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupPickerTVCell") as! CreateGroupPickerTVCell
             var data: [[String]]!
-            switch schedule.getRepeatType()! {
+            switch schedule.getRepeatType() {
             case .repeatByDay:
                 data = repeatByDayData
             case .repeatByWeek:
@@ -308,7 +298,7 @@ class CreateGroupScheduleContentTVC: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toScheduleType" {
             let vc = segue.destination as! CreateGroupScheduleTypeTVC
-            vc.repeatType = schedule!.getRepeatType()!
+            vc.repeatType = schedule.getRepeatType()
             vc.delegate = self
         }
     }
@@ -347,7 +337,7 @@ extension CreateGroupScheduleContentTVC: CreateGroupDatePickerTVCellDelegate{
         switch cellType {
         case .datePickerCell:
             schedule!.setDate(date: date)
-            cell.setResutLabel(text: schedule!.dateToString()!, isValid: true)
+            cell.setResutLabel(text: schedule.dateToString(), isValid: true)
         case .startDatePickerCell:
             schedule!.setStartDate(startDate: date)
             tableView.reloadSections([0], with: .none)
@@ -372,8 +362,8 @@ extension CreateGroupScheduleContentTVC: CreateGroupPickerTVCellDelegate {
         let cell = tableView.cellForRow(at: [indexPath.section, indexPath.row - 1]) as! CreateGroupPickerHeaderCell
         switch cellType {
         case .frequencyPickerCell:
-            schedule!.setFrequency(frequency: frequency)
-            cell.setResutLabel(text: schedule!.frequencyToString()!, isValid: true)
+            schedule.setFrequency(frequency: frequency)
+            cell.setResutLabel(text: schedule.frequencyToString(), isValid: true)
         default:
             break
         }
@@ -382,9 +372,16 @@ extension CreateGroupScheduleContentTVC: CreateGroupPickerTVCellDelegate {
 
 extension CreateGroupScheduleContentTVC: CreateGroupScheduleTypeTVCDelegate {
     func typeSelected(newType: ScheduleRepeatingType) {
-        if newType != schedule!.getRepeatType()! {
-            schedule!.setRepeatType(repeatType: newType)
-            schedule!.setFrequency(frequency: nil)
+        if newType != schedule.getRepeatType() {
+            schedule.setRepeatType(repeatType: newType)
+            switch newType {
+            case .repeatByDay:
+                schedule.setFrequency(frequency: ["1"])
+            case .repeatByWeek:
+                schedule.setFrequency(frequency: ["1", "Sunday"])
+            case .repeatByMonth:
+                schedule.setFrequency(frequency: ["1", "1st", "day"])
+            }
             if currentPickerCell == .frequencyPickerCell {
                 removeCurrentPickerCell()
             }

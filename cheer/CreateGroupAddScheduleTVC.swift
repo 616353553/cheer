@@ -48,7 +48,8 @@ class CreateGroupAddScheduleTVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row < schedules.count {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupScheduleTVCell") as! CreateGroupScheduleTVCell
-            cell.updateCell(text: schedules[indexPath.row].toStringArray()!, indexPath: indexPath, delegate: self)
+            cell.updateCell(text: schedules[indexPath.row].toColorString(), indexPath: indexPath, delegate: self)
+            //cell.updateCell(text: schedules[indexPath.row].toStringArray()!, indexPath: indexPath, delegate: self)
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupAddScheduleTVCell") as! CreateGroupAddScheduleTVCell

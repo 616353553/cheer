@@ -196,7 +196,7 @@ class ImageData{
      - parameter completion: The block which will be excuted once parsing process is done.
      
      */
-    func setImage(atIndex index: Int, asset: PHAsset?, completion: @escaping (UIImage?) -> Void){
+    func setImage(atIndex index: Int, asset: PHAsset?, completion: ((UIImage?) -> Void)?){
         guard data != nil else {
             fatalError("Error: Object must be iniilialized before use.")
         }
@@ -207,8 +207,10 @@ class ImageData{
             
             manager.requestImage(for: asset!, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: option){(result, info)->Void in
                 self.setImage(atIndex: index, image: result)
-                DispatchQueue.main.async{
-                    completion(result)
+                if completion != nil {
+                    DispatchQueue.main.async{
+                        completion!(result)
+                    }
                 }
             }
         }

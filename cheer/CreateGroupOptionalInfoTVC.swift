@@ -8,7 +8,7 @@
 
 import UIKit
 import Photos
-import  BSImagePicker
+import BSImagePicker
 
 class CreateGroupOptionalInfoTVC: UITableViewController {
 

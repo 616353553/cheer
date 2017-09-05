@@ -10,7 +10,8 @@ import UIKit
 
 protocol CommentTVCellDelegate {
     func replyPushed(indexPath: IndexPath)
-    func unfoldPushed(cellState: CellState, indexPath: IndexPath)
+    func readReplyPushed(indexPath: IndexPath)
+    func morePushed(indexPath: IndexPath)
 }
 
 class CommentTVCell: UITableViewCell {
@@ -18,26 +19,24 @@ class CommentTVCell: UITableViewCell {
     @IBOutlet weak var userIcon: UIImageView!
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var content: UILabel!
-    @IBOutlet weak var unfoldButton: UIButton!
     @IBOutlet weak var postTime: UILabel!
-    @IBOutlet weak var replyButton: UIButton!
+    @IBOutlet weak var firstDotLabel: UILabel!
+    @IBOutlet weak var readReplyButton: UIButton!
     
-    @IBAction func commentIsPushed(_ sender: UIButton) {
+    @IBAction func replyPushed(_ sender: UIButton) {
         delegate.replyPushed(indexPath: indexPath)
     }
     
-    @IBAction func unfoldIsPushed(_ sender: UIButton) {
-        switch cellState! {
-        case .contracted:
-            delegate.unfoldPushed(cellState: .expanded, indexPath: indexPath)
-        case .expanded:
-            delegate.unfoldPushed(cellState: .contracted, indexPath: indexPath)
-        }
+    @IBAction func readReplyPushed(_ sender: UIButton) {
+        delegate.readReplyPushed(indexPath: indexPath)
     }
     
-    var delegate: CommentTVCellDelegate!
-    var indexPath: IndexPath!
-    var cellState: CellState!
+    @IBAction func morePushed(_ sender: UIButton) {
+        delegate.morePushed(indexPath: indexPath)
+    }
+    
+    private var delegate: CommentTVCellDelegate!
+    private var indexPath: IndexPath!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -52,33 +51,37 @@ class CommentTVCell: UITableViewCell {
         initialize()
     }
     
-    func initialize(){
+    private func initialize(){
         userIcon.layer.cornerRadius = 14
         userIcon.image = nil
         userName.text = nil
         content.text = nil
         postTime.text = nil
-        replyButton.setTitle(nil, for: .normal)
+        readReplyButton.setTitle(nil, for: .normal)
         indexPath = nil
-        cellState = nil
+        delegate = nil
     }
     
-    func updateCell(comment: Comment, cellState: CellState, indexPath: IndexPath) {
-        self.cellState = cellState
+    func updateCell(commentType: CommentType, comment: Comment, indexPath: IndexPath, delegate: CommentTVCellDelegate) {
         self.indexPath = indexPath
-        self.userName.text = comment.getUID()
+        self.delegate = delegate
+        self.userName.text = comment.getAuthor().getNickname()
         self.content.text = comment.getContent()
-        switch cellState {
-        case .contracted:
-            unfoldButton.setTitle("unfold", for: .normal)
-        case .expanded:
-            unfoldButton.setTitle("fold", for: .normal)
-        }
-        let replyCount = comment.getReplyCount()
-        if replyCount > 999 {
-            self.replyButton.setTitle("Reply (999+)", for: .normal)
-        } else {
-            self.replyButton.setTitle("Reply (\(replyCount))", for: .normal)
+        self.postTime.text = comment.getTimeString()
+        switch commentType {
+        case .comment:
+            let replyCount = comment.getReplyCount()
+            if replyCount > 999 {
+                self.readReplyButton.setTitle("Read replies (999+)", for: .normal)
+            } else {
+                self.readReplyButton.setTitle("Read replies (\(replyCount))", for: .normal)
+            }
+            self.readReplyButton.isHidden = false
+            self.firstDotLabel.isHidden = false
+        case .reply:
+            self.readReplyButton.setTitle("Reply", for: .normal)
+            self.readReplyButton.isHidden = true
+            self.firstDotLabel.isHidden = true
         }
         layoutIfNeeded()
     }

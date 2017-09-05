@@ -39,6 +39,12 @@ class GroupMainTVC: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200
         
+        
+        let error = NSError(domain: "", code: 1, userInfo: nil)
+        print(error)
+        print(error as Error)
+        print((error as Error).localizedDescription)
+        
         createActionSheet()
     }
     
@@ -61,15 +67,19 @@ class GroupMainTVC: UITableViewController {
     func createActionSheet(){
         actionSheet = UIAlertController(title: "Group", message: "More options", preferredStyle: .actionSheet)
         let bookmarksAction = UIAlertAction(title: "Bookmarks", style: .default) { (action) in
-            self.performSegue(withIdentifier: "bookmarks", sender: self)
+            if Auth.auth().currentUser == nil{
+                let authVC = AuthorizationViewController()
+                authVC.initialize(authType: .regular, delegate: self)
+                authVC.presentFromBottom(viewController: self, completion: nil)
+            } else {
+                self.performSegue(withIdentifier: "toBookmark", sender: self)
+            }
         }
         let createGroupAction = UIAlertAction(title: "Create Group", style: .default) { (action) in
-            // log in view if user is not logged in.
             if Auth.auth().currentUser == nil{
-                let storyboard = UIStoryboard.init(name: "Authorization", bundle: nil)
-                let vc = storyboard.instantiateInitialViewController() as! AuthorizationNVC
-                vc.setAuthType(authType: .regular)
-                self.present(vc, animated: true, completion: nil)
+                let authVC = AuthorizationViewController()
+                authVC.initialize(authType: .regular, delegate: self)
+                authVC.presentFromBottom(viewController: self, completion: nil)
             } else {
                 let storyboard = UIStoryboard.init(name: "CreateGroup", bundle: nil)
                 self.present(storyboard.instantiateInitialViewController()!, animated: true, completion: nil)
@@ -197,6 +207,9 @@ class GroupMainTVC: UITableViewController {
         case "toMoreGroups":
             let vc = segue.destination as! GroupMoreGroupsTVC
             
+        case "toBookmark":
+            let vc = segue.destination as! GroupBookmarkMainTVC
+            
         default:
             break
         }
@@ -204,8 +217,14 @@ class GroupMainTVC: UITableViewController {
 }
 
 
-extension GroupMainCellDelegate {
+extension GroupMainTVC: GroupMainCellDelegate {
     func cellPushed(indexPath: IndexPath) {
+        
+    }
+}
+
+extension GroupMainTVC: AuthorizationViewControllerDelegate {
+    func authorizationViewControllerWillDisappear() {
         
     }
 }

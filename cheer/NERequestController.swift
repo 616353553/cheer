@@ -141,8 +141,8 @@ class NERequestController{
     /**
      false: async request and response, only block at end of all the requests
      true:  block each request and start the next after handling response
-     
      */
+    
     var isSequential: Bool = false
     var requestDidEnd: (()->Void)?
     var requestDidEndPresent: (()->Void)? // NOT IMPLEMENTED =
@@ -155,27 +155,36 @@ class NERequestController{
 
     /**
      
+     Initializer
      
-        - parameter beforeStart: Called just BEFORE all requests start on MAIN thread
-        - parameter callback: Called AFTER all the requests are done on MAIN thread
+    - parameter beforeStart: Called just BEFORE all requests start on MAIN thread.
+     
+    - parameter callback: Called AFTER all the requests are done on MAIN thread.
+     
      */
+    
     init(beforeStart:(()->Void)? = nil, callback: (()->Void)? = nil){
         requestDidEndPresent = callback
         requestWillBeginMain = beforeStart
     }
     
     /** 
-    add request to controller's queue
+     
+    Add request to controller's queue
+     
      */
+    
     func add(request: NERequestAction){
         requests.append(request)
     }
     
     /**
-        dispatch requests in the order given
+    
+     Dispatch requests in the order given
+    
      */
+    
     func sendRequests(){
-        
         // do not support
         if counter > 0 {
             print("NERequestController in process, cannot take new request")
@@ -249,47 +258,36 @@ class NERequestController{
         let task = session.dataTask(with: request){
             (data, res, err) in
             
-
             // error
             
             if err != nil {
                 if let viewWillUpdate = action.viewWillUpdate{
                     DispatchQueue.main.async {
                         // do nothing when data is not proceed, not crash though
-                        
                         viewWillUpdate(nil, nil, err)
-                        
                     }
                 }
             } else {
-            
                 if let dataWillLoad  = action.dataWillLoad{
                     dataWillLoad(data)
                 }
-                
                 do {
-                    
                     var res = try JSONSerialization.jsonObject(with: data!) as! [String:Any]
-                    
+        
                     print(action.verifyTimestamp(time: res["time"] as! String?))
                     print(action.timestampIsActive)
                     
                     if action.verifyTimestamp(time: res["time"] as! String?) == true || action.timestampIsActive == false {
-
-                    
-        //                var result: Any?
+                        // var result: Any?
                         if let dataDidLoad = action.dataDidLoad{
                             dataDidLoad(res["data"])
                         }
-                        
                         if let viewWillUpdate = action.viewWillUpdate{
                             DispatchQueue.main.async {
                                 // do nothing when data is not proceed, not crash though
                                 viewWillUpdate(res["data"], res["error"], nil)
-
                             }
                         }
-                    
                     }
                     
                 } catch {

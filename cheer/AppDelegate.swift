@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import UserNotifications
 import FBSDKLoginKit
+import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -25,22 +26,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         FirebaseApp.configure()
         
         UINavigationBar.appearance().tintColor = Config.themeColor
-        
-        // show sign in page if no school is selected
-        var storyboard = UIStoryboard()
-        if UserDefaults.standard.string(forKey: "selectedSchool") == nil || UserDefaults.standard.string(forKey: "selectedSchool") == ""{
-            storyboard = UIStoryboard.init(name: "Welcome", bundle: nil)
+        let school = CoreDataManagement.getSchool()
+        if school != nil && school != "" {
+            skipLogIn()
         } else {
-            storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+            logIn()
         }
+        return true
+    }
+    
+    
+    func logIn() {
+        let storyboard = UIStoryboard.init(name: "Authorization", bundle: nil)
+        let vc = storyboard.instantiateInitialViewController() as! AuthorizationNVC
+        vc.setAuthType(authType: .firstTime)
+        vc.setDelegate(delegate: self)
+        self.window?.rootViewController = vc
+    }
+    
+    func skipLogIn() {
+        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let vc = storyboard.instantiateInitialViewController()
         self.window?.rootViewController = vc
-        return true
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
     }
+    
     
     //--------------------------------------
     // MARK: Push Notifications
@@ -78,7 +91,72 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        // Saves changes in the application’s managed object context before the application terminates.
+        self.saveContext()
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    //--------------------------------------
+    // MARK: Core Data stack
+    //--------------------------------------
+
+    // MARK: - Core Data stack
+    lazy var persistentContainer: NSPersistentContainer = {
+        /*
+         The persistent container for the application. This implementation
+         creates and returns a container, having loaded the store for the
+         application to it. This property is optional since there are legitimate
+         error conditions that could cause the creation of the store to fail.
+         */
+        let container = NSPersistentContainer(name: "Cheer")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                /*
+                 Typical reasons for an error here include:
+                 * The parent directory does not exist, cannot be created, or disallows writing.
+                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
+                 * The device is out of space.
+                 * The store could not be migrated to the current model version.
+                 Check the error message to determine what the actual problem was.
+                 */
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        return container
+    }()
+    
+    // MARK: - Core Data Saving support
+    
+    func saveContext () {
+        let context = persistentContainer.viewContext
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
     }
 
+}
+
+
+
+extension AppDelegate: AuthorizationViewControllerDelegate {
+    func authorizationViewControllerWillDisappear() {
+        // ??
+    }
 }
 
