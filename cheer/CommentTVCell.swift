@@ -62,27 +62,20 @@ class CommentTVCell: UITableViewCell {
         delegate = nil
     }
     
-    func updateCell(commentType: CommentType, comment: Comment, indexPath: IndexPath, delegate: CommentTVCellDelegate) {
+    func updateCell(comment: Comment, indexPath: IndexPath, delegate: CommentTVCellDelegate) {
         self.indexPath = indexPath
         self.delegate = delegate
-        self.userName.text = comment.getAuthor().getNickname()
+        self.userName.text = comment.getAuthor()!.getName()
         self.content.text = comment.getContent()
-        self.postTime.text = comment.getTimeString()
-        switch commentType {
-        case .comment:
-            let replyCount = comment.getReplyCount()
-            if replyCount > 999 {
-                self.readReplyButton.setTitle("Read replies (999+)", for: .normal)
-            } else {
-                self.readReplyButton.setTitle("Read replies (\(replyCount))", for: .normal)
-            }
-            self.readReplyButton.isHidden = false
-            self.firstDotLabel.isHidden = false
-        case .reply:
-            self.readReplyButton.setTitle("Reply", for: .normal)
-            self.readReplyButton.isHidden = true
-            self.firstDotLabel.isHidden = true
+        self.postTime.text = comment.getTime()
+        let replyCount = comment.getReplyCount()!
+        if replyCount > 999 {
+            self.readReplyButton.setTitle("Read replies (999+)", for: .normal)
+        } else {
+            self.readReplyButton.setTitle("Read replies (\(replyCount))", for: .normal)
         }
+        self.readReplyButton.isHidden = false
+        self.firstDotLabel.isHidden = false
         layoutIfNeeded()
     }
 }

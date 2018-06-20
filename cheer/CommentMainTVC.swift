@@ -27,7 +27,7 @@ class CommentMainTVC: UITableViewController {
         setTableViewBackground(text: "loading comments...")
         let spinner = UIActivityIndicatorView()
         Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self)
-        comments.loadMoreIfPossible(cleanData: false){ (snapshot) in
+        comments.retrieveMoreIfPossible { (snapshot) in
             if self.comments.count() == 0 {
                 self.setTableViewBackground(text: "There is no comment yet")
             } else  {
@@ -76,7 +76,7 @@ class CommentMainTVC: UITableViewController {
     
     
     func refreshComments() {
-        comments.loadMoreIfPossible(cleanData: true) { (snapshot) in
+        comments.retrieveMoreIfPossible { (snapshot) in
             self.refreshControl!.endRefreshing()
             self.setTableViewBackground(text: self.comments.count() == 0 ? "There is no comment yet" : nil)
             DispatchQueue.main.async {
@@ -88,13 +88,11 @@ class CommentMainTVC: UITableViewController {
     
     func addComment() {
         if Auth.auth().currentUser == nil{
-            let authVC = AuthorizationViewController()
-            authVC.initialize(authType: .regular, delegate: self)
+            let authVC = AuthorizationViewController(authType: .regular, delegate: self)
             authVC.presentFromBottom(viewController: self, completion: nil)
         }else{
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "CommentEditNVC") as! CommentEditNVC
-            vc.comment = Comment()
-            vc.comment.initialize(commentType: .comment, parentDirectory: comments.getParentDirectory(), recipientID: nil)
+            vc.comment = Comment(authorID: Auth.auth().currentUser!.uid, parentRef: comments.getParentRef())
             vc.commentEditVCDelegate = self
             self.present(vc, animated: true, completion: nil)
         }
@@ -102,8 +100,7 @@ class CommentMainTVC: UITableViewController {
     
     func replyComment(indexPath: IndexPath) {
         if Auth.auth().currentUser == nil {
-            let authVC = AuthorizationViewController()
-            authVC.initialize(authType: .regular, delegate: self)
+            let authVC = AuthorizationViewController(authType: .regular, delegate: self)
             authVC.presentFromBottom(viewController: self, completion: nil)
         } else {
             selectedIndexPath = indexPath
@@ -114,12 +111,11 @@ class CommentMainTVC: UITableViewController {
     
     func reportComment(indexPath: IndexPath) {
         if Auth.auth().currentUser == nil {
-            let authVC = AuthorizationViewController()
-            authVC.initialize(authType: .regular, delegate: self)
+            let authVC = AuthorizationViewController(authType: .regular, delegate: self)
             authVC.presentFromBottom(viewController: self, completion: nil)
         } else {
             let reportVC = ReportViewController()
-            reportVC.initialize(directory: comments.getComment(at: indexPath.row).getDirectory(), reasons: ["Inappropriate Content" : "Verbal abuse/insulting/etc.", "Spam": "Ads/etc."])
+            reportVC.initialize(directory: comments.getComment(at: indexPath.row).getReference()!, reasons: ["Inappropriate Content" : "Verbal abuse/insulting/etc.", "Spam": "Ads/etc."])
             reportVC.presentFromBottom(viewController: self, completion: nil)
         }
     }
@@ -138,9 +134,8 @@ class CommentMainTVC: UITableViewController {
             guard selectedIndexPath != nil else {
                 return
             }
-            vc.replies = CommentList()
-            vc.replies.initialize(parentDirectory: comments.getComment(at: selectedIndexPath!.row).getDirectory(), directory: comments.getComment(at: selectedIndexPath!.row).getChildDirectory(), numOfQuery: 20, commentType: .reply)
-            vc.commentAuthorID = comments.getComment(at: selectedIndexPath!.row).getAuthor().getUID()
+            vc.replies = CommentList(parentReference: "", reference: "")
+            vc.commentAuthorID = comments.getComment(at: selectedIndexPath!.row).getAuthor()?.getUID()
             vc.createReply = createReply
             createReply = false
             selectedIndexPath = nil
@@ -162,7 +157,7 @@ class CommentMainTVC: UITableViewController {
             return UITableViewCell()
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTVCell") as! CommentTVCell
-        cell.updateCell(commentType: .comment, comment: comments.getComment(at: indexPath.row), indexPath: indexPath, delegate: self)
+//        cell.updateCell(commentType: .comment, comment: comments.getComment(at: indexPath.row), indexPath: indexPath, delegate: self)
         return cell
     }
     

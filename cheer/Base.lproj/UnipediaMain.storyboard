@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="k4v-9T-a2x">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Unipedia-->
+        <scene sceneID="LuJ-hc-0hs">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="k4v-9T-a2x" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Unipedia" image="Unipedia_unselected" selectedImage="Unipedia_selected" id="1sq-mb-C1O"/>
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Mt2-vb-rK4">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="HQv-W5-v0q" kind="relationship" relationship="rootViewController" id="nVR-4n-r7O"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wc5-RK-IVB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="805.60000000000002" y="-822.63868065967017"/>
+        </scene>
+        <!--Unipedia-->
+        <scene sceneID="qRb-ki-LkN">
+            <objects>
+                <viewController id="HQv-W5-v0q" customClass="UnipediaMainVC" customModule="cheer" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Qir-0s-LY9"/>
+                        <viewControllerLayoutGuide type="bottom" id="frH-Oz-OWC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="boQ-81-bEX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npg-Uu-pvE">
+                                <rect key="frame" x="0.0" y="8" width="375" height="667"/>
+                            </scrollView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="918-6E-8YH">
+                                <rect key="frame" x="0.0" y="64" width="375" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="nPa-qz-ecr"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem style="plain" id="Lfv-nN-6kC">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="diL-my-xxQ">
+                                            <rect key="frame" x="16" y="3" width="41" height="34"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <state key="normal" title="Feed">
+                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="categoryIsPushed:" destination="HQv-W5-v0q" eventType="touchUpInside" id="zPB-VG-HWY"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Xas-A7-Btm"/>
+                                    <barButtonItem style="plain" id="ElS-d3-bCv">
+                                        <button key="customView" opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ZFX-x5-RHe">
+                                            <rect key="frame" x="96.5" y="3" width="78" height="34"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <state key="normal" title="Teacher">
+                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="categoryIsPushed:" destination="HQv-W5-v0q" eventType="touchUpInside" id="rOU-7i-vel"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="0Qk-Aa-ygb"/>
+                                    <barButtonItem style="plain" id="Aqq-n6-vVe">
+                                        <button key="customView" opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Y3z-9K-Hwm">
+                                            <rect key="frame" x="214.5" y="3" width="58" height="34"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <state key="normal" title="Course">
+                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="categoryIsPushed:" destination="HQv-W5-v0q" eventType="touchUpInside" id="YO4-ux-Nvz"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="t9G-EC-ayD"/>
+                                    <barButtonItem style="plain" id="uI9-8T-s8T">
+                                        <button key="customView" opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="L9n-D0-IHG">
+                                            <rect key="frame" x="312" y="3" width="47" height="34"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <state key="normal" title="Other">
+                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="categoryIsPushed:" destination="HQv-W5-v0q" eventType="touchUpInside" id="tTm-1J-xg7"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XKn-n9-R2B" userLabel="underline">
+                                <rect key="frame" x="16" y="100" width="41" height="2"/>
+                                <color key="backgroundColor" red="0.15068247909999999" green="0.34167712929999999" blue="0.35882651809999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="41" id="6h5-ui-Req"/>
+                                    <constraint firstAttribute="height" constant="2" id="qwr-DU-PfJ"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="npg-Uu-pvE" secondAttribute="bottom" id="0Eb-ZO-6ry"/>
+                            <constraint firstItem="npg-Uu-pvE" firstAttribute="top" secondItem="boQ-81-bEX" secondAttribute="top" id="4pn-hj-1ew"/>
+                            <constraint firstItem="npg-Uu-pvE" firstAttribute="leading" secondItem="boQ-81-bEX" secondAttribute="leading" id="9Qs-jI-D3g"/>
+                            <constraint firstItem="XKn-n9-R2B" firstAttribute="leading" secondItem="boQ-81-bEX" secondAttribute="leading" constant="16" id="Hbf-Um-czn"/>
+                            <constraint firstItem="918-6E-8YH" firstAttribute="top" secondItem="Qir-0s-LY9" secondAttribute="bottom" id="cqQ-6M-zvD"/>
+                            <constraint firstAttribute="trailing" secondItem="918-6E-8YH" secondAttribute="trailing" id="jHl-54-B9f"/>
+                            <constraint firstItem="XKn-n9-R2B" firstAttribute="bottom" secondItem="918-6E-8YH" secondAttribute="bottom" constant="-2" id="mSa-xo-cOd"/>
+                            <constraint firstItem="918-6E-8YH" firstAttribute="leading" secondItem="boQ-81-bEX" secondAttribute="leading" id="nxa-z3-hWG"/>
+                            <constraint firstAttribute="trailing" secondItem="npg-Uu-pvE" secondAttribute="trailing" id="uRw-sb-qIn"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Unipedia" id="rFJ-Gk-R3V">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="wFD-Xr-BZU">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="nU1-pN-jV0">
+                                <rect key="frame" x="16" y="10" width="75" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Search" image="Search">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="4BX-7S-skh">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="6F6-nj-Ycx">
+                                <rect key="frame" x="286" y="10" width="73" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Create" image="Compose">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="contentScrollView" destination="npg-Uu-pvE" id="4eP-rm-nkW"/>
+                        <outlet property="toolbar" destination="918-6E-8YH" id="SkT-DM-z33"/>
+                        <outlet property="underlineLeftConstraint" destination="Hbf-Um-czn" id="BHg-qM-38s"/>
+                        <outlet property="underlineView" destination="XKn-n9-R2B" id="ZC7-RQ-2O4"/>
+                        <outlet property="underlineWidthConstraint" destination="6h5-ui-Req" id="W0Z-7I-xUL"/>
+                        <outletCollection property="categoryButtons" destination="diL-my-xxQ" collectionClass="NSMutableArray" id="pdq-wH-1A3"/>
+                        <outletCollection property="categoryButtons" destination="ZFX-x5-RHe" collectionClass="NSMutableArray" id="CrB-aX-mlF"/>
+                        <outletCollection property="categoryButtons" destination="Y3z-9K-Hwm" collectionClass="NSMutableArray" id="IhM-7n-Cym"/>
+                        <outletCollection property="categoryButtons" destination="L9n-D0-IHG" collectionClass="NSMutableArray" id="CYb-hb-4Wk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ILa-Yu-drz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1564" y="-823.53823088455783"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Compose" width="24" height="24"/>
+        <image name="Search" width="24" height="24"/>
+        <image name="Unipedia_selected" width="23" height="23"/>
+        <image name="Unipedia_unselected" width="23" height="23"/>
+    </resources>
+</document>

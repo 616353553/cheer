@@ -12,19 +12,19 @@ class Masker{
         var result = ""
         var counter = 0
         var atIsFound = false
-        for char in email.characters{
+        for char in email {
             if char == "@"{
                 atIsFound = true
             }
             if atIsFound{
-                result.characters.append(char)
+                result.append(char)
             }
             else{
                 if counter < 2{
-                    result.characters.append(char)
+                    result.append(char)
                     counter += 1
                 }else{
-                    result.characters.append("*")
+                    result.append("*")
                 }
             }
         }
@@ -35,14 +35,14 @@ class Masker{
         var result = ""
         let leading = 4
         let trailing = 2
-        let stringLength = phone.characters.count
+        let stringLength = phone.count
         var current = 0
-        for char in phone.characters{
+        for char in phone {
             if current < leading || current >= stringLength - trailing{
-                result.characters.append(char)
+                result.append(char)
             }
             else{
-                result.characters.append("*")
+                result.append("*")
             }
             current = current + 1
         }

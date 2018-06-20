@@ -9,107 +9,106 @@
 import Foundation
 import FirebaseDatabase
 
-enum QueueDataType {
-    case creator
-    case member
-    case pending
+struct MemberStruct {
+    var groupRef: String?
+    var profile: UserProfile?
+    var time: String?
+    var reason: String?
+    
+    func toJSON() -> [String: Any] {
+        return ["groupRef": (groupRef ?? "") as Any,
+                "uid": (profile?.getUID() ?? "") as Any]
+    }
+    
+    func joinGroup() {
+        
+    }
 }
 
-public struct QueueStruct {
-    var creator: String
-    var member: [String]
-    var pending: [String]
+struct QueueStruct {
+    // tiny data
+    var reference: String?
+    var groupRef: String?
+    var creatorID: String?
+    var maxSlot: Int?
+    var currentCount: Int?
+    var pendingCount: Int?
+    var memberRef: String?
+    var pendingRef: String?
+    var rejectRef: String?
+    var sendNotification: Bool?
+    //mega data
+    var current: [MemberStruct]?
+    var pending: [MemberStruct]?
+    var reject: [MemberStruct]?
 }
 
 class Queue {
     
-    private var data: QueueStruct?
+    private var data: QueueStruct!
 
-    func initialize(creatorId: String) {
-        data = QueueStruct(creator: creatorId, member: [], pending: [])
+    init(creatorID: String) {
+        data = QueueStruct()
+        data?.creatorID = creatorID
     }
-    
-    private func getValue(dataType: QueueDataType) -> AnyObject {
-        switch dataType {
-        case .creator:
-            return data!.creator as AnyObject
-        case .member:
-            return data!.member as AnyObject
-        case .pending:
-            return data!.pending as AnyObject
-        }
-    }
-    
-    private func setValue(dataType: QueueDataType, value: AnyObject) {
-        switch dataType {
-        case .creator:
-            data!.creator = value as! String
-        case .member:
-            data!.member = value as! [String]
-        case .pending:
-            data!.pending = value as! [String]
-        }
+
+    init(reference: String) {
+        data = QueueStruct()
+        data.reference = reference
     }
     
     
-    
-    
-    // getters
-    func getCreator() -> String {
-        return getValue(dataType: .creator) as! String
+    // Getters
+    func getReference() -> String? {
+        return data.reference
     }
     
-    func getMember() -> [String] {
-        return getValue(dataType: .member) as! [String]
+    func getGroupRef() -> String? {
+        return data.groupRef
     }
     
-    func getPending() -> [String] {
-        return getValue(dataType: .pending) as! [String]
+    func getCreatorID() -> String? {
+        return data.creatorID
     }
     
-    
-    
-    
-    // setters
-    func setCreator(value: String) {
-        setValue(dataType: .creator, value: value as AnyObject)
+    func getMaxSlot() -> Int? {
+        return data.maxSlot
     }
     
-    func setMember(value: [String]) {
-        setValue(dataType: .member, value: value as AnyObject)
+    func getCurrentCount() -> Int? {
+        return data.currentCount
     }
     
-    func setPending(value: [String]) {
-        setValue(dataType: .pending, value: value as AnyObject)
+    func getPendingCount() -> Int? {
+        return data.pendingCount
+    }
+    
+    func getCurrent() -> [MemberStruct]? {
+        return data.current
+    }
+    
+    func getPending() -> [MemberStruct]? {
+        return data.pending
+    }
+    
+    func getReject() -> [MemberStruct]? {
+        return data.reject
+    }
+    
+    func getSendNotification() -> Bool? {
+        return data.sendNotification
     }
     
     
     
-    func toJSON() -> [String: AnyObject] {
-        var queueJSON = ["creator": data!.creator as AnyObject]
-        if data!.member != [] {
-            queueJSON["member"] = data!.member as AnyObject
-        }
-        if data!.pending != [] {
-            queueJSON["pending"] = data!.pending as AnyObject
-        }
-        return queueJSON
+    
+    // Setters
+    func setMaxSlot(maxSlot:Int) {
+        data.maxSlot = maxSlot
     }
     
-    
-    func upload(completion: @escaping (String?, DatabaseReference?)->Void) {
-        let action = NERequestAction.init(endPoint: "", httpBody: toJSON()) { (data, dataBaseError, requestError) in
-            if dataBaseError == nil && requestError == nil {
-                completion(nil, nil)
-            } else if dataBaseError != nil {
-                completion("Unknown Error", nil)
-            } else {
-                completion(requestError!.localizedDescription, nil)
-            }
-        }
-        let controller = NERequestController()
-        controller.isSequential = true
-        controller.add(request: action)
-        controller.sendRequests()
+    func setSendNotification(sendNotification: Bool?) {
+        data.sendNotification = sendNotification
     }
+
 }

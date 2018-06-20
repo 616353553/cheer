@@ -35,7 +35,7 @@ class CommentEditVC: UIViewController {
                 Alert.displayAlertWithOneButton(title: "Error", message: errorString!, vc: self)
             } else {
                 Alert.displayAlertWithOneButton(title: "Success", message: "Comment uploaded sucessfully", vc: self, alertActionHandler: { (action) in
-                    self.dismiss(animated: true, completion: { 
+                    self.dismiss(animated: true, completion: {
                         self.delegate.commentPosted()
                     })
                 })
@@ -51,16 +51,16 @@ class CommentEditVC: UIViewController {
         let vc = self.parent as! CommentEditNVC
         self.comment = vc.comment
         self.delegate = vc.commentEditVCDelegate
-        switch comment.getCommentType() {
-        case .comment:
-            recipientLabel.text = nil
-            navigationItem.title = "Comment"
-            placeholderLabel.text = "Enter comment here"
-        case .reply:
-            recipientLabel.text = "+ \(comment.getRecipient()!.getNickname())"
-            navigationItem.title = "Reply"
-            placeholderLabel.text = "Enter reply here"
-        }
+//        switch comment.getCommentType() {
+//        case .comment:
+//            recipientLabel.text = nil
+//            navigationItem.title = "Comment"
+//            placeholderLabel.text = "Enter comment here"
+//        case .reply:
+//            recipientLabel.text = "+ \(comment.getRecipient()!.getName())"
+//            navigationItem.title = "Reply"
+//            placeholderLabel.text = "Enter reply here"
+//        }
         textView.delegate = self
     }
 

@@ -21,12 +21,11 @@ class ChatMainVC: JSQMessagesViewController {
         guard Auth.auth().currentUser != nil else {
             fatalError("Error: User must be signed in to chat")
         }
-        userProfile = UserProfile()
-        userProfile.initialize(uid: Auth.auth().currentUser!.uid)
+        userProfile = UserProfile(uid: Auth.auth().currentUser!.uid)
         userProfile.fetchDataFromUID(){ (snapshot) in
             if snapshot.exists() {
                 self.senderId = self.userProfile.getUID()
-                self.senderDisplayName = self.userProfile.getNickname()
+                self.senderDisplayName = self.userProfile.getName()
             }
         }
     }

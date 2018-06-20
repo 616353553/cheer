@@ -38,9 +38,8 @@ class GroupDetailVC: UIViewController {
     }
     
     @IBAction func commentPushed(_ sender: UIButton) {
-        group.getComments().initialize(parentDirectory: group.getGroupDirectory(), directory: group.getCommentListDirectory(), numOfQuery: 20, commentType: .comment)
         let commentVC = CommentViewController()
-        commentVC.initialize(comments: group.getComments())
+        commentVC.initialize(comments: group.getComments()!)
         commentVC.presentOnNavigationController(navigationController: self.navigationController!)
     }
     
@@ -93,24 +92,11 @@ class GroupDetailVC: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    func schedulesToString() -> String {
-        let schedules = group.getSchedules()
-        var scheduleText = ""
-        for i in 0..<schedules.count {
-            if i != 0 {
-                scheduleText.append("\n\n")
-            }
-            scheduleText.append(schedules[i].toString()!)
-        }
-        return scheduleText
-    }
-    
     func createActionSheet(){
         actionSheet = UIAlertController(title: "Group", message: "More options", preferredStyle: .actionSheet)
         let chatAction = UIAlertAction(title: "Chat with creator", style: .default) { (action) in
             if Auth.auth().currentUser == nil{
-                let authVC = AuthorizationViewController()
-                authVC.initialize(authType: .regular, delegate: self)
+                let authVC = AuthorizationViewController(authType: .regular, delegate: self)
                 authVC.presentFromBottom(viewController: self, completion: nil)
             } else {
                 print("Chat")
@@ -118,12 +104,12 @@ class GroupDetailVC: UIViewController {
         }
         let reportAction = UIAlertAction(title: "Report", style: .destructive) { (action) in
             if Auth.auth().currentUser == nil{
-                let authVC = AuthorizationViewController()
-                authVC.initialize(authType: .regular, delegate: self)
+                let authVC = AuthorizationViewController(authType: .regular, delegate: self)
                 authVC.presentFromBottom(viewController: self, completion: nil)
             } else {
                 let reportVC = ReportViewController()
-                reportVC.initialize(directory: self.group.getGroupDirectory(), reasons: ["Inappropriate Content" : "Verbal abuse/insulting/etc.",
+                
+                reportVC.initialize(directory: self.group.getReference() ?? "", reasons: ["Inappropriate Content" : "Verbal abuse/insulting/etc.",
                                                                                          "Spam": "Ads/etc.",
                                                                                          "Scam": "Online scams/etc."])
                 reportVC.presentFromBottom(viewController: self, completion: nil)
@@ -157,62 +143,62 @@ extension GroupDetailVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch cellTypes[indexPath.section][indexPath.row] {
         case .headerCell:
-            if group.getImage().numOfImages() > 0 {
+            if group.getGroupImage() != nil && group.getGroupImage()!.numOfImages() > 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GroupDetailImageHeaderTVCell") as! GroupDetailImageHeaderTVCell
-                cell.updateCell(title: group.getTitle(), departments: group.getDepartments(), professors: group.getProfessors(), imageData: group.getImage())
+                cell.updateCell(title: group.getTitle() ?? "", department: group.getGroupTag()!.getTagName()!, professors: group.getProfessors()!, imageData: group.getGroupImage()!)
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GroupDetailTextHeaderTVCell") as! GroupDetailTextHeaderTVCell
-                cell.updateCell(title: group.getTitle(), departments: group.getDepartments(), professors: group.getProfessors())
+                cell.updateCell(title: group.getTitle()!, department: group.getGroupTag()!.getTagName()!, professors: group.getProfessors()!)
                 return cell
             }
         case .queueCell:
             let cell = tableView.dequeueReusableCell(withIdentifier: "GroupDetailQueueTVCell") as! GroupDetailQueueTVCell
-            cell.updateCell(maxSlots: group.getMaxSlots(), memberCount: group.getQueueMemberCount(), pendingCount: group.getQueuePendingCount())
+            cell.updateCell(maxSlots: group.getQueue()!.getMaxSlot()!, memberCount: group.getQueue()!.getCurrentCount()!, pendingCount: group.getQueue()!.getPendingCount()!)
             return cell
         case .scheduleCell:
             let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTextInfoTVCell") as! GroupTextInfoTVCell
             var schedules = group.getSchedules()
-            if schedules.count == 0 {
+            if schedules?.count() == 0 {
                 // download schedules if schedules is empty
-                let ref = Database.database().reference()
-                ref.child(group.getScheduleList()).observe(.value, with: { (snapshot) in
-                    guard snapshot.exists() else {
-                        return
-                    }
-                    if let schedulesData = snapshot.value as? [[String: AnyObject]] {
-                        for scheduleData in schedulesData {
-                            let schedule = Schedule()
-                            schedule.initialize(scheduleData: scheduleData)
-                            schedules.append(schedule)
-                        }
-                        self.group.setSchedules(schedules: schedules)
-                        //cell.updateCell(title: "Schedule", text: self.schedulesToString())
-                        tableView.reloadRows(at: [indexPath], with: .automatic)
-                    } else {
-                        // Error appears
-                    }
-                })
+//                let ref = Database.database().reference()
+//                ref.child(group.getScheduleList()).observe(.value, with: { (snapshot) in
+//                    guard snapshot.exists() else {
+//                        return
+//                    }
+//                    if let schedulesData = snapshot.value as? [[String: AnyObject]] {
+//                        for scheduleData in schedulesData {
+//                            let schedule = Schedule()
+//                            schedule.initialize(scheduleData: scheduleData)
+//                            schedules.append(schedule)
+//                        }
+//                        self.group.setSchedules(schedules: schedules)
+//                        //cell.updateCell(title: "Schedule", text: self.schedulesToString())
+//                        tableView.reloadRows(at: [indexPath], with: .automatic)
+//                    } else {
+//                        // Error appears
+//                    }
+//                })
             } else {
                 print("in")
-                cell.updateCell(title: "Schedule", text: self.schedulesToString())
+                cell.updateCell(title: "Schedule", text: group.getSchedules()!.toString())
             }
             return cell
         case .requirementCell:
             let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTextInfoTVCell") as! GroupTextInfoTVCell
-            cell.updateCell(title: "Requirement", text: group.getRequirement())
+            cell.updateCell(title: "Requirement", text: group.getRequirement()!)
             return cell
         case .descriptionCell:
             let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTextInfoTVCell") as! GroupTextInfoTVCell
-            cell.updateCell(title: "Description", text: group.getDescription())
+            cell.updateCell(title: "Description", text: group.getDescription()!)
             return cell
         case .locationCell:
             let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTextInfoTVCell") as! GroupTextInfoTVCell
-            cell.updateCell(title: "Location", text: group.getLocation())
+            cell.updateCell(title: "Location", text: group.getLocation()!)
             return cell
         case .contactCell:
             let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTextInfoTVCell") as! GroupTextInfoTVCell
-            cell.updateCell(title: "Contact Information", text: group!.getContact())
+            cell.updateCell(title: "Contact Information", text: group!.getContact()!)
             return cell
         }
     }

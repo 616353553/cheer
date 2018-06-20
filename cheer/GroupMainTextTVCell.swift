@@ -50,24 +50,24 @@ class GroupMainTextTVCell: UITableViewCell {
     }
     
     func updateCell(group: Group) {
-        self.title.text = group.getTitle()
-        self.descriptionLabel.text = group.getDescription()
-        self.maxSlots.text = "\(group.getMaxSlots())"
-        if group.getGroupType() == .professorProject {
-            self.departmentProfessorTopConstraint.constant = 8
-            self.departmentProfessorHeightConstraint.constant = 14.5
-            if group.getDepartments().count() > 0 {
-                self.department.text = group.getDepartments().get(at: 0)
-            }
-            if group.getProfessors().count() > 0 {
-                self.professor.text = group.getProfessors().get(at: 0)
-            }
-        } else {
-            self.departmentProfessorTopConstraint.constant = 0
-            self.departmentProfessorHeightConstraint.constant = 0
-            self.department.text = nil
-            self.professor.text = nil
-        }
-        self.layoutIfNeeded()
+//        self.title.text = group.getTitle()
+//        self.descriptionLabel.text = group.getDescription()
+//        self.maxSlots.text = "\(group.getMaxSlots())"
+//        if group.getGroupType() == .research {
+//            self.departmentProfessorTopConstraint.constant = 8
+//            self.departmentProfessorHeightConstraint.constant = 14.5
+//            if group.getDepartments().count() > 0 {
+//                self.department.text = group.getDepartments().get(at: 0)
+//            }
+//            if group.getProfessors().count() > 0 {
+//                self.professor.text = group.getProfessors().get(at: 0)
+//            }
+//        } else {
+//            self.departmentProfessorTopConstraint.constant = 0
+//            self.departmentProfessorHeightConstraint.constant = 0
+//            self.department.text = nil
+//            self.professor.text = nil
+//        }
+//        self.layoutIfNeeded()
     }
 }

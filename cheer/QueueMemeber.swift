@@ -19,8 +19,7 @@ class QueueMember {
     private var data: QueueMemberStruct!
     
     func initialize(groupDirectory: String, uid: String) {
-        let user = UserProfile()
-        user.initialize(uid: uid)
+        let user = UserProfile(uid: uid)
         data = QueueMemberStruct(groupDirectory: groupDirectory,
                                  user: user,
                                  time: nil)

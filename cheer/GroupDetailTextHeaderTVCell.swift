@@ -37,12 +37,12 @@ class GroupDetailTextHeaderTVCell: UITableViewCell {
         self.professors.text = nil
     }
     
-    func updateCell(title: String, departments: GroupDepartments, professors: GroupProfessors) {
+    func updateCell(title: String, department: String, professors: ProfessorList) {
         self.title.text = title
-        self.departmentTopConstraint.constant = (departments.count() == 0) ? 0: 8
+        self.departmentTopConstraint.constant = (department == "") ? 0: 8
         self.professorTopConstraint.constant = (professors.count() == 0) ? 0 : 8
-        self.departments.text = departments.toString()
-        self.professors.text = professors.toString()
+        self.departments.text = department
+        self.professors.text = professors[0].getProfessorName()
         self.layoutIfNeeded()
     }
 }

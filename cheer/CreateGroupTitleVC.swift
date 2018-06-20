@@ -9,22 +9,43 @@
 import UIKit
 
 class CreateGroupTitleVC: UIViewController {
+    
+    var group: Group!
+    var tap: UITapGestureRecognizer!
+    let minTextViewHeight: CGFloat = 150
+    var maxCompressedTextViewHeight: CGFloat?
+    var maxExpandedTextViewHeight: CGFloat?
 
+    @IBOutlet weak var tagImageButton: UIButton!
+    @IBOutlet weak var tagTitleButton: UIButton!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var placeHolderLabel: UILabel!
     @IBOutlet weak var textCounterLabel: UILabel!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
     
+    
+    @IBAction func tagIsPushed(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "toTag", sender: self)
+        switch group.getGroupType()! {
+        case .activity:
+            print("activity tag")
+        case .project:
+            print("project tag")
+        case .research:
+            print("research tag")
+        }
+    }
+    
     @IBAction func nextPushed(_ sender: UIBarButtonItem) {
         // remove "\n" if there is any
         let title = textView.text.replacingOccurrences(of: "^\\s*", with: "", options: .regularExpression, range: nil)
         group.setTitle(title: title)
         if group!.isValidTitle() {
-            switch group!.getGroupType() {
-            case .professorProject:
+            switch group!.getGroupType()! {
+            case .research:
                 self.performSegue(withIdentifier: "toProfessors", sender: self)
-            case .studentProject, .activity:
+            case .project, .activity:
                 self.performSegue(withIdentifier: "toSchedules", sender: self)
             }
         } else {
@@ -32,18 +53,12 @@ class CreateGroupTitleVC: UIViewController {
         }
     }
     
-    var group: Group!
-    var tap: UITapGestureRecognizer!
-    let minTextViewHeight: CGFloat = 150
-    var maxCompressedTextViewHeight: CGFloat?
-    var maxExpandedTextViewHeight: CGFloat?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         textView.delegate = self
         textView.text = group.getTitle()
         placeHolderLabel.isHidden = textView.text != nil && textView.text != ""
-        textCounterLabel.text = "\(textView.text.characters.count)/\(Config.groupTitleLength) Letters"
+        textCounterLabel.text = "\(textView.text.count)/\(Config.groupTitleLength) Letters"
         tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -103,8 +118,8 @@ extension CreateGroupTitleVC: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         group!.setTitle(title: textView.text!)
         placeHolderLabel.isHidden = textView.text != ""
-        textCounterLabel.textColor = textView.text.characters.count > Config.groupTitleLength ? UIColor.red : UIColor.darkGray 
-        textCounterLabel.text = "\(textView.text.characters.count)/\(Config.groupTitleLength) Letters"
+        textCounterLabel.textColor = textView.text.count > Config.groupTitleLength ? UIColor.red : UIColor.darkGray
+        textCounterLabel.text = "\(textView.text.count)/\(Config.groupTitleLength) Letters"
         let newSize = textView.sizeThatFits(CGSize.init(width: textView.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
         if newSize.height != textView.frame.height {
             if newSize.height > minTextViewHeight && textView.frame.height < maxCompressedTextViewHeight! {

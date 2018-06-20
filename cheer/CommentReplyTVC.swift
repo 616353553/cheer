@@ -13,13 +13,12 @@ import FirebaseDatabase
 class CommentReplyTVC: UITableViewController {
     
     @IBAction func addReplyPushed(_ sender: UIBarButtonItem) {
-        if Auth.auth().currentUser == nil{
-            let authVC = AuthorizationViewController()
-            authVC.initialize(authType: .regular, delegate: self)
-            authVC.presentFromBottom(viewController: self, completion: nil)
-        }else{
-            addReply(parentDirectory: replies.getParentDirectory(), recipientID: commentAuthorID)
-        }
+//        if Auth.auth().currentUser == nil{
+//            let authVC = AuthorizationViewController(authType: .regular, delegate: self)
+//            authVC.presentFromBottom(viewController: self, completion: nil)
+//        }else{
+//            addReply(parentDirectory: replies.getParentDirectory(), recipientID: commentAuthorID)
+//        }
     }
     
     var replies: CommentList!
@@ -33,7 +32,7 @@ class CommentReplyTVC: UITableViewController {
         setTableViewBackground(text: "loading replies...")
         let spinner = UIActivityIndicatorView()
         Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self)
-        replies.loadMoreIfPossible(cleanData: false){ (snapshot) in
+        replies.retrieveMoreIfPossible { (snapshot) in
             if self.replies.count() == 0 {
                 self.setTableViewBackground(text: "There is no reply yet")
             } else {
@@ -53,9 +52,9 @@ class CommentReplyTVC: UITableViewController {
         
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200
-        if createReply {
-            addReply(parentDirectory: replies.getParentDirectory(), recipientID: commentAuthorID)
-        }
+//        if createReply {
+//            addReply(parentDirectory: replies.getParentDirectory(), recipientID: commentAuthorID)
+//        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -85,33 +84,32 @@ class CommentReplyTVC: UITableViewController {
     }
     
     func addReply(parentDirectory: String, recipientID: String) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CommentEditNVC") as! CommentEditNVC
-        vc.commentEditVCDelegate = self
-        vc.comment = Comment()
-        vc.comment.initialize(commentType: .reply, parentDirectory: parentDirectory, recipientID: recipientID)
-        self.present(vc, animated: true, completion: nil)
+//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CommentEditNVC") as! CommentEditNVC
+//        vc.commentEditVCDelegate = self
+//        vc.comment = Comment()
+//        vc.comment.initialize(commentType: .reply, parentDirectory: parentDirectory, recipientID: recipientID)
+//        self.present(vc, animated: true, completion: nil)
     }
     
     func reportReply(indexPath: IndexPath) {
-        if Auth.auth().currentUser == nil {
-            let authVC = AuthorizationViewController()
-            authVC.initialize(authType: .regular, delegate: self)
-            authVC.presentFromBottom(viewController: self, completion: nil)
-        } else {
-            let reportVC = ReportViewController()
-            reportVC.initialize(directory: replies.getComment(at: indexPath.row).getDirectory(), reasons: ["Inappropriate Content" : "Verbal abuse/insulting/etc.", "Spam": "Ads/etc."])
-            reportVC.presentFromBottom(viewController: self, completion: nil)
-        }
+//        if Auth.auth().currentUser == nil {
+//            let authVC = AuthorizationViewController(authType: .regular, delegate: self)
+//            authVC.presentFromBottom(viewController: self, completion: nil)
+//        } else {
+//            let reportVC = ReportViewController()
+//            reportVC.initialize(directory: replies.getComment(at: indexPath.row).getDirectory(), reasons: ["Inappropriate Content" : "Verbal abuse/insulting/etc.", "Spam": "Ads/etc."])
+//            reportVC.presentFromBottom(viewController: self, completion: nil)
+//        }
     }
     
     func refreshReplies() {
-        replies.loadMoreIfPossible(cleanData: true) { (snapshot) in
-            self.refreshControl?.endRefreshing()
-            self.setTableViewBackground(text: self.replies.count() == 0 ? "There is no reply yet" : nil)
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
+//        replies.loadMoreIfPossible(cleanData: true) { (snapshot) in
+//            self.refreshControl?.endRefreshing()
+//            self.setTableViewBackground(text: self.replies.count() == 0 ? "There is no reply yet" : nil)
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
+//        }
     }
     
     
@@ -137,7 +135,7 @@ class CommentReplyTVC: UITableViewController {
             return UITableViewCell()
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTVCell") as! CommentTVCell
-        cell.updateCell(commentType: .reply, comment: replies.getComment(at: indexPath.row), indexPath: indexPath, delegate: self)
+//        cell.updateCell(commentType: .reply, comment: replies.getComment(at: indexPath.row), indexPath: indexPath, delegate: self)
         return cell
     }
     
@@ -157,13 +155,12 @@ class CommentReplyTVC: UITableViewController {
 
 extension CommentReplyTVC: CommentTVCellDelegate {
     func replyPushed(indexPath: IndexPath) {
-        if Auth.auth().currentUser == nil{
-            let authVC = AuthorizationViewController()
-            authVC.initialize(authType: .regular, delegate: self)
-            authVC.presentFromBottom(viewController: self, completion: nil)
-        }else{
-            addReply(parentDirectory: replies.getParentDirectory(), recipientID: replies.getComment(at: indexPath.row).getAuthor().getUID())
-        }
+//        if Auth.auth().currentUser == nil{
+//            let authVC = AuthorizationViewController(authType: .regular, delegate: self)
+//            authVC.presentFromBottom(viewController: self, completion: nil)
+//        }else{
+//            addReply(parentDirectory: replies.getParentDirectory(), recipientID: replies.getComment(at: indexPath.row).getAuthor().getUID())
+//        }
     }
     
     func readReplyPushed(indexPath: IndexPath) {
@@ -172,20 +169,19 @@ extension CommentReplyTVC: CommentTVCellDelegate {
     }
     
     func morePushed(indexPath: IndexPath) {
-        let actionSheet = UIAlertController(title: "Reply", message: "More options", preferredStyle: .actionSheet)
-        let replyAction = UIAlertAction(title: "Reply", style: .default) { (action) in
-            self.addReply(parentDirectory: self.replies.getParentDirectory(), recipientID: self.replies.getComment(at: indexPath.row).getAuthor().getUID())
-        }
-        let reportAction = UIAlertAction(title: "Report", style: .destructive) { (action) in
-            self.reportReply(indexPath: indexPath)
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        // add actions to action sheet
-        actionSheet.addAction(replyAction)
-        actionSheet.addAction(reportAction)
-        actionSheet.addAction(cancelAction)
-        self.present(actionSheet, animated: true, completion: nil)
-
+//        let actionSheet = UIAlertController(title: "Reply", message: "More options", preferredStyle: .actionSheet)
+//        let replyAction = UIAlertAction(title: "Reply", style: .default) { (action) in
+//            self.addReply(parentDirectory: self.replies.getParentDirectory(), recipientID: self.replies.getComment(at: indexPath.row).getAuthor().getUID())
+//        }
+//        let reportAction = UIAlertAction(title: "Report", style: .destructive) { (action) in
+//            self.reportReply(indexPath: indexPath)
+//        }
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+//        // add actions to action sheet
+//        actionSheet.addAction(replyAction)
+//        actionSheet.addAction(reportAction)
+//        actionSheet.addAction(cancelAction)
+//        self.present(actionSheet, animated: true, completion: nil)
     }
 }
 

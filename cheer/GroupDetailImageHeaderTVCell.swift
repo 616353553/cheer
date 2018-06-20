@@ -50,34 +50,24 @@ class GroupDetailImageHeaderTVCell: UITableViewCell {
     
     
     
-    func updateCell(title: String, departments: GroupDepartments, professors: GroupProfessors, imageData: ImageData) {
+    func updateCell(title: String, department: String, professors: ProfessorList, imageData: ImageData) {
         self.title.text = title
-        self.departmentTopConstraint.constant = (departments.count() == 0) ? 0 : 8
+        self.departmentTopConstraint.constant = (department == "") ? 0 : 8
         self.professorTopConstraint.constant = (professors.count() == 0) ? 0 : 8
-        self.departments.text = departments.toString()
-        self.professors.text = professors.toString()
+        self.departments.text = department
+        self.professors.text = professors[0].getProfessorName()
         
-        if imageData.getImage(atIndex: 0) == nil && imageData.getDirectories()[0] != nil {
-            // retrieve thumb nail image
-            if imageData.getImage(atIndex: 1) == nil && imageData.getDirectories()[1] != nil {
-                imageData.retrieveImage(atIndex: 1, completion: { (thumbImage, error) in
-                    if thumbImage != nil {
-                        self.progressView.isHidden = true
-                        self.blurView.isHidden = false
-                        self.groupImage.image = thumbImage
-                    }
-                    self.retrieveImage(imageData: imageData)
-                }, progress: nil, success: nil, failure: nil)
-            } else if imageData.getImage(atIndex: 1) != nil {
-                self.progressView.isHidden = true
-                self.blurView.isHidden = false
-                self.groupImage.image = imageData.getImage(atIndex: 1)
-                self.retrieveImage(imageData: imageData)
-            }
-        } else if imageData.getImage(atIndex: 0) != nil {
-            self.progressView.isHidden = true
-            self.blurView.isHidden = true
-            self.groupImage.image = imageData.getImage(atIndex: 0)
+        if imageData.getThumbnailImage(at: 0) == nil {
+            imageData.retrieveThumbnailImage(at: 0, completion: { (image, error) in
+                if image != nil {
+                    self.progressView.isHidden = false
+                    self.blurView.isHidden = false
+                    self.groupImage.image = image
+                }
+                self.retrieveOriginalImage(imageData: imageData)
+            })
+        } else if imageData.getOriginalImage(at: 0) == nil {
+            retrieveOriginalImage(imageData: imageData)
         }
         self.layoutIfNeeded()
     }
@@ -85,9 +75,9 @@ class GroupDetailImageHeaderTVCell: UITableViewCell {
     
     
     
-    private func retrieveImage(imageData: ImageData) {
+    private func retrieveOriginalImage(imageData: ImageData) {
         self.progressView.isHidden = false
-        imageData.retrieveImage(atIndex: 0, completion: { (image, error) in
+        imageData.retrieveOriginalImage(at: 0, completion: { (image, error) in
             if image != nil {
                 self.blurView.isHidden = true
                 self.groupImage.image = image

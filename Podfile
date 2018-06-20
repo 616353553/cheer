@@ -23,7 +23,8 @@ target 'cheer' do
   #pod 'StarryStars', '~> 0.0.1'
 
   # image picker
-  pod "BSImagePicker", "~> 2.4"
+  pod 'RSKImageCropper'
+  pod 'QBImagePickerController'
 
   # circular progress bar
   pod 'KDCircularProgress'

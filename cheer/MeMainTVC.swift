@@ -88,8 +88,7 @@ class MeMainTVC: UITableViewController {
         case .headerCell:
             let cell = tableView.dequeueReusableCell(withIdentifier: "MeHeaderTVCell") as! MeHeaderTVCell
             if let uid = Auth.auth().currentUser?.uid {
-                let user = UserProfile()
-                user.initialize(uid: uid)
+                let user = UserProfile(uid: uid)
                 cell.updateCell(user: user, delegate: self)
             } else {
                 cell.updateCell(user: nil, delegate: self)
@@ -117,14 +116,12 @@ class MeMainTVC: UITableViewController {
             if Auth.auth().currentUser != nil {
                 self.performSegue(withIdentifier: "toPersonalInfo", sender: self)
             } else {
-                let vc = AuthorizationViewController()
-                vc.initialize(authType: .regular, delegate: self)
+                let vc = AuthorizationViewController(authType: .regular, delegate: self)
                 vc.presentFromBottom(viewController: self, completion: nil)
             }
         case .schoolCell:
-            let vc = ChooseSchoolTableViewController()
-            vc.initialize(delegate: self)
-            vc.presentOnNavigationController(navigationController: self.navigationController!)
+            let vc = ChooseSchoolTableViewController(delegate: self)
+            vc.presentOn(navigationController: self.navigationController!)
         case .schedulerCell:
             print("schedule")
         case .groupCell:
@@ -146,8 +143,7 @@ class MeMainTVC: UITableViewController {
                     self.tableView.reloadData()
                 })
             } else {
-                let vc = AuthorizationViewController()
-                vc.initialize(authType: .regular, delegate: self)
+                let vc = AuthorizationViewController(authType: .regular, delegate: self)
                 vc.presentFromBottom(viewController: self, completion: nil)
             }
         }
@@ -188,8 +184,8 @@ extension MeMainTVC: AuthorizationViewControllerDelegate {
 
 
 extension MeMainTVC: ChooseSchoolTVCDelegate {
-    func schoolChoosed(vc: ChooseSchoolTVC) {
-        vc.navigationController?.popViewController(animated: true)
+    func schoolChoosed(schoolName: String) {
+        self.navigationController?.popViewController(animated: true)
         updateCellsData()
         tableView.reloadData()
     }

@@ -19,12 +19,21 @@ protocol GroupMainCellDelegate {
 
 
 class GroupMainTVC: UITableViewController {
-
-    @IBAction func showActionSheet(_ sender: UIBarButtonItem) {
-        self.present(actionSheet, animated: true, completion: nil)
+    
+    @IBAction func searchIsPushed(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "toSearch", sender: self)
     }
     
-    var actionSheet: UIAlertController!
+    @IBAction func createIsPushed(_ sender: UIButton) {
+        if Auth.auth().currentUser == nil{
+            let authVC = AuthorizationViewController(authType: .regular, delegate: self)
+            authVC.presentFromBottom(viewController: self, completion: nil)
+        } else {
+            let storyboard = UIStoryboard.init(name: "CreateGroup", bundle: nil)
+            self.present(storyboard.instantiateInitialViewController()!, animated: true, completion: nil)
+        }
+    }
+    
     var dataIsLoaded: Bool = false
     var groups: [[Group]] = [[], [], []]
     var selectedIndexPath: IndexPath?
@@ -38,79 +47,27 @@ class GroupMainTVC: UITableViewController {
         self.tableView.register(UINib.init(nibName: "GroupFooterTVCell", bundle: nil), forCellReuseIdentifier: "GroupFooterTVCell")
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200
-        
-        
-        let error = NSError(domain: "", code: 1, userInfo: nil)
-        print(error)
-        print(error as Error)
-        print((error as Error).localizedDescription)
-        
-        createActionSheet()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        let searchButton = UIButton.init(type: .custom)
-        searchButton.setImage(#imageLiteral(resourceName: "search"), for: .normal)
-        searchButton.setTitleColor(.darkGray, for: .normal)
-        searchButton.setTitle("Search", for: .normal)
-        searchButton.titleEdgeInsets.left = 8
-        searchButton.contentEdgeInsets.left = -5
-        searchButton.frame = CGRect.init(x: 0, y: 0, width: 75, height: 30)
-        searchButton.addTarget(self, action: #selector(searchPushed(_:)), for: .touchUpInside)
-        navigationItem.setLeftBarButtonItems([UIBarButtonItem(customView: searchButton)], animated: false)
-    }
-    
-    func createActionSheet(){
-        actionSheet = UIAlertController(title: "Group", message: "More options", preferredStyle: .actionSheet)
-        let bookmarksAction = UIAlertAction(title: "Bookmarks", style: .default) { (action) in
-            if Auth.auth().currentUser == nil{
-                let authVC = AuthorizationViewController()
-                authVC.initialize(authType: .regular, delegate: self)
-                authVC.presentFromBottom(viewController: self, completion: nil)
-            } else {
-                self.performSegue(withIdentifier: "toBookmark", sender: self)
-            }
-        }
-        let createGroupAction = UIAlertAction(title: "Create Group", style: .default) { (action) in
-            if Auth.auth().currentUser == nil{
-                let authVC = AuthorizationViewController()
-                authVC.initialize(authType: .regular, delegate: self)
-                authVC.presentFromBottom(viewController: self, completion: nil)
-            } else {
-                let storyboard = UIStoryboard.init(name: "CreateGroup", bundle: nil)
-                self.present(storyboard.instantiateInitialViewController()!, animated: true, completion: nil)
-            }
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        // add actions to action sheet
-        actionSheet.addAction(bookmarksAction)
-        actionSheet.addAction(createGroupAction)
-        actionSheet.addAction(cancelAction)
-    }
     
     func loadData() {
-        let group = Group()
-        group.initialize(groupDirectory: "group_info/-KpT6IowopfnlvLyPceo")
-        group.retrieveGroupFromDirectory { (snapshot) in
-            if snapshot.exists() {
-                self.groups = [[group, group, group, group],
-                               [group, group, group, group],
-                               [group, group, group, group]]
-                self.dataIsLoaded = true
-                self.tableView.reloadData()
-            } else {
-                
-            }
-        }
-    }
-    
-    
-    func searchPushed(_ sender: UIBarButtonItem) {
-        self.performSegue(withIdentifier: "toSearch", sender: self)
+        let group = Group(reference: "group_info/-KpT6IowopfnlvLyPceo")
+        group.retrieveTinyData()
+//        group.retrieveGroupFromDirectory { (snapshot) in
+//            if snapshot.exists() {
+//                self.groups = [[group, group, group, group],
+//                               [group, group, group, group],
+//                               [group, group, group, group]]
+//                self.dataIsLoaded = true
+//                self.tableView.reloadData()
+//            } else {
+//
+//            }
+//        }
     }
     
     // MARK: - Table view data source
@@ -148,7 +105,7 @@ class GroupMainTVC: UITableViewController {
             return cell
         case 1, 2, 3, 4:
             let group = groups[indexPath.section][indexPath.row - 1]
-            if group.getImage().numOfImages() > 0 {
+            if group.getGroupImage() != nil && group.getGroupImage()!.numOfImages() > 0 {
                 let cell = self.tableView.dequeueReusableCell(withIdentifier: "GroupMainImageTVCell") as! GroupMainImageTVCell
                 cell.updateCell(group: group)
                 return cell
@@ -206,10 +163,6 @@ class GroupMainTVC: UITableViewController {
             vc.group = groups[selectedIndexPath!.section][selectedIndexPath!.row - 1]
         case "toMoreGroups":
             let vc = segue.destination as! GroupMoreGroupsTVC
-            
-        case "toBookmark":
-            let vc = segue.destination as! GroupBookmarkMainTVC
-            
         default:
             break
         }

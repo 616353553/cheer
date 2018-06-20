@@ -28,23 +28,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UINavigationBar.appearance().tintColor = Config.themeColor
         let school = CoreDataManagement.getSchool()
         if school != nil && school != "" {
-            skipLogIn()
+            skipSignIn()
         } else {
-            logIn()
+            signIn()
         }
         return true
     }
     
     
-    func logIn() {
-        let storyboard = UIStoryboard.init(name: "Authorization", bundle: nil)
-        let vc = storyboard.instantiateInitialViewController() as! AuthorizationNVC
-        vc.setAuthType(authType: .firstTime)
-        vc.setDelegate(delegate: self)
-        self.window?.rootViewController = vc
+    func signIn() {
+        let authVC = AuthorizationViewController(authType: .firstTime, delegate: self)
+        self.window?.rootViewController = authVC.navigationController()
     }
     
-    func skipLogIn() {
+    func skipSignIn() {
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let vc = storyboard.instantiateInitialViewController()
         self.window?.rootViewController = vc

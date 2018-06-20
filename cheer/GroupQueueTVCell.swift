@@ -33,13 +33,13 @@ class GroupQueueTVCell: UITableViewCell {
         userNameLabel.text = nil
     }
     
-    func updateCell(memeber: QueueMember) {
-        if memeber.getUserName() == nil || memeber.getUserImage().getImage(atIndex: 0) == nil {
-            
-        } else {
-            userImage.image = memeber.getUserImage().getImage(atIndex: 0)
-            userNameLabel.text = memeber.getUserName()
-        }
-    }
+//    func updateCell(memeber: QueueMember) {
+//        if memeber.getUserName() == nil || memeber.getUserImage().getImage(atIndex: 0) == nil {
+//
+//        } else {
+//            userImage.image = memeber.getUserImage().getImage(atIndex: 0)
+//            userNameLabel.text = memeber.getUserName()
+//        }
+//    }
     
 }

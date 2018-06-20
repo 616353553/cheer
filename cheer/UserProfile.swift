@@ -18,7 +18,7 @@ enum Gender: String {
 fileprivate struct UserProfileStruct {
     var uid: String
     var portrait: ImageData
-    var nickname: String
+    var name: String
     var gender: Gender
     var description: String
 }
@@ -27,9 +27,8 @@ class UserProfile {
     
     private var data: UserProfileStruct!
     
-    func initialize(uid: String) {
-        data = UserProfileStruct(uid: uid, portrait: ImageData(), nickname: "", gender: .none, description: "")
-        data.portrait.initialize(withCapacity: 1)
+    init(uid: String) {
+        data = UserProfileStruct(uid: uid, portrait: ImageData(), name: "", gender: .none, description: "")
     }
     
     func fetchDataFromUID(completion: @escaping ((DataSnapshot) -> Void)) {
@@ -49,8 +48,8 @@ class UserProfile {
         data.portrait = portrait
     }
     
-    func setNickname(nickname: String) {
-        data.nickname = nickname
+    func setName(name: String) {
+        data.name = name
     }
     
     func setGender(gender: Gender) {
@@ -74,8 +73,8 @@ class UserProfile {
         return data.portrait
     }
     
-    func getNickname() -> String {
-        return data.nickname
+    func getName() -> String {
+        return data.name
     }
     
     func getGender() -> Gender {

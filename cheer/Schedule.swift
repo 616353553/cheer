@@ -8,6 +8,12 @@
 
 import Foundation
 
+enum ScheduleRepeatingType: String {
+    case repeatByDay = "repeatByDay"
+    case repeatByWeek = "repeatByWeek"
+    case repeatByMonth = "repeatByMonth"
+}
+
 struct ScheduleStruct {
     var repeating: Bool
     var repeatType: ScheduleRepeatingType
@@ -19,17 +25,6 @@ struct ScheduleStruct {
     var startTime: Date
     var endTime: Date
 }
-
-
-
-enum ScheduleRepeatingType: String {
-    case repeatByDay = "repeatByDay"
-    case repeatByWeek = "repeatByWeek"
-    case repeatByMonth = "repeatByMonth"
-}
-
-
-
 
 class Schedule {
     

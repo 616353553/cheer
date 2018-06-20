@@ -11,11 +11,11 @@ import CoreData
 
 class CoreDataManagement {
     static func getSchool() -> String? {
-        var schools: [School] = []
+        var userDatas: [UserData] = []
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         do {
-            schools = try context.fetch(School.fetchRequest())
-            return schools.first?.schoolName
+            userDatas = try context.fetch(UserData.fetchRequest())
+            return userDatas.first?.currentSchool
         } catch {
             return nil
         }
@@ -35,15 +35,15 @@ class CoreDataManagement {
     
     
     static func updateSchool(schoolName: String?) -> String? {
-        var schools: [School] = []
+        var userDatas: [UserData] = []
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         do {
-            schools = try context.fetch(School.fetchRequest())
-            if schools.count > 0 {
-                schools.first?.schoolName = schoolName
+            userDatas = try context.fetch(UserData.fetchRequest())
+            if userDatas.count > 0 {
+                userDatas.first?.currentSchool = schoolName
             } else {
-                let school = School(context: context)
-                school.schoolName = schoolName
+                let userData = UserData(context: context)
+                userData.currentSchool = schoolName
                 (UIApplication.shared.delegate as! AppDelegate).saveContext()
             }
             return nil

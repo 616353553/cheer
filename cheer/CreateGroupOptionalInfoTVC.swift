@@ -8,22 +8,19 @@
 
 import UIKit
 import Photos
-import BSImagePicker
+import RSKImageCropper
+import QBImagePickerController
 
 class CreateGroupOptionalInfoTVC: UITableViewController {
 
     @IBAction func nextPushed(_ sender: UIBarButtonItem) {
-        if group!.isValidGroup() {
-            self.performSegue(withIdentifier: "toRules", sender: self)
-        } else {
-            Alert.displayAlertWithOneButton(title: "Error", message: "Unknown error, please try again later", vc: self)
-        }
+        self.performSegue(withIdentifier: "toRules", sender: self)
     }
     
     var group: Group!
     var textViewCellsStates: [CellState] = [.contracted, .contracted, .contracted, .contracted]
     var tap: UITapGestureRecognizer!
-    var imagePicker: BSImagePickerViewController?
+    var imagePicker: QBImagePickerController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,11 +72,11 @@ class CreateGroupOptionalInfoTVC: UITableViewController {
         switch indexPath {
         case [0, 0]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupImageTVCell") as! CreateGroupImageTVCell
-            cell.updateCell(image: group!.getImage().getImage(atIndex: 0), indexPath: indexPath, delegate: self)
+            cell.updateCell(image: group.getGroupImage()?.getOriginalImage(at: 0), indexPath: indexPath, delegate: self)
             return cell
         case [1 , 0]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupSlotsTVCell") as! CreateGroupSlotsTVCell
-            cell.updateCell(maxSlots: group!.getMaxSlots(), minAllowed: Config.minMembersAllowed, maxAllowed: Config.maxMembersAllowed, indexPath: indexPath, delegate: self)
+            cell.updateCell(maxSlots: group!.getQueue()!.getMaxSlot()!, minAllowed: Config.minMembersAllowed, maxAllowed: Config.maxMembersAllowed, indexPath: indexPath, delegate: self)
             return cell
         case [2, 0]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupTextViewTVCell") as! CreateGroupTextViewTVCell
@@ -180,29 +177,32 @@ extension CreateGroupOptionalInfoTVC: CreateGroupTextViewTVCellDelegate {
 
 extension CreateGroupOptionalInfoTVC: CreateGroupSlotsTVCellDelegate {
     func maxSlotsChanged(value: Int) {
-        group!.setMaxSlots(maxSlots: value)
+        group.getQueue()?.setMaxSlot(maxSlot: value)
     }
 }
 
 extension CreateGroupOptionalInfoTVC: CreateGroupImageTVCellDelegate {
     func imageChanged(image: UIImage?) {
-        self.group.getImage().setImage(atIndex: 0, image: image)
-        self.group.getImage().setImage(atIndex: 1, image: image)
+        if image != nil {
+            self.group.getGroupImage()?.setThumbnailImage(at: 0, image: image!)
+            self.group.getGroupImage()?.setOriginalImage(at: 0, image: image!)
+        }
     }
     
     func editImage(indexPath: IndexPath) {
-        imagePicker = BSImagePickerViewController()
-        imagePicker!.maxNumberOfSelections = 1
-        bs_presentImagePickerController(imagePicker!, animated: true, select: nil, deselect: nil, cancel: nil, finish: { (assets) in
-            self.group.getImage().setImage(atIndex: 0, asset: assets[0], completion: { (image) in
-                if image != nil {
-                    self.group.getImage().setImage(atIndex: 1, image: image!)
-                    let cell = self.tableView.cellForRow(at: indexPath) as! CreateGroupImageTVCell
-                    cell.setImage(image: image)
-                } else {
-                    Alert.displayAlertWithOneButton(title: "Unknown Error", message: "Image cannot be set", vc: self)
-                }
-            })
-        }, completion: nil)
+        imagePicker = QBImagePickerController()
+        
+//        imagePicker!.maxNumberOfSelections = 1
+//        bs_presentImagePickerController(imagePicker!, animated: true, select: nil, deselect: nil, cancel: nil, finish: { (assets) in
+//            self.group.getImage().setImage(atIndex: 0, asset: assets[0], completion: { (image) in
+//                if image != nil {
+//                    self.group.getImage().setImage(atIndex: 1, image: image!)
+//                    let cell = self.tableView.cellForRow(at: indexPath) as! CreateGroupImageTVCell
+//                    cell.setImage(image: image)
+//                } else {
+//                    Alert.displayAlertWithOneButton(title: "Unknown Error", message: "Image cannot be set", vc: self)
+//                }
+//            })
+//        }, completion: nil)
     }
 }

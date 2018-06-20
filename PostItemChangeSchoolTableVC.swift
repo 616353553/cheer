@@ -45,10 +45,10 @@ class PostItemChangeSchoolTableVC: UITableViewController {
         schools.sort()
         tableView.register(UINib(nibName: "SchoolCell", bundle: nil), forCellReuseIdentifier: "schoolCell")
         // set up observers
-        NotificationCenter.default.addObserver(self, selector: #selector(ChooseSchoolTableVC.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChooseSchoolTableVC.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        // set up gesture recognizer
-        tap = UITapGestureRecognizer(target: self, action: #selector(ChooseSchoolTableVC.dismissKeyboard))
+//        NotificationCenter.default.addObserver(self, selector: #selector(ChooseSchoolTVC.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(ChooseSchoolTVC.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+//        // set up gesture recognizer
+//        tap = UITapGestureRecognizer(target: self, action: #selector(ChooseSchoolTVC.dismissKeyboard))
     }
     
     override func didReceiveMemoryWarning() {
@@ -92,12 +92,8 @@ class PostItemChangeSchoolTableVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "schoolCell", for: indexPath) as! SchoolCell
         let name = searchBar.text! != "" ? filteredSchools[indexPath.row] : SchoolData.schools[SchoolData.states[indexPath.section]]![indexPath.row]
-        cell.schoolName.text = name
-        cell.logo.image = SchoolData.schoolData[name]![0]
-        cell.background.image = SchoolData.schoolData[name]![1]
-        if selectedSchool != nil && selectedSchool! == name{
-            self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-        }
+        cell.updateCell(logo: SchoolData.schoolData[name], schoolName: name)
+        cell.setSelected(selectedSchool == name, animated: false)
         return cell
     }
     

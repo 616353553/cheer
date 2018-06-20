@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class GroupCreateTypeTVC: UITableViewController {
     
@@ -16,8 +17,7 @@ class GroupCreateTypeTVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        group = Group()
-        group!.initialize(groupType: .professorProject)
+        group = Group(creatorID: Auth.auth().currentUser!.uid)
         setCheckMarks()
         // disable navigation controller dismiss on swipe action
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
@@ -27,11 +27,13 @@ class GroupCreateTypeTVC: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
-    func setCheckMarks(){
-        for check in checks{
-            if check.tag == group!.getGroupType().hashValue {
-                check.isHidden = false
-            } else {
+    private func setCheckMarks(){
+        if let groupType = group.getGroupType() {
+            for check in checks {
+                check.isHidden = (check.tag != groupType.hashValue)
+            }
+        } else {
+            for check in checks {
                 check.isHidden = true
             }
         }
@@ -43,10 +45,15 @@ class GroupCreateTypeTVC: UITableViewController {
     
     @IBAction func nextIsPushed(_ sender: UIBarButtonItem) {
         next()
+        //print("next")
     }
     
-    func next(){
-        performSegue(withIdentifier: "toTitle", sender: self)
+    private func next(){
+        if group.getGroupType() != nil {
+            performSegue(withIdentifier: "toTitle", sender: self)
+        } else {
+            Alert.displayAlertWithOneButton(title: "Warning", message: "Please select a group type", vc: self)
+        }
     }
 
     // MARK: - Table view data source
@@ -69,13 +76,13 @@ class GroupCreateTypeTVC: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath {
         case [0, 0]:
-            group!.setGroupType(groupType: .professorProject)
+            group!.setGroupType(groupType: .activity)
             setCheckMarks()
         case [0, 1]:
-            group!.setGroupType(groupType: .studentProject)
+            group!.setGroupType(groupType: .project)
             setCheckMarks()
         case [0, 2]:
-            group!.setGroupType(groupType: .activity)
+            group!.setGroupType(groupType: .research)
             setCheckMarks()
         case [1, 0]:
             next()

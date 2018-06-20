@@ -11,11 +11,11 @@ import UIKit
 class CreateGroupAddScheduleTVC: UITableViewController {
 
     @IBAction func nextPushed(_ sender: UIBarButtonItem) {
-        if group!.isValidSchedules() {
-            self.performSegue(withIdentifier: "toOptionalInfo", sender: self)
-        } else {
-            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid Schedules", vc: self)
-        }
+//        if group!.isValidSchedules() {
+//            self.performSegue(withIdentifier: "toOptionalInfo", sender: self)
+//        } else {
+//            Alert.displayAlertWithOneButton(title: "Error", message: "Invalid Schedules", vc: self)
+//        }
     }
     
     var group: Group!
@@ -24,7 +24,7 @@ class CreateGroupAddScheduleTVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        schedules = group!.getSchedules()
+        //schedules = group!.getSchedules()
         tableView.register(UINib.init(nibName: "CreateGroupScheduleTVCell", bundle: nil), forCellReuseIdentifier: "CreateGroupScheduleTVCell")
         tableView.register(UINib.init(nibName: "CreateGroupAddScheduleTVCell", bundle: nil), forCellReuseIdentifier: "CreateGroupAddScheduleTVCell")
         
@@ -93,21 +93,21 @@ class CreateGroupAddScheduleTVC: UITableViewController {
 
 extension CreateGroupAddScheduleTVC: CreateGroupScheduleTVCellDelegate {
     func deleteButtonPushed(indexPath: IndexPath) {
-        schedules.remove(at: indexPath.row)
-        group!.setSchedules(schedules: schedules)
-        tableView.deleteRows(at: [indexPath], with: .none)
-        tableView.reloadData()
+//        schedules.remove(at: indexPath.row)
+//        group!.setSchedules(schedules: schedules)
+//        tableView.deleteRows(at: [indexPath], with: .none)
+//        tableView.reloadData()
     }
 }
 
 extension CreateGroupAddScheduleTVC: CreateGroupScheduleContentTVCDelegate {
     func scheduleCreated(schedule: Schedule) {
-        if selectedIndex!.row == schedules.count {
-            schedules.append(schedule)
-        } else {
-            schedules[selectedIndex!.row] = schedule
-        }
-        group!.setSchedules(schedules: schedules)
-        tableView.reloadData()
+//        if selectedIndex!.row == schedules.count {
+//            schedules.append(schedule)
+//        } else {
+//            schedules[selectedIndex!.row] = schedule
+//        }
+//        group!.setSchedules(schedules: schedules)
+//        tableView.reloadData()
     }
 }

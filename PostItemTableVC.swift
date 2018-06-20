@@ -8,7 +8,8 @@
 
 import UIKit
 import Photos
-import BSImagePicker
+import RSKImageCropper
+import QBImagePickerController
 
 class PostItemTableVC: UITableViewController {
 
@@ -37,7 +38,7 @@ class PostItemTableVC: UITableViewController {
     let deliveryMethodTitles = ["Deliver", "Pick up", "Both", "N/A"]
     let spinner = UIActivityIndicatorView()
     var tap: UITapGestureRecognizer!
-    var imagePicker: BSImagePickerViewController!
+    var imagePicker: QBImagePickerController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +54,6 @@ class PostItemTableVC: UITableViewController {
             ButtonDesign.round(button: catagoryButton, color: Config.themeColor, radius: 12, borderWidth: 1)
         }
         
-        item.initialize()
         setupCollectionView()
         setupTextFields()
         
@@ -78,7 +78,7 @@ class PostItemTableVC: UITableViewController {
         if InputChecker.onlyHasWhiteSpace(text: titleTextView.text!){
             Alert.displayAlertWithOneButton(title: "Error", message: "Invalid title", vc: self)
         }
-        else if (titleTextView.text!.characters.count > 150){
+        else if (titleTextView.text!.count > 150){
             Alert.displayAlertWithOneButton(title: "Error", message: "Invalid title length", vc: self)
         }
         else if priceTextField.text! != "" && Double(priceTextField.text!) == nil{
@@ -87,7 +87,7 @@ class PostItemTableVC: UITableViewController {
         else if InputChecker.onlyHasWhiteSpace(text: discriptionTextView.text!){
             Alert.displayAlertWithOneButton(title: "Error", message: "Invalid discription", vc: self)
         }
-        else if discriptionTextView.text!.characters.count > 1500{
+        else if discriptionTextView.text!.count > 1500{
             Alert.displayAlertWithOneButton(title: "Error", message: "Invalid discription length", vc: self)
         }
         else{
@@ -137,8 +137,8 @@ class PostItemTableVC: UITableViewController {
     func setupCells(){
         // cell 1
         schoolName.text = item.location
-        schoolLogo.image = SchoolData.schoolData[item.location!]![0]
-        schoolView.image = SchoolData.schoolData[item.location!]![1]
+        schoolLogo.image = SchoolData.schoolData[item.location!]
+        schoolView.image = SchoolData.schoolData[item.location!]
         // cell 2
         for catagoryButton in catagoryButtons{
             ButtonDesign.selectButton(button: catagoryButton, setSelect: catagoryButton.titleLabel!.text! == item.category!)
@@ -373,20 +373,20 @@ extension PostItemTableVC: UITextViewDelegate{
     func textViewDidChange(_ textView: UITextView) {
         if textView.restorationIdentifier == "title"{
             titlePlaceHolder.isHidden = textView.text != ""
-            titleLength.text = "\(titleTextView.text.characters.count)/150 Letters"
+            titleLength.text = "\(titleTextView.text.count)/150 Letters"
         } else if textView.restorationIdentifier == "discription"{
             discriptionPlaceHolder.isHidden = textView.text != ""
-            discriptionLength.text = "\(discriptionTextView.text.characters.count)/1500 Letters"
+            discriptionLength.text = "\(discriptionTextView.text.count)/1500 Letters"
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.restorationIdentifier == "title"{
             titlePlaceHolder.isHidden = textView.text != ""
-            titleLength.text = "\(titleTextView.text.characters.count)/150 Letters"
+            titleLength.text = "\(titleTextView.text.count)/150 Letters"
         } else if textView.restorationIdentifier == "discription"{
             discriptionPlaceHolder.isHidden = textView.text != ""
-            discriptionLength.text = "\(discriptionTextView.text.characters.count)/1500 Letters"
+            discriptionLength.text = "\(discriptionTextView.text.count)/1500 Letters"
         }
     }
     
@@ -405,7 +405,7 @@ extension PostItemTableVC: PostItemChangeSchoolTableVCDelegate, PostImageCollect
     }
     
     func deleteImage(index: Int){
-        item.images.removeImage(atIndex: index)
+        item.images.removeData(at: index)
         numberOfImagesHasChanged()
     }
 }

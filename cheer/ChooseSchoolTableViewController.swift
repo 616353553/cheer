@@ -12,13 +12,13 @@ class ChooseSchoolTableViewController {
     
     private var vc: ChooseSchoolTVC!
     
-    func initialize(delegate: ChooseSchoolTVCDelegate) {
+    init(delegate: ChooseSchoolTVCDelegate) {
         let storyboard = UIStoryboard.init(name: "ChooseSchool", bundle: nil)
         vc = storyboard.instantiateInitialViewController() as! ChooseSchoolTVC
         vc.delegate = delegate
     }
     
-    func presentOnNavigationController(navigationController: UINavigationController) {
+    func presentOn(navigationController: UINavigationController) {
         guard vc != nil else {
             fatalError("Error: ChooseSchoolTableViewController must be initialized before using")
         }

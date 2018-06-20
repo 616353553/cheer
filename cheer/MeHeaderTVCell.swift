@@ -51,7 +51,7 @@ class MeHeaderTVCell: UITableViewCell {
     func updateCell(user: UserProfile?, delegate: MeHeaderTVCellDelegate) {
         self.delegate = delegate
         if user != nil {
-            if let userIconImage = user?.getPortrait().getImage(atIndex: 0) {
+            if let userIconImage = user?.getPortrait().getThumbnailImage(at: 0) {
                 userIcon.setImage(userIconImage, for: .normal)
             } else {
 //                user?.getUserImage().retrieveImage(atIndex: 0, completion: { (image, error) in

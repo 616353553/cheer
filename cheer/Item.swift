@@ -22,7 +22,7 @@ class Item {
     var location: String!
     var images: ImageData!
     
-    func initialize(){
+    init(){
         userId = Auth.auth().currentUser!.uid
         category = "Auto"
         deliveryMethod = "Deliver"
@@ -31,7 +31,7 @@ class Item {
         discription = ""
         location = UserDefaults.standard.string(forKey: "selectedSchool")!
         images = ImageData()
-        images.initialize()
+        images = ImageData()
     }
     
     func initialize(snapshot: DataSnapshot){

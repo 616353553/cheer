@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iPq-eM-K4e">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Schedule-->
+        <scene sceneID="cZu-Z0-f94">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="iPq-eM-K4e" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Schedule" image="Home_unselected" selectedImage="Home_selected" id="fhg-RH-t2Y"/>
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dcN-FU-EgJ">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="9Z4-MX-C45">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="ibA-Aj-1qe" kind="relationship" relationship="rootViewController" id="Erx-rm-DOi"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xJe-Sb-0D6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-237.59999999999999" y="-914.392803598201"/>
+        </scene>
+        <!--date-->
+        <scene sceneID="KaI-ds-HDa">
+            <objects>
+                <viewController id="ibA-Aj-1qe" customClass="ScheduleMainVC" customModule="cheer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4yl-JT-UYF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ju0-9v-If3">
+                                <rect key="frame" x="0.0" y="119" width="375" height="499"/>
+                            </scrollView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="wqV-bB-vad">
+                                <rect key="frame" x="18" y="64" width="357" height="25"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="mXy-6N-7LE"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="d2W-ER-Ya6">
+                                    <size key="itemSize" width="46" height="25"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="weekCell" id="lh7-mg-c7B" customClass="WeekCVCell" customModule="cheer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="46" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="46" height="25"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sun" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fHo-vv-c5t">
+                                                    <rect key="frame" x="11" y="4" width="24" height="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="fHo-vv-c5t" firstAttribute="centerY" secondItem="lh7-mg-c7B" secondAttribute="centerY" id="hXI-RT-2na"/>
+                                            <constraint firstItem="fHo-vv-c5t" firstAttribute="centerX" secondItem="lh7-mg-c7B" secondAttribute="centerX" id="yNd-No-stD"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="weekLabel" destination="fHo-vv-c5t" id="jLK-4i-BCa"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="MlE-g7-TuY">
+                                <rect key="frame" x="18" y="89" width="357" height="30"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="ZiW-fL-JLW"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="7HR-Y6-Qy9">
+                                    <size key="itemSize" width="46" height="30.5"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="dateCell" id="Xv9-ZE-hbN" customClass="DateCVCell" customModule="cheer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="-0.5" width="46" height="30.5"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="46" height="30.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOE-Pl-cDG">
+                                                    <rect key="frame" x="14.5" y="7" width="17.5" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="VOE-Pl-cDG" firstAttribute="centerY" secondItem="Xv9-ZE-hbN" secondAttribute="centerY" id="o0X-SC-B9i"/>
+                                            <constraint firstItem="VOE-Pl-cDG" firstAttribute="centerX" secondItem="Xv9-ZE-hbN" secondAttribute="centerX" id="oeo-Ba-Z89"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="dateLabel" destination="VOE-Pl-cDG" id="DfC-1Y-dZ7"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ju0-9v-If3" firstAttribute="leading" secondItem="Sg9-Af-seQ" secondAttribute="leading" id="5d4-N0-kHU"/>
+                            <constraint firstItem="MlE-g7-TuY" firstAttribute="top" secondItem="wqV-bB-vad" secondAttribute="bottom" id="8Ao-pO-jqY"/>
+                            <constraint firstItem="Sg9-Af-seQ" firstAttribute="trailing" secondItem="wqV-bB-vad" secondAttribute="trailing" id="9hU-3y-gqj"/>
+                            <constraint firstItem="MlE-g7-TuY" firstAttribute="leading" secondItem="Sg9-Af-seQ" secondAttribute="leading" constant="18" id="AKa-yP-YCK"/>
+                            <constraint firstItem="Sg9-Af-seQ" firstAttribute="bottom" secondItem="ju0-9v-If3" secondAttribute="bottom" id="JbX-fz-ynZ"/>
+                            <constraint firstItem="Sg9-Af-seQ" firstAttribute="trailing" secondItem="ju0-9v-If3" secondAttribute="trailing" id="Wtd-O8-76h"/>
+                            <constraint firstItem="wqV-bB-vad" firstAttribute="top" secondItem="Sg9-Af-seQ" secondAttribute="top" id="cyS-pR-dPE"/>
+                            <constraint firstItem="wqV-bB-vad" firstAttribute="leading" secondItem="Sg9-Af-seQ" secondAttribute="leading" constant="18" id="fwx-oD-Kz5"/>
+                            <constraint firstItem="Sg9-Af-seQ" firstAttribute="trailing" secondItem="MlE-g7-TuY" secondAttribute="trailing" id="s1v-Ry-paw"/>
+                            <constraint firstItem="ju0-9v-If3" firstAttribute="top" secondItem="MlE-g7-TuY" secondAttribute="bottom" id="yQB-L5-4vo"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Sg9-Af-seQ"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="date" id="4Mg-Jk-SEz"/>
+                    <connections>
+                        <outlet property="dateCollectionView" destination="MlE-g7-TuY" id="OwM-P2-TVz"/>
+                        <outlet property="scheduleScrollView" destination="ju0-9v-If3" id="5yP-W7-44N"/>
+                        <outlet property="weekCollectionView" destination="wqV-bB-vad" id="jzF-bJ-WLR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eVb-HS-fZP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="605.60000000000002" y="-914.392803598201"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Home_selected" width="22" height="22"/>
+        <image name="Home_unselected" width="22" height="22"/>
+    </resources>
+</document>

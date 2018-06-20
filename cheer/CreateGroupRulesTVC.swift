@@ -12,22 +12,22 @@ class CreateGroupRulesTVC: UITableViewController {
     
     @IBOutlet var checks: [UIImageView]!
     @IBAction func submitPushed(_ sender: UIBarButtonItem) {
-        if group!.isValidGroup() {
-            let spinner = UIActivityIndicatorView()
-            Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
-            group.upload() {(error, data) in
-                Spinner.disableActivityIndicator(activityIndicator: spinner, enableInteraction: true)
-                if error == nil {
-                    Alert.displayAlertWithOneButton(title: "Success", message: "Your group is created successfully", vc: self) {(action) in
-                        self.dismiss(animated: true, completion: nil)
-                    }
-                } else {
-                    Alert.displayAlertWithOneButton(title: "Error", message: error!, vc: self)
-                }
-            }
-        } else {
-            Alert.displayAlertWithOneButton(title: "Unknown Error", message: "Please try again later", vc: self)
-        }
+//        if group!.isValidGroup() {
+//            let spinner = UIActivityIndicatorView()
+//            Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
+//            group.upload() {(error, data) in
+//                Spinner.disableActivityIndicator(activityIndicator: spinner, enableInteraction: true)
+//                if error == nil {
+//                    Alert.displayAlertWithOneButton(title: "Success", message: "Your group is created successfully", vc: self) {(action) in
+//                        self.dismiss(animated: true, completion: nil)
+//                    }
+//                } else {
+//                    Alert.displayAlertWithOneButton(title: "Error", message: error!, vc: self)
+//                }
+//            }
+//        } else {
+//            Alert.displayAlertWithOneButton(title: "Unknown Error", message: "Please try again later", vc: self)
+//        }
     }
     
     var group: Group!
@@ -42,13 +42,13 @@ class CreateGroupRulesTVC: UITableViewController {
     }
     
     func updateCheckMark() {
-        var checkMarkTag = 1
-        if group!.getSendNotification() {
-            checkMarkTag = 0
-        }
-        for check in checks {
-            check.isHidden = (check.tag != checkMarkTag)
-        }
+//        var checkMarkTag = 1
+//        if group!.getSendNotification() {
+//            checkMarkTag = 0
+//        }
+//        for check in checks {
+//            check.isHidden = (check.tag != checkMarkTag)
+//        }
     }
     
 
@@ -63,15 +63,15 @@ class CreateGroupRulesTVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.row {
-        case 0:
-            group!.setSendNotification(sendNotification: true)
-        case 1:
-            group!.setSendNotification(sendNotification: false)
-        default:
-            break
-        }
-        updateCheckMark()
+//        switch indexPath.row {
+//        case 0:
+//            group!.setSendNotification(sendNotification: true)
+//        case 1:
+//            group!.setSendNotification(sendNotification: false)
+//        default:
+//            break
+//        }
+//        updateCheckMark()
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

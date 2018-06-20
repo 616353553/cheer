@@ -18,13 +18,13 @@ class MeNicknameTVC: UITableViewController {
     @IBAction func savePushed(_ sender: UIBarButtonItem) {
         if let nickname = nicknameTextField.text {
             if InputChecker.hasCorrectLength(min: 1, max: 32, text: nickname) {
-                let originalNickname = userProfile.getNickname()
-                userProfile.setNickname(nickname: nickname)
+                let originalName = userProfile.getName()
+                userProfile.setName(name: nickname)
                 Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
                 userProfile.update(completion: { (errorString) in
                     Spinner.disableActivityIndicator(activityIndicator: spinner, enableInteraction: true)
                     if errorString != nil {
-                        userProfile.setNickname(nickname: originalNickname)
+                        userProfile.setName(name: originalName)
                         Alert.displayAlertWithOneButton(title: "Error", message: errorString!, vc: self)
                     } else {
                         Alert.displayAlertWithOneButton(title: "Success", message: "Nickname updated successfully", vc: self, alertActionHandler: { (action) in
@@ -46,7 +46,7 @@ class MeNicknameTVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         nicknameTextField.becomeFirstResponder()
-        nicknameTextField.text = userProfile.getNickname()
+        nicknameTextField.text = userProfile.getName()
     }
 
     override func didReceiveMemoryWarning() {

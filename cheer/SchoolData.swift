@@ -8,17 +8,18 @@
 
 import Foundation
 class SchoolData {
-    static let schoolData = ["Arizona State University": [#imageLiteral(resourceName: "ASU"), #imageLiteral(resourceName: "ASU_view")],
-                             "University of Illinois at Urbana-Champaign": [#imageLiteral(resourceName: "UIUC"), #imageLiteral(resourceName: "UIUC_view")],
-                             "Indiana University Bloomington": [#imageLiteral(resourceName: "IU Bloomington"), #imageLiteral(resourceName: "IU Bloomington_view")],
-                             "Pennsylvania State University": [#imageLiteral(resourceName: "PSU"), #imageLiteral(resourceName: "PSU_view")],
-                             "University of Washington": [#imageLiteral(resourceName: "UW"), #imageLiteral(resourceName: "UW_view")],
-                             "New York University": [#imageLiteral(resourceName: "NYU"), #imageLiteral(resourceName: "NYU_view")],
-                             "Michigan State University": [#imageLiteral(resourceName: "MSU"),#imageLiteral(resourceName: "MSU_view")],
-                             "University of California, Los Angeles": [#imageLiteral(resourceName: "UCLA"),#imageLiteral(resourceName: "UCLA_view")],
-                             "Northeastern University": [#imageLiteral(resourceName: "NU"), #imageLiteral(resourceName: "NU_view")],
-                             "Columbia University in the City of New York": [#imageLiteral(resourceName: "CU"), #imageLiteral(resourceName: "CU_view")],
-                             "University of Southern California": [#imageLiteral(resourceName: "USC"), #imageLiteral(resourceName: "USC_view")]]
+    static let schoolData = ["Arizona State University": #imageLiteral(resourceName: "ASU"),
+                             "University of Illinois at Urbana-Champaign": #imageLiteral(resourceName: "UIUC"),
+                             "Indiana University Bloomington": #imageLiteral(resourceName: "IU Bloomington"),
+                             "Pennsylvania State University": #imageLiteral(resourceName: "PSU"),
+                             "University of Washington": #imageLiteral(resourceName: "UW"),
+                             "New York University": #imageLiteral(resourceName: "NYU"),
+                             "Michigan State University": #imageLiteral(resourceName: "MSU"),
+                             "University of California, Los Angeles": #imageLiteral(resourceName: "UCLA"),
+                             "Northeastern University": #imageLiteral(resourceName: "NU"),
+                             "Columbia University in the City of New York": #imageLiteral(resourceName: "CU"),
+                             "University of Southern California": #imageLiteral(resourceName: "USC")
+                            ]
     
     static let schools = ["AL": [""],
                          "AK": [""],

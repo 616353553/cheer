@@ -4,4 +4,5 @@
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
-#import <JSQMessagesViewController/JSQMessages.h>
+#import <RSKImageCropper/RSKImageCropper.h>
+#import <QBImagePickerController/QBImagePickerController.h>

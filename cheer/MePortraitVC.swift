@@ -7,7 +7,8 @@
 //
 
 import UIKit
-import BSImagePicker
+import RSKImageCropper
+import QBImagePickerController
 
 class MePortraitVC: UIViewController {
     
@@ -31,39 +32,39 @@ class MePortraitVC: UIViewController {
     
     func createActionSheet() {
         let selectFromLibrary = UIAlertAction(title: "Select from library", style: .default) { (action) in
-            let imagePicker = BSImagePickerViewController()
-            imagePicker.maxNumberOfSelections = 1
-            self.bs_presentImagePickerController(imagePicker, animated: true, select: nil, deselect: nil, cancel: nil, finish: { (assets) in
-                if assets.count == 0 {
-                    Alert.displayAlertWithOneButton(title: "Error", message: "Unknown error, please try again later", vc: self)
-                    return
-                }
-                Spinner.enableActivityIndicator(activityIndicator: self.spinner, vc: self, disableInteraction: true)
-                
-                // hold the orginal image
-                let originalImage = self.userProfile.getPortrait().getImage(atIndex: 0)
-                
-                self.userProfile.getPortrait().setImage(atIndex: 0, asset: assets[0], completion: { (image) in
-                    if image != nil {
-                        self.userProfile.update(completion: { (errorString) in
-                            Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
-                            if errorString != nil {
-                                // clear the changes
-                                self.userProfile.getPortrait().setImage(atIndex: 0, image: originalImage)
-                                self.userProfile.getPortrait().setImage(atIndex: 0, asset: nil, completion: nil)
-                                Alert.displayAlertWithOneButton(title: "Error", message: errorString!, vc: self)
-                            } else {
-                                DispatchQueue.main.async {
-                                    self.portraitView.image = image
-                                }
-                            }
-                        })
-                    } else {
-                        Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
-                        Alert.displayAlertWithOneButton(title: "Error", message: "Unknown error, please try again later", vc: self)
-                    }
-                })
-            }, completion: nil)
+            let imagePicker = QBImagePickerController()
+//            imagePicker.maxNumberOfSelections = 1
+//            self.bs_presentImagePickerController(imagePicker, animated: true, select: nil, deselect: nil, cancel: nil, finish: { (assets) in
+//                if assets.count == 0 {
+//                    Alert.displayAlertWithOneButton(title: "Error", message: "Unknown error, please try again later", vc: self)
+//                    return
+//                }
+//                Spinner.enableActivityIndicator(activityIndicator: self.spinner, vc: self, disableInteraction: true)
+//
+//                // hold the orginal image
+//                let originalImage = self.userProfile.getPortrait().getImage(atIndex: 0)
+//
+//                self.userProfile.getPortrait().setImage(atIndex: 0, asset: assets[0], completion: { (image) in
+//                    if image != nil {
+//                        self.userProfile.update(completion: { (errorString) in
+//                            Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
+//                            if errorString != nil {
+//                                // clear the changes
+//                                self.userProfile.getPortrait().setImage(atIndex: 0, image: originalImage)
+//                                self.userProfile.getPortrait().setImage(atIndex: 0, asset: nil, completion: nil)
+//                                Alert.displayAlertWithOneButton(title: "Error", message: errorString!, vc: self)
+//                            } else {
+//                                DispatchQueue.main.async {
+//                                    self.portraitView.image = image
+//                                }
+//                            }
+//                        })
+//                    } else {
+//                        Spinner.disableActivityIndicator(activityIndicator: self.spinner, enableInteraction: true)
+//                        Alert.displayAlertWithOneButton(title: "Error", message: "Unknown error, please try again later", vc: self)
+//                    }
+//                })
+//            }, completion: nil)
         }
         
         let selectFromCamera = UIAlertAction(title: "Select from camera", style: .default) { (action) in
@@ -97,15 +98,15 @@ class MePortraitVC: UIViewController {
 
 extension MePortraitVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let originalImage = userProfile.getPortrait().getImage(atIndex: 0)
+        let originalImage = userProfile.getPortrait().getOriginalImage(at: 0)
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        userProfile.getPortrait().setImage(atIndex: 0, image: chosenImage)
+        userProfile.getPortrait().setOriginalImage(at: 0, image: chosenImage)
         Spinner.enableActivityIndicator(activityIndicator: spinner, vc: self, disableInteraction: true)
         userProfile.update { (errorString) in
             Spinner.disableActivityIndicator(activityIndicator: spinner, enableInteraction: true)
             if errorString != nil {
                 // clear all the changes
-                userProfile.getPortrait().setImage(atIndex: 0, image: originalImage)
+                userProfile.getPortrait().setOriginalImage(at: 0, image: originalImage!)
                 Alert.displayAlertWithOneButton(title: "Error", message: errorString!, vc: self)
             } else {
                 DispatchQueue.main.async {

@@ -7,125 +7,134 @@
 //
 
 import UIKit
+import FirebaseStorage
 
 protocol ChooseSchoolTVCDelegate {
-    func schoolChoosed(vc: ChooseSchoolTVC)
+    func schoolChoosed(schoolName: String)
 }
 
 class ChooseSchoolTVC: UITableViewController {
     
-    fileprivate var filteredSchools = [String]()
-    fileprivate var schools = [String]()
-    private let searchBar = UISearchBar()
     private var tap: UITapGestureRecognizer!
     private var selectedSchool: String?
+    private var schoolData: [(key: String, value: [School])] = []
+    private var refresher: UIRefreshControl!
     var delegate: ChooseSchoolTVCDelegate!
     
+    @IBAction func doneIsPushed(_ sender: UIBarButtonItem) {
+        if selectedSchool == nil {
+            Alert.displayAlertWithOneButton(title: "Error", message: "Please select a school", vc: self)
+        } else {
+            self.delegate.schoolChoosed(schoolName: selectedSchool!)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        super.viewDidLoad()
-        self.navigationItem.titleView = searchBar
-        searchBar.placeholder = "Search school name"
-        searchBar.returnKeyType = .done
-        searchBar.keyboardType = .asciiCapable
-        searchBar.delegate = self
-        for data in SchoolData.schoolData{
-            schools.append(data.key)
-        }
-        schools.sort()
         tableView.register(UINib(nibName: "SchoolCell", bundle: nil), forCellReuseIdentifier: "schoolCell")
-        // set up observers
-        NotificationCenter.default.addObserver(self, selector: #selector(ChooseSchoolTableVC.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChooseSchoolTableVC.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        // set up gesture recognizer
-        tap = UITapGestureRecognizer(target: self, action: #selector(ChooseSchoolTableVC.dismissKeyboard))
+        tableView.backgroundColor = UIColor.groupTableViewBackground
+        tableView.tableFooterView = UIView(frame: .zero)
+        refresher = UIRefreshControl()
+        refresher.attributedTitle = NSAttributedString(string: "Fetching School Data",
+                                                       attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 10.0)!,
+                                                                    NSForegroundColorAttributeName: UIColor.lightGray])
+        refresher.addTarget(self, action: #selector(fetchData(_:)), for: UIControlEvents.valueChanged)
+        tableView.refreshControl = refresher
+        tableView.setContentOffset(CGPoint.init(x: 0, y: -refresher.frame.height), animated: true)
+        refresher.beginRefreshing()
+        fetchData(refresher)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func doneIsPushed(_ sender: UIBarButtonItem) {
-        if selectedSchool != nil{
-            if let errorString = CoreDataManagement.updateSchool(schoolName: selectedSchool!) {
-                Alert.displayAlertWithOneButton(title: "Error", message: errorString, vc: self)
+    
+    func fetchData(_ refreshControl: UIRefreshControl) {
+        let request = Request(requestType: .json, endPoint: "get_school_data", body: nil, userToken: nil) { (data, error) in
+            if error != nil {
+                Alert.displayAlertWithOneButton(title: "Error", message: error!.localizedDescription, vc: self)
             } else {
-                self.delegate.schoolChoosed(vc: self)
+                self.schoolData.removeAll()
+                self.schoolParser(data: data!)
+                refreshControl.endRefreshing()
+                self.tableView.reloadData()
             }
         }
-        else{
-            Alert.displayAlertWithOneButton(title: "Error", message: "Please select a school", vc: self)
+        request.start()
+    }
+    
+    
+    func schoolParser(data: [String: Any]) {
+        var schools = [String: [School]]()
+        for schoolData in data {
+            var school: School?
+            if let schoolInfo = schoolData.value as? [String: String] {
+                school = School(fullName: schoolInfo["fullName"],
+                                logoRef: schoolInfo["logoRef"],
+                                state: schoolInfo["state"],
+                                teacherList: schoolInfo["teacherList"])
+            }
+            if let school = school {
+                if schools[school.getState()] != nil {
+                    schools[school.getState()]!.append(school)
+                } else {
+                    schools[school.getState()] = [school]
+                }
+            }
         }
+        self.schoolData = schools.sorted(by: {$0.0 < $1.0})
     }
+
     
-    func keyboardWillShow(notification: NSNotification){
-        self.view.addGestureRecognizer(tap)
-    }
     
-    func keyboardWillHide(notification: NSNotification){
-        self.view.removeGestureRecognizer(tap)
-    }
-    
-    func dismissKeyboard(){
-        searchBar.endEditing(true)
-    }
     
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return searchBar.text! != "" ? 1 : SchoolData.states.count
+        return schoolData.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchBar.text! != "" ? filteredSchools.count : SchoolData.schools[SchoolData.states[section]]!.count
+        return schoolData[section].value.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "schoolCell", for: indexPath) as! SchoolCell
-        let name = searchBar.text! != "" ? filteredSchools[indexPath.row] : SchoolData.schools[SchoolData.states[indexPath.section]]![indexPath.row]
-        cell.schoolName.text = name
-        cell.logo.image = SchoolData.schoolData[name]![0]
-        cell.background.image = SchoolData.schoolData[name]![1]
-        if selectedSchool != nil && selectedSchool! == name{
-            self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        let school = schoolData[indexPath.section].value[indexPath.row]
+        if let logoImage = school.getLogo() {
+            cell.updateCell(logo: logoImage, schoolName: school.getFullName())
+        } else {
+            school.fetchLogo(completion: { (data, error) in
+                if data != nil {
+                    cell.updateCell(logo: school.getLogo(), schoolName: school.getFullName())
+                }
+            })
         }
+        cell.setSelected(selectedSchool == school.getFullName(), animated: false)
         return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 80
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return searchBar.text! != "" ? "" : SchoolData.states[section]
+        return schoolData[section].key
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! SchoolCell
-        selectedSchool = cell.schoolName.text!
+        selectedSchool = schoolData[indexPath.section].value[indexPath.row].getFullName()
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        view.tintColor = UIColor.groupTableViewBackground
     }
     
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // do something?
-    }
-}
-
-extension ChooseSchoolTVC: UISearchBarDelegate{
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.endEditing(true)
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filteredSchools.removeAll(keepingCapacity: false)
-        for school in schools{
-            if school.lowercased().contains(searchBar.text!.lowercased()){
-                filteredSchools.append(school)
-            }
-        }
-        self.tableView.reloadData()
     }
 }

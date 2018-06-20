@@ -11,32 +11,27 @@ import FirebaseDatabase
 
 class CommentList {
     
+    private var commentsCount: Int!
     private var comments: [Comment]!
-    private var parentDirectory: String!
-    private var directory: String!
-    private var numOfQuery: UInt!
-    private var commentType: CommentType!
+    private var parentRef: String!
+    private var reference: String!
     
-    func initialize(parentDirectory: String, directory: String, numOfQuery: UInt, commentType: CommentType) {
+    
+    
+    init(parentReference: String, reference: String) {
         self.comments = []
-        self.parentDirectory = parentDirectory
-        self.directory = directory
-        self.numOfQuery = numOfQuery
-        self.commentType = commentType
+        self.parentRef = parentReference
+        self.reference = reference
     }
     
-    func loadMoreIfPossible(cleanData: Bool, completion: @escaping (DataSnapshot) -> Void) {
-        if cleanData {
-            comments.removeAll()
-        }
-        let query = Database.database().reference().child(directory).queryLimited(toLast: numOfQuery).queryOrderedByKey()
+    func retrieveMoreIfPossible(completion: @escaping (DataSnapshot) -> Void) {
+        let query = Database.database().reference().child(reference).queryLimited(toLast: 10).queryOrderedByKey()
         query.observe(.value, with: { (snapshot) in
             query.removeAllObservers()
             if let commentsData = snapshot.value as? [String: [String: AnyObject]] {
                 let data = commentsData.sorted(by: { $0.0 > $1.0 })
                 for commentData in data {
-                    let comment = Comment()
-                    comment.initialize(commentDirectory: self.directory.appending("/\(commentData.key)"), commentData: commentData.value)
+                    let comment = Comment(reference: self.reference.appending("/\(commentData.key)"))
                     self.comments.append(comment)
                 }
             }
@@ -44,56 +39,27 @@ class CommentList {
         })
     }
     
+    
+    
     func clear() {
         comments.removeAll()
     }
     
     
     
-    /**
-     
-     Set maximum count of each query.
     
-     - parameter numOfQuery: maximum count of each query
-     
-    */
+    // Getters
     
-    func setNumOfQuery(numOfQuery: UInt) {
-        self.numOfQuery = numOfQuery
+    func getParentRef() -> String {
+        return parentRef
     }
     
-    
-    
-    
-    
-    
-    /**
-     
-     Get maximum count of each query.
-     
-     - returns: Maximum count of each query.
-     
-     */
-    
-    func geNumOfQuery() -> UInt {
-        return self.numOfQuery
+    func getReference() -> String {
+        return reference
     }
     
-    
-    
-    
-    
-    
-    func getParentDirectory() -> String {
-        return parentDirectory
-    }
-    
-    
-    
-    
-    
-    func getDirectory() -> String {
-        return directory
+    func getCommentsCount() -> Int {
+        return commentsCount
     }
     
     
